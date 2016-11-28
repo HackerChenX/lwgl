@@ -15,6 +15,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<title></title>
 	</head>
 	<body>
+		<script type="text/javascript" src="<%=basePath%>js/AnsjCheck.js" ></script>
+
+<style>
+	#mymodal-ansj .modal-body{
+		height:400px;
+  		overflow:auto;
+	}
+</style>
 		<div class="container" style="margin-top: 50px;">
 			<div class="row">
 				<div class="col-md-9 col-md-offset-1">
@@ -31,7 +39,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td><strong>课题所属专业：</strong>${teaTitle.teacher.major}</td>
 									</tr>
 									<tr>
-										<td><strong>课题名称：</strong>${teaTitle.title}</td>
+										<td><div class="col-sm-10" style="padding:0px;"><strong>课题名称：</strong>${teaTitle.title}</div>
+										<input hidden="hidden" id="titleName" value="${teaTitle.title}">
+										<div class="col-sm-1"><button class="btn btn-success" type="button" onclick="checkTitle()">查重</button>
+										</div>
+										</td>
 									</tr>
 									<tr>
 										<td><strong>题目性质：</strong>${teaTitle.nature}</td>
@@ -74,6 +86,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 		</div>
+		<!-- 课题查重结果显示模态窗 -->
+	<div class="modal fade" id="mymodal-ansj" tabindex="-1" role="dialog"
+		aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	   <div class="modal-dialog">
+		 <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="ansjModalTitle"><span class="fa fa-database"></span></h4>
+				</div>
+				<div class="modal-body" id="ansjModalBody">
+				<div class="alert alert-info text-center"><p>课题查重尚有不足，结果仅供参考</p></div>
+				<div class="" id="keyWords"></div>
+				<div>
+					<table class="table table-hover" id="ansj-table">
+						<thead>
+							<tr>
+							    <th>学届</th>
+								<th><span style="margin-left:15%">往届课题名</span>
+									<span class="text-success" style="float:right;"><small>相似度<span class="fa fa-sort-amount-desc fa-xs"></span></small></span>
+								</th>	
+								<div></div>
+							</tr>
+						</thead>
+						<tbody id="ansj-tbody" class="text-center">
+
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<div class="modal-footer" id="ansjModalFooter">			
+					<button type="button" class="btn btn-primary"
+						data-dismiss="modal">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	</body>
 
 </html>
