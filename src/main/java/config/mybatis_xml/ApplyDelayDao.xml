@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.ApplyDelayDao" >
+  <resultMap id="BaseResultMap" type="com.hlzt.power.model.ApplyDelay">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="delay_stage" property="delayStage" jdbcType="VARCHAR" />
+    <result column="delay_time" property="delayTime" jdbcType="TIMESTAMP" />
+    <result column="delay_reason" property="delayReason" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="tea_idea" property="teaIdea" jdbcType="VARCHAR" />
+    <result column="manager_status" property="managerStatus" jdbcType="VARCHAR" />
+    <result column="manager_idea" property="managerIdea" jdbcType="VARCHAR" />
+  	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  	<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 根据学生ID查询延期申请 -->
+  <select id="findApplyDelayByStuId" resultMap="BaseResultMap">
+  	SELECT * from apply_delay WHERE stu_id=#{stuId}
+  </select>
+  
+  <!-- 删除记录 -->
+  <delete id="deleteById">
+  	DELETE from apply_delay WHERE id=#{id}
+  </delete>
+  
+  <!-- 添加记录 -->
+  <insert id="insert"> 
+       insert into apply_delay (id, stu_id, tea_id, delay_stage,delay_time,delay_reason,tea_status,manager_status, create_time, create_user)
+      values (#{id}, #{stuId}, #{teaId},#{delayStage},#{delayTime},#{delayReason},#{teaStatus},#{managerStatus}, #{createTime}, #{createUser})
+  </insert>
+
+<!-- 根据id查询 -->
+<select id="selectById" resultMap="BaseResultMap">
+	SELECT * FROM apply_delay WHERE id=#{id}
+</select>
+
+<!-- 教学秘书初始化查询延期申请 -->
+<select id="findApplyDelayInit" resultMap="BaseResultMap">
+	select a.* ,s.stu_name as stuName, s.user_num as stuNum 
+	from apply_delay a,student s
+	where a.stu_id = s.user_id AND a.tea_status = 1 AND a.manager_status = 0
+	order by a.create_time
+    <if test=" page.pageSize>0">
+       limit #{page.recordNo},#{page.pageSize}
+    </if>
+</select>
+
+<!-- 教学秘书按条件查询延期申请 -->
+ <select id="findApplyDelay" resultMap="BaseResultMap">
+ 	select a.*,
+ 		   s.stu_name as stuName, 
+ 		   s.user_num as stuNum,
+ 		   t.tea_name as teaName
+ 		from apply_delay a, student s, teacher t
+ 		<trim prefix="WHERE" prefixOverrides="AND | OR">
+ 			a.stu_id = s.user_id
+ 			and a.tea_id = t.user_id
+ 			and a.tea_status = 1
+ 			<if test="map.stuNum!=null">
+ 				and s.user_num = #{map.stuNum}
+ 			</if>
+ 			<if test="map.stuName!=null">
+ 				and s.stu_name like #{map.stuName}
+ 			</if>
+ 			<if test="map.zdTeaName!=null">
+ 				and t.tea_name like #{map.zdTeaName}
+ 			</if>
+ 			<if test="map.status!=null">
+ 				and a.manager_status = #{map.status}
+ 			</if>
+ 		</trim>
+ 			order by a.create_time
+	    <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>
+ </select>
+
+ 
+ <!-- 教学秘书查询延期申请 数量-->
+ <select id="findApplyDelayNum" resultType="int">
+ 	select count(*)
+ 		from apply_delay a, student s, teacher t
+ 		<trim prefix="WHERE" prefixOverrides="AND | OR">
+ 			a.stu_id = s.user_id
+ 			and a.tea_id = t.user_id
+ 			and a.tea_status = 1
+ 			<if test="map.stuNum!=null">
+ 				and s.user_num = #{map.stuNum}
+ 			</if>
+ 			<if test="map.stuName!=null">
+ 				and s.stu_name like #{map.stuName}
+ 			</if>
+ 			<if test="map.zdTeaName!=null">
+ 				and t.tea_name like #{map.zdTeaName}
+ 			</if>
+ 			<if test="map.status!=null">
+ 				and a.manager_status = #{map.status}
+ 			</if>
+ 		</trim>
+ </select>
+
+<!-- 初始化查询延期申请数量 -->
+<select id="findApplyDelayNumInit" resultType="int">
+	select count(*) from apply_delay a,student s
+	where a.stu_id = s.user_id AND a.tea_status = 1 AND a.manager_status = 0
+</select>
+
+<update id="updateManagerStatus">
+	update apply_delay
+		<set>
+			<if test="status!=null">
+				manager_status = #{status},
+			</if>
+			<if test="idea!=null">
+				manager_idea = #{idea}
+			</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+</update>
+
+
+<delete id="deleteAll">
+	TRUNCATE TABLE apply_delay;
+</delete>
+
+<!-- 通过map.教师Id查询学生延期申请 -->
+<select id="findByTeaId" resultMap="BaseResultMap">
+select apd.*,s.user_num as stuNum,s.stu_name as stuName
+from
+apply_delay apd,
+student s
+	<trim prefix="WHERE" prefixOverrides="AND | OR">
+	apd.tea_id=#{map.teaId}
+	and s.user_id=apd.stu_id
+	<if test="map.stuNum!=null">
+	AND s.user_num like #{map.stuNum}
+	</if>
+	<if test="map.stuName!=null">
+	AND s.stu_name like #{map.stuName}
+	</if>
+	<if test="map.status!=null">
+	AND apd.tea_status=#{map.status}
+	</if>
+</trim>
+</select>
+<!-- 更新学生延期 -->
+	<update id="zdTeacherOptStuDelay">
+		update apply_delay  a
+			<set>
+				a.tea_status = #{status},
+				<if test="teaIdea!=null">
+					a.tea_idea = #{teaIdea}
+				</if>
+			</set>
+			where a.id in
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>	
+	</update>
+</mapper>
+
+

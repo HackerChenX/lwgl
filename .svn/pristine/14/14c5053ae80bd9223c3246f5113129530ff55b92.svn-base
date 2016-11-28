@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.PaperDao" >
+  <resultMap id="BaseResultMap" type="Paper" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="term" property="term" jdbcType="VARCHAR" />
+    <result column="stu_num" property="stuNum" jdbcType="VARCHAR" />
+    <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+    <result column="stu_major" property="stuMajor" jdbcType="VARCHAR" />
+    <result column="stu_class" property="stuClass" jdbcType="VARCHAR" />
+    <result column="zd_teanum" property="zdTeaNum" jdbcType="VARCHAR" />
+    <result column="zd_teacher" property="zdTeacher" jdbcType="VARCHAR" />
+    <result column="zd_zhicheng" property="zdZhiCheng" jdbcType="VARCHAR" />
+    <result column="py_teacher" property="pyTeacher" jdbcType="VARCHAR" />
+    <result column="py_zhicheng" property="pyZhiCheng" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="title_nature" property="titleNature" jdbcType="VARCHAR" />
+    <result column="title_form" property="titleForm" jdbcType="VARCHAR" />
+    <result column="title_reason" property="titleReason" jdbcType="VARCHAR" />
+    <result column="task_book" property="taskBook" jdbcType="VARCHAR" />
+    <result column="opening_report" property="openingReport" jdbcType="VARCHAR" />
+    <result column="mid_check" property="midCheck" jdbcType="VARCHAR" />
+    <result column="first_paper" property="firstPaper" jdbcType="VARCHAR" />
+    <result column="final_paper" property="finalPaper" jdbcType="VARCHAR" />
+    <result column="project_file" property="projectFile" jdbcType="VARCHAR" />
+    <result column="reply_note" property="replyNote" jdbcType="FLOAT" />
+    <result column="sy_grade" property="syGrade" jdbcType="FLOAT" />
+    <result column="py_grade" property="pyGrade" jdbcType="FLOAT" />
+    <result column="db_grade" property="dbGrade" jdbcType="FLOAT" />
+    <result column="final_grade" property="finalGrade" jdbcType="FLOAT" />
+    <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />   
+  </resultMap>
+ 
+ <insert id="insert">
+ 	insert into paper (id, term, stu_num, stu_name, stu_major, stu_class, create_time, create_user)
+ 		values(#{id},#{term}, #{stuNum}, #{stuName}, #{stuMajor}, #{stuClass},#{createTime},#{createUser})
+ </insert>
+ 
+ <update id="updatePaper">
+ 	update paper
+ 		<set>
+ 			<if test="paper.term!=null">
+				term = #{paper.term},
+			</if>
+			<if test="paper.stuNum!=null">
+				stu_num = #{paper.stuNum},
+			</if>
+			<if test="paper.stuName!=null">
+				stu_name = #{paper.stuName},
+			</if>
+			<if test="paper.stuMajor!=null">
+				stu_major = #{paper.stuMajor},
+			</if>
+			<if test="paper.stuClass!=null">
+				stu_class = #{paper.stuClass},
+			</if>
+			<if test="paper.zdTeaNum!=null">
+				zd_teanum = #{paper.zdTeaNum},
+			</if>
+			<if test="paper.zdTeacher!=null">
+				zd_teacher = #{paper.zdTeacher},
+			</if>
+			<if test="paper.zdZhiCheng!=null">
+				zd_zhicheng = #{paper.zdZhiCheng},
+			</if>
+			<if test="paper.pyTeacher!=null">
+				py_teacher=#{paper.pyTeacher},
+			</if>
+			<if test="paper.pyZhiCheng!=null">
+				py_zhicheng=#{paper.pyZhiCheng},
+			</if>
+			<if test="paper.title!=null">
+				title=#{paper.title},
+			</if>
+			<if test="paper.titleNature!=null">
+				title_nature=#{paper.titleNature},
+			</if>
+			<if test="paper.titleForm!=null">
+				title_form=#{paper.titleForm},
+			</if>
+			<if test="paper.titleReason!=null">
+				title_reason=#{paper.titleReason},
+			</if>
+			<if test="paper.taskBook!=null">
+				task_book=#{paper.taskBook},
+			</if>
+			<if test="paper.openingReport!=null">
+				opening_report=#{paper.openingReport},
+			</if>
+			<if test="paper.midCheck!=null">
+				mid_check=#{paper.midCheck},
+			</if>
+			<if test="paper.firstPaper!=null">
+				first_paper=#{paper.firstPaper},
+			</if>
+			<if test="paper.finalPaper!=null">
+				final_paper=#{paper.finalPaper},
+			</if>
+			<if test="paper.projectFile!=null">
+				project_file=#{paper.projectFile},
+			</if>
+			<if test="paper.replyNote!=null">
+				reply_note=#{paper.replyNote},
+			</if>
+			<if test="paper.syGrade>0.0">
+				sy_grade=#{paper.syGrade},
+			</if>
+			<if test="paper.pyGrade>0.0">
+				py_grade=#{paper.pyGrade},
+			</if>
+			<if test="paper.dbGrade>0.0">
+				db_grade=#{paper.dbGrade},
+			</if>
+			<if test="paper.finalGrade!=null">
+				final_grade=#{paper.finalGrade},
+			</if>
+			<if test="paper.evaluate!=null">
+				evaluate=#{paper.evaluate},
+			</if>
+			<if test="paper.createTime!=null">
+				create_time=#{paper.createTime},
+			</if>
+			<if test="paper.createUser!=null">
+				create_user=#{paper.createUser},
+			</if>
+ 		</set>
+ 		where stu_num = #{paper.stuNum}
+ </update>
+  
+  <select id="findPage" resultMap="BaseResultMap">
+  	select *   		 
+  	from paper 
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  			<if test="map.term!=null">
+  				and term = #{map.term}
+  			</if>
+  			<if test="map.major!=null">
+	        	AND stu_major = #{map.major}
+	         </if>
+	         <if test="map.teaName!=null">
+	        	AND zd_teacher like CONCAT('%',#{map.teaName},'%')
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND stu_name like CONCAT('%',#{map.stuName},'%')
+	         </if>
+	         <if test="map.stuNum!=null">
+	        	AND stu_num like CONCAT('%',#{map.stuNum},'%')
+	         </if>
+	         <if test="map.title!=null">
+	        	AND title like CONCAT('%',#{map.title},'%')
+	         </if>
+	         <if test="map.className!=null">
+	        	AND stu_class = #{map.className}
+	         </if>
+        	<if test="map.endNum!=null">
+	        	AND stu_num regexp #{map.endNum}
+	         </if>
+	         <if test="map.zdTeaNum!=null">
+	        	AND zd_teanum = #{map.zdTeaNum}
+	         </if>	      
+	     </trim>
+   	order by term,stu_num
+   	  <if test=" page.pageSize>0">
+    limit #{page.recordNo},#{page.pageSize}
+    </if>
+  </select>
+  
+  <select id="rowsSize" resultType="int">
+  	select count(*)
+  	from paper
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  			<if test="map.term!=null">
+  				and term = #{map.term}
+  			</if>
+  			<if test="map.major!=null">
+	        	AND stu_major = #{map.major}
+	         </if>
+	         <if test="map.teaName!=null">
+	        	AND zd_teacher like CONCAT('%',#{map.teaName},'%')
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND stu_name like CONCAT('%',#{map.stuName},'%')
+	         </if>
+	         <if test="map.stuNum!=null">
+	        	AND stu_num like CONCAT('%',#{map.stuNum},'%')
+	         </if>
+	         <if test="map.title!=null">
+	        	AND title like CONCAT('%',#{map.title},'%')
+	         </if>
+	         <if test="map.className!=null">
+	        	AND stu_class = #{map.className}
+	         </if>
+        	<if test="map.endNum!=null">
+	        	AND stu_num regexp #{map.endNum}
+	         </if>
+	         <if test="map.zdTeaNum!=null">
+	        	AND zd_teanum = #{map.zdTeaNum}
+	         </if>	    
+	     </trim>
+  </select>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+  	SELECT * FROM paper WHERE id=#{id};
+  </select>
+  
+  <select id="selectByStuNum" resultMap="BaseResultMap">
+  	SELECT * FROM paper WHERE stu_num = #{stuNum};
+  </select>
+  
+  <delete id="deleteByStuNum">
+  	delete from paper where stu_num = #{stuNum}
+  </delete>
+  
+  <!-- 指导老师下载学生源文件 -->
+  <select id="findStuFileForteacher" resultMap="BaseResultMap">
+  select p.* 
+  from paper p
+  <trim prefix="WHERE" prefixOverrides="AND | OR">
+  p.zd_teanum=#{map.teaNum}
+  and p.term=#{map.term}
+  <if test="map.stuNum!=null">
+  AND p.stu_num like #{map.stuNum}
+  </if>
+  <if test="map.stuName!=null">
+  AND p.stu_name like #{map.stuName}
+  </if>  
+  </trim>
+  
+  </select>
+  
+</mapper>

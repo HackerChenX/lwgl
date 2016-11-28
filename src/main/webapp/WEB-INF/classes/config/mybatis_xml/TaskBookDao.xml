@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.TaskBookDao" >
+  <resultMap id="BaseResultMap" type="TaskBook" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="task_book" property="taskBookPath" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="limit_time" property="limitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, tea_id, tea_status, leader_status, task_book, create_user, create_time, 
+    limit_time
+  </sql>
+  
+   <!-- 提交任务书 -->
+  <insert id="insert">
+  	insert into taskbook (id, stu_id, tea_id, tea_status, leader_status, task_book, create_user, create_time, limit_time)
+  	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
+  			#{leaderStatus, jdbcType=VARCHAR}, #{taskBookPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
+  			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- 根据学生ID查询任务书信息 -->
+  <select id="findTaskByStuId" resultMap="BaseResultMap">
+  	SELECT * FROM taskbook WHERE stu_id=#{stuId}
+  </select>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+  	SELECT * FROM taskbook WHERE id=#{id}
+  </select>
+ 
+ 
+  <!-- 重新提交任务书,更新记录 -->
+  <update id="updateTaskBookById">
+  	UPDATE taskbook
+  	<set>
+  		<if test="map.teaStatus!=null">
+  			tea_status=#{map.teaStatus},
+  		</if>
+  		<if test="map.leaderStatus!=null">
+  			leader_status=#{map.leaderStatus},
+  		</if>
+  		<if test="map.taskBook!=null">
+  			task_book=#{map.taskBook},
+  		</if>
+  		<if test="map.createTime!=null">
+  			create_time=#{map.createTime}
+  		</if>
+  	</set> 
+  	WHERE stu_id=#{stuId}
+  </update>
+
+  <!-- 删除记录 -->
+  <delete id="deleteById">
+  	DELETE FROM taskbook WHERE id=#{id}
+  </delete>
+
+   <!-- 指导老师按条件（分页）查询学生任务书 -->
+     <!--<select id="zdTeaFindByMap"  resultMap="com.hlzt.power.model.StuStageFile">
+       select s.stu_name as stuName, s.sex as sex, s.user_num as stuNum, s.title as title, 
+       		  s.tel as tel, s.mail as mail, t.tea_status as status, t.task_book as taskBook	
+       from taskbook t, student s
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.stuNum!=null">
+	        	AND s.stu_num = #{map.stuNum}	
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND s.stuName like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND t.tea_status = #{map.status}
+	         </if>
+	     </trim>
+	     order by s.user_num
+	     <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>
+    </select>
+    
+      --><!-- 指导老师按条件（分页）查询学生任务书 数量-->
+     <select id="zdTeaFindNumByMap"  resultType="int">
+       select count(*)
+       from taskbook t, student s
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.stuNum!=null">
+	        	AND s.stu_num = #{map.stuNum}	
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND s.stuName like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND t.tea_status = #{map.status}
+	         </if>
+	     </trim>
+    </select>
+    
+   <!-- 更新指导老师的审核状态 -->
+  <update id="updateStatus">
+  	update taskbook 
+  		<set>
+  			tea_status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+    
+    <!-- 查询未提交任务书的学生数量 -->
+    <select id="selectNotSubmitNum" resultType="int">
+    	SELECT distinct COUNT(*) from student s 
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 s.user_id NOT in (SELECT t.stu_id from taskbook t)
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className!=null">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+   	<!-- 查询专业审核中任务书的学生数量 -->
+    <select id="selectCheckingNum" resultType="int">
+    	select count(*) from taskbook tb, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 tb.task_book is NOT NULL
+    		 and tb.leader_status = 0
+    		 and tb.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询指导审核中任务书的学生数量 -->
+    <select id="selectZdCheckingNum" resultType="int">
+    	select count(*) from taskbook tb, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 tb.task_book is NOT NULL
+    		 and tb.tea_status = 0
+    		 and tb.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询专业退回中任务书的学生数量 -->
+    <select id="selectCheckNotNum" resultType="int">
+    	select count(*) from taskbook tb, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 tb.task_book is NOT NULL
+    		 and tb.leader_status = 2
+    		 and tb.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+      <!-- 查询指导退回中任务书的学生数量 -->
+    <select id="selectZdCheckNotNum" resultType="int">
+    	select count(*) from taskbook tb, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 tb.task_book is NOT NULL
+    		 and tb.tea_status = 2
+    		 and tb.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询任务书专业审核通过的学生数量 -->
+    <select id="selectCheckPassNum" resultType="int">
+    	select count(*) from taskbook tb, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 tb.task_book is NOT NULL
+    		 and tb.leader_status = 1
+    		 and tb.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+      <!-- 查询指导审核通过任务书的学生数量 -->
+    <select id="selectZdCheckPassNum" resultType="int">
+    	select count(*) from taskbook tb, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 tb.task_book is NOT NULL
+    		 and tb.tea_status = 1
+    		 and tb.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 专业负责人查询本专业任务书 -->
+    <select id="mlFindTaskBook" resultType="com.hlzt.power.model.StuStageFile">
+    	select s.stu_name as stuName, s.sex as sex, s.user_num as stuNum, s.title as title, 
+       		 t.tea_name as teaName, s.tel as tel, s.mail as mail, t.leader_status as status, t.task_book as taskBook, t.id as id
+       from taskbook t, student s,teacher t
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 s.user_id = t.stu_id
+         	 and t.tea_status = 1
+         	 AND t.user_id = o.tea_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+         	 <if test="map.stuNum!=null">
+	        	AND s.user_num = #{map.stuNum}	
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND t.leader_status = #{map.status}
+	         </if>
+	         <if test="map.titleName">
+	         	AND s.title like #{map.titleName}
+	         </if>
+	     </trim>
+	     order by s.user_num
+	     <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>
+    </select>
+    <!-- 专业负责人查询本专业任务书数量 -->
+    <select id="mlFindTaskBookNum" resultType="int">
+    	select count(*)
+       from taskbook t, student s
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 t.tea_status = 1
+         	 AND s.user_id = t.stu_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+         	 <if test="map.stuNum!=null">
+	        	AND s.user_num = #{map.stuNum}	
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND t.leader_status = #{map.status}
+	         </if>
+	         <if test="map.titleName">
+	         	AND s.title like #{map.titleName}
+	         </if>
+	     </trim>
+    </select>
+    <!-- 专业负责人审核本专业任务书 -->
+    <update id="updateTaskBookMlStatus">
+    	update taskbook t, student s
+  		<set>
+  			t.leader_status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where 
+  		t.stu_id = s.user_id
+  		and t.tea_status = 1
+  		and s.major = #{major}
+  		and t.id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+    </update>   
+  <delete id="deleteAll">
+	TRUNCATE TABLE taskbook;
+</delete>
+<!--根据指导老师Id和Tea状态查找-->
+<select id="findTaskbookByKey" resultMap="BaseResultMap">
+select tb.* 
+from
+taskbook tb
+<trim prefix="WHERE" prefixOverrides="AND | OR">
+tb.tea_id=#{teaId}
+ <if test="status!=null">
+ AND tb.tea_status=#{status}
+ </if>
+</trim>
+
+</select>
+  
+</mapper>

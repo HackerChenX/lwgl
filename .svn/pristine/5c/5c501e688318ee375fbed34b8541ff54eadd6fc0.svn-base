@@ -1,0 +1,10 @@
+common.error.paramError=参数异常
+common.error.systemError=系统异常
+common.error.fileDownloadFailure=文件下载失败
+
+
+#student
+student.applyTitle.lessThanTime=未到申请课题时间
+student.applyTitle.moreThanTime=已超过申请课题时间
+student.applyTitle.titleChoosed=课题已被选用,请重新选择其他课题
+student.applyTitle.titleStatusError=课题已审核,不能退选

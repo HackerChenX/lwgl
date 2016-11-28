@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.MajorDao" >
+  <resultMap id="BaseResultMap" type="Major" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="major_name" property="majorName" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="major_leader" property="majorLeader" jdbcType="VARCHAR"/>
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- 增加专业 -->
+  <insert id="insert">
+  	insert into major (id, major_name, department, create_user, create_time)
+  		values(#{id, jdbcType=VARCHAR}, #{majorName, jdbcType=VARCHAR},
+  			   #{department, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR},
+  			   #{createTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+    <!-- 根据ID删除 -->
+  <delete id="deleteByIds">
+  	delete from major where id in 
+  	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        #{item}   
+    </foreach>
+  </delete>
+  
+  <!-- 查询专业 -->
+  <select id="selectMajor" resultMap="BaseResultMap">
+  	select * from major
+  </select>
+  
+  <select id="selectMajorByName" resultType="int">
+  	select count(*) from major where major_name = #{majorName}
+  </select>
+  
+  <select id="selectByName" resultMap="BaseResultMap">
+  	select * from major where major_name = #{majorName}
+  </select>
+  
+  <select id="selectMajorById" resultMap="BaseResultMap">
+  	select * from major where id = #{id}
+  </select>
+  
+</mapper>

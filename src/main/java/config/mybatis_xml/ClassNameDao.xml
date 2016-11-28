@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.ClassNameDao" >
+  <resultMap id="BaseResultMap" type="ClassName" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="class_name" property="cName" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!-- 增加班级 -->
+  <insert id="insert">
+  	insert into classname (id, class_name, major, create_user, create_time)
+  		values(#{id, jdbcType=VARCHAR}, #{cName, jdbcType=VARCHAR}, #{major, jdbcType=VARCHAR},
+  		#{createUser, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- 根据ID删除 -->
+  <delete id="deleteByIds">
+  	delete from classname where id in 
+  	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        #{item}   
+    </foreach>
+  </delete>
+  
+  <!-- 查询班级 -->
+  <select id="selectClass" resultMap="BaseResultMap">
+  	select * from classname 
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  			<if test="map.majorId!=null">
+	        	AND major = #{map.majorId}
+	         </if>
+	     </trim>
+	     order by class_name
+  </select>
+  
+  <!-- 根据班级名字查询班级 -->
+  <select id="findClassNum" resultType="int">
+  	select count(*) from classname where class_name = #{cName}
+  </select>
+  
+  <select id="findClassByName" resultMap="BaseResultMap">
+  	select * from classname where class_name = #{cName}
+  </select>
+  
+</mapper>

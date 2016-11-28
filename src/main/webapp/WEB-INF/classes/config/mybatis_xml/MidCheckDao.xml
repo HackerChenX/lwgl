@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.MidCheckDao" >
+  <resultMap id="BaseResultMap" type="MidCheck" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="mid_check" property="midCheckPath" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="limit_time" property="limitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, tea_id, tea_status, leader_status, midcheck_path, create_user, create_time, limit_time
+  </sql>
+  
+  <!-- 提交中期检查表 -->
+  <insert id="insert">
+  	insert into midcheck (id, stu_id, tea_id, tea_status, leader_status, mid_check, create_user, create_time, limit_time)
+  	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
+  			#{leaderStatus, jdbcType=VARCHAR}, #{midCheckPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
+  			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- 根据学生ID查询中期检查信息 -->
+  <select id="findMidCheckByStuId" resultMap="BaseResultMap">
+  	SELECT * FROM midcheck WHERE stu_id=#{stuId}
+  </select>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+  	SELECT * FROM midcheck WHERE id=#{id}
+  </select>
+  
+  <!-- 重新提交,在原有记录上修改 -->
+  <update id="updateMidCheckById">
+  	UPDATE midcheck
+  	<set>
+  		<if test="map.teaStatus!=null">
+  			tea_status=#{map.teaStatus},
+  		</if>
+  		<if test="map.leaderStatus!=null">
+  			leader_status=#{map.leaderStatus},
+  		</if>
+  		<if test="map.midCheck!=null">
+  			mid_check=#{map.midCheck},
+  		</if>
+  		<if test="map.createTime!=null">
+  			create_time=#{map.createTime}
+  		</if>
+  	</set> 
+  	WHERE stu_id=#{stuId}
+  </update>
+  
+   <!-- 删除记录 -->
+  <delete id="deleteById">
+  	DELETE FROM midcheck WHERE id=#{id}
+  </delete>
+  
+  <!-- 按条件（分页）查询学生中期检查表 --><!--
+     <select id="findPage"  resultMap="com.hlzt.power.model.StuStageFile">
+       select s.stu_name as stuName, s.sex as sex, s.user_num as suNum, s.title as title, 
+       		  s.tel as tel, s.mail as mail, m.tea_status as status, m.mid_check as midCheck	
+       from midcheck m, student s
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.stuNum!=null">
+	        	AND stu_num = #{map.stuNum}
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND stuName like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND status = #{map.status}
+	         </if>
+	     </trim>
+	     order by create_time desc
+	      <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>
+    </select>
+  
+    --><!-- 更新指导老师的审核状态 -->
+  <update id="updateStatus">
+  	update midcheck 
+  		<set>
+  			tea_status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+  
+  <!-- 查询未提交中期检查表的学生数量 -->
+    <select id="selectNotSubmitNum" resultType="int">
+    	SELECT distinct COUNT(*) from student s 
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 s.user_id NOT in (SELECT m.stu_id from midcheck m)
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+   	<!-- 查询专业审核中中期检查表的学生数量 -->
+    <select id="selectCheckingNum" resultType="int">
+    	select count(*) from midcheck m, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 m.mid_check is NOT NULL
+    		 and m.mid_check != ""
+    		 and m.leader_status = 0
+    		 and m.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询专业退回中中期检查表的学生数量 -->
+    <select id="selectCheckNotNum" resultType="int">
+    	select count(*) from midcheck m, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 m.mid_check is NOT NULL
+    		 and m.mid_check != ""
+    		 and m.leader_status = 2
+    		 and m.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    
+    <!-- 查询中期检查表专业审核通过的学生数量 -->
+    <select id="selectCheckPassNum" resultType="int">
+    	select count(*) from midcheck m, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 m.mid_check is NOT NULL
+    		 and m.mid_check != ""
+    		 and m.leader_status = 1
+    		 and m.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+  
+  <delete id="deleteAll">
+	TRUNCATE TABLE midcheck;
+</delete>
+<!-- 根据指导老师Id和Tea状态查找 -->
+<select id="findMidCheckByKey" resultMap="BaseResultMap">
+select mid.* 
+from
+midcheck mid
+<trim prefix="WHERE" prefixOverrides="AND | OR">
+ mid.tea_id=#{teaId}
+ <if test="status!=null">
+ AND mid.tea_status=#{status}
+ </if>
+</trim>
+</select>
+  
+  
+</mapper>

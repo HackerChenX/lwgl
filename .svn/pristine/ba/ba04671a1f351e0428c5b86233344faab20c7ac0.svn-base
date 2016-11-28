@@ -1,0 +1,192 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page import="com.hlzt.commons.model.GlobalVar"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title></title>
+</head>
+
+<body style="font-family: '微软雅黑'; font-size: 17px;">
+	<div class="container" style="margin-top: 50px;">
+		<form  name="applyTitleSelf" class="form-horizontal" role="form" method="post" action="<%=basePath%>student/ApplyTitleSelf_applyTitle.shtm">
+			<div class="row">
+				<div class="col-md-9 col-md-offset-1">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<span class="fa fa-edit"></span>&nbsp;&nbsp;可选指导老师
+						</div>
+						<table style="text-align:center"
+							class="table table-bordered table-striped table-hover text-center">
+							<thead>
+								<tr>
+									<th>选择</th>
+									<th>教师名</th>
+									<th>性别</th>
+									<th>职称</th>
+									<th>学生名额</th>
+									<th>已申请名额</th>
+									<th>联系方式</th>
+									<th>邮箱</th>
+								</tr>
+							</thead>
+							<tbody>
+							  <c:if test="${page.results!=null}">
+								<c:forEach var="teacher" items="${page.results}">
+									<tr>
+										<td><input type="radio" name="id"
+											value="${teacher.id}"></td>
+										<td>${teacher.teaName}</td>
+										<td>${teacher.sex}</td>
+										<td>${teacher.zhicheng}</td>
+										<td>${teacher.allStunum}</td>
+										<td>${teacher.nowStunum}</td>
+										<td>${teacher.tel}</td>
+										<td>${teacher.mail}</td>										
+									</tr>					
+								</c:forEach>
+							  </c:if>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9 col-md-offset-1">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<span class="fa fa-edit"></span>&nbsp;&nbsp;课题申报
+						</div>
+						<div class="panel-body" style="padding-bottom: 100px;padding-top: 50px;">
+							<div class="form-group ">
+								<label class="col-sm-3 control-label">课题名称:</label>
+								<div class="col-sm-8">
+									<input class="form-control" type="text" id="titleName" name="titleName" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">题目性质:</label>
+								<div class="col-sm-8">
+									<select class="form-control" type="text" id="titleNature" name="titleNature">
+										<option value=null>请选择</option>
+										<c:if test="${titleNatures!=null}">
+											<c:forEach var="titleNature" items="${titleNatures}">
+												<option>${titleNature.natureName}</option>
+											</c:forEach>
+										</c:if>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">完成形式:</label>
+								<div class="col-sm-8">
+									<select class="form-control" type="text" id="titleForm" name="titleForm">
+										<option value="">请选择</option>
+										<c:if test="${titleForms!=null}">
+											<c:forEach var="titleForm" items="${titleForms}">
+												<option>${titleForm.formName}</option>
+											</c:forEach>
+										</c:if>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">立题理由:</label>
+								<div class="col-sm-8">
+									<textarea name="titleReason" id="titleReason" class="form-control" rows="6"></textarea>
+								</div>
+							</div>
+							<div class="col-sm-6 col-sm-offset-3" style="margin-top: 20px">
+								<div>
+									<button id="ApplyCheck" class="btn btn-primary" type="button">提交</button>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button class="btn btn-default" type="reset">重置</button>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<a class="btn btn-default" href="<%=basePath %>student/ApplyTitleSelf.shtm">返回</a>
+								</div>
+							</div>
+							<div class="modal fade" id="mymodal-data" tabindex="-1" role="dialog"
+							aria-labelledby="mySmallModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title"></h4>
+									</div>
+									<div class="modal-body">
+										<p></p>
+									</div>
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-primary">确认</button>
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">取消</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="modal fade" id="mymodal-error" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+		 <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+				<p></p>
+				</div>
+				<div class="modal-footer">			
+					<button type="button" class="btn btn-primary"
+						data-dismiss="modal">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script type="text/javascript">
+	$(function(){
+		$("#ApplyCheck").click(function(){
+			var val=$('input:radio[name="id"]:checked').val();			
+			if(val==null){
+				$(".modal-title").html("错误提示");
+				$(".modal-body").html("请选择指导老师!");
+				$("#mymodal-error").modal("toggle");
+				return false;
+			}
+			var titleName=$("#titleName").val().trim();
+			var titleNature=$("#titleNature").val();
+			var titleForm=$("#titleForm").val();
+			var titleReason=$("#titleReason").val().trim();
+			if(titleName==""||titleNature==""||titleForm==""||titleReason=="")
+			{
+		       $(".modal-title").html("错误提示");
+			   $(".modal-body").html("当前表单不能有空项!");
+			   $("#mymodal-error").modal("toggle");
+			   return false;
+        	}
+			$(".modal-title").html("提交申请");
+			$(".modal-body").html("审核后无法修改，确认提交？");
+			$("#mymodal-data").modal("toggle");
+		});
+	});      
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+package com.hlzt.power.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.ansj.domain.Result;
+
+import com.hlzt.commons.model.BasePage;
+import com.hlzt.power.model.BackLog;
+import com.hlzt.power.model.ClassName;
+import com.hlzt.power.model.Major;
+import com.hlzt.power.model.Paper;
+import com.hlzt.power.model.PublicNotice;
+import com.hlzt.power.model.ZhiCheng;
+
+public interface PublicSer {
+	
+	/**
+	 * 查询专业
+	 * @return
+	 */
+	public List<Major> findMajor();
+	
+	/**
+	 * 查询班级
+	 * @param majorId
+	 * @return
+	 */
+	public List<ClassName> findClass(String majorId);
+	
+	/**
+	 * 根据专业名字查询专业
+	 * @param majorName
+	 * @return
+	 */
+	public Major findMajorByName(String majorName);
+	
+	/**
+	 * 根据专业名字查询专业
+	 * @param majorName
+	 * @return
+	 */
+	public Major findMajorById(String id);
+	
+	/**
+	 * @Title: findFormerTerm
+	 * @Description: 查询往届信息
+	 * @param map
+	 * @return BasePage<Paper> 
+	 * @throws
+	 */
+	public BasePage<Paper> findFormerTerm(Map<String, Object> map,BasePage<Paper> page);
+	
+	/**
+	 * @Title: findFormTermById
+	 * @Description: 根据ID查询往届信息
+	 * @param id
+	 * @return Page 
+	 * @throws
+	 */
+	public Paper findFormTermById(String id);
+	
+	/**
+	 * 查询公告列表
+	 * @param map
+	 * @return
+	 */
+	public List<PublicNotice> findNotice(String noticeType);
+	
+	/**
+	 * @Title: findNoticeById
+	 * @Description: 根据id查询公告
+	 * @param id
+	 * @return PublicNotice 
+	 * @throws
+	 */
+	public PublicNotice findNoticeById(String id);
+
+	/**
+	 * @Title: insertBackLog
+	 * @Description: 添加代办事项
+	 * @param backLog
+	 * @return int 
+	 * @throws
+	 */
+	public int insertBackLog(BackLog backLog);
+	
+	/**
+	 * @Title: findBackLog
+	 * @Description: 查询待办事项
+	 * @param userId
+	 * @return List<BackLog> 
+	 * @throws
+	 */
+	public List<BackLog> findBackLog(String userId,String major,String role);
+
+	/**
+	 * @Title: removeBackLog
+	 * @Description: 根据ID删除代办事项
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int removeBackLog(String id);
+	
+	/**
+	 * @Title: findBackLogOfDelay
+	 * @Description: 根据待办事项类型查询
+	 * @param stuId
+	 * @param teaId
+	 * @param backLogInfo
+	 * @return List<BackLog> 
+	 * @throws
+	 */
+	public List<BackLog> findBackLogOfDelay(String stuId,String teaId,String backLogInfo);
+	
+	/**
+	 * @Title: updateBackLogNumById
+	 * @Description: 更改待办事项次数
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int updateBackLogNumById(String id,String status);
+	
+	/**
+	 * @Title: findBackLogByType
+	 * @Description: 根据类型查询待办事项
+	 * @param status
+	 * @return List<BackLog> 
+	 * @throws
+	 */
+	public List<BackLog> findBackLogByType(String status);
+	
+	/**
+	 * @Title: findZhiCheng
+	 * @Description: 查询职称列表
+	 * @return List<ZhiCheng> 
+	 * @throws
+	 */
+	public List<ZhiCheng> findZhiCheng();
+	
+	/**
+	 * @Title: findRepeatByAnsj
+	 * @Description: 根据Ansj分词结果查询重复课题
+	 * @param splitWords
+	 * @return List<Paper> 
+	 * @throws
+	 */
+	public List<Paper> findRepeatByAnsj(List<String> keyWords,String nowTerm,String threeTerm);
+
+}

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.TeacherTitleDao">
+	<resultMap id="BaseResultMap" type="TeacherTitle">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
+		<result column="nature" property="nature" jdbcType="VARCHAR" />
+		<result column="title_form" property="titleForm" jdbcType="VARCHAR" />
+		<result column="title_reason" property="titleReason" jdbcType="VARCHAR" />
+		<result column="leader_status" property="leaderStatus"
+			jdbcType="VARCHAR" />
+		<result column="leader_idea" property="leaderIdea" jdbcType="VARCHAR" />
+		<result column="manager_status" property="managerStatus"
+			jdbcType="VARCHAR" />
+		<result column="manager_idea" property="managerIdea" jdbcType="VARCHAR" />
+		<result column="choose" property="choose" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<association property="teacher" javaType="Teacher">
+			<id column="id" property="id" />
+			<result column="user_id" property="userId" />
+			<result column="tea_num" property="teaNum" />
+			<result column="tea_name" property="teaName" />
+			<result column="sex" property="sex" />
+			<result column="id_card" property="idCard" />
+			<result column="zhicheng" property="zhicheng" />
+			<result column="tel" property="tel" />
+			<result column="mail" property="mail" />
+			<result column="department" property="department" />
+			<result column="major" property="major" />
+			<result column="all_stunum" property="allStunum" />
+			<result column="now_stunum" property="nowStunum" />
+			<result column="create_time" property="createTime" />
+			<result column="create_user" property="createUser" />
+		</association>
+	</resultMap>
+
+
+	<!-- 根据Id查询老师发布的课题 -->
+	<select id="selectById" resultMap="BaseResultMap">
+		select tt.*,t.* from teacher_title tt, teacher t
+		where
+		tt.teacher_id = t.user_id
+		and tt.id = #{id, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 学生选/退题,更改课题被选状态 -->
+	<update id="updateTitleChoose">
+		UPDATE teacher_title SET
+		<if test="map.teaTitleId!=null"><!-- 学生选题,参数为课题ID -->
+			choose="1"
+			WHERE id=#{map.teaTitleId}
+		</if>
+		<if test="map.applyTitleName!=null"><!-- 退选题目,参数为课题名称 -->
+			choose="0"
+			WHERE title=#{map.applyTitleName}
+		</if>
+	</update>
+
+	<!-- 根据课题名查询课题信息 -->
+	<select id="selectByTitle" resultMap="BaseResultMap">
+		SELECT * FROM teacher_title WHERE title=#{title}
+	</select>
+
+	<!-- 根据ID查询教师发布的课题 -->
+	<select id="selectTeaTitleById" resultMap="BaseResultMap">
+		select tt.*,t.* from teacher_title tt, teacher t
+		where
+		tt.teacher_id = t.user_id
+		and tt.id = #{id, jdbcType=VARCHAR}
+		and t.major = #{major}
+	</select>
+
+	<!-- 专业负责人查询教师发布的课题 -->
+	<select id="selectTeacherTitle" resultMap="BaseResultMap">
+		select tt.*, t.* from teacher_title tt, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			tt.teacher_id = t.user_id
+			and t.major = #{map.major}
+			<if test="map.teaName!=null">
+				AND t.tea_name like #{map.teaName}
+			</if>
+			<if test="map.status!=null">
+				AND tt.leader_status = #{map.status}
+			</if>
+		</trim>
+		order by t.tea_num
+		  <if test=" page.pageSize>0">
+		limit #{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+
+	<!-- 专业负责人查询教师发布的课题数量 -->
+	<select id="selectTeacherTitleNum" resultType="int">
+		select count(*) from teacher_title tt, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			tt.teacher_id = t.user_id
+			and t.major = #{map.major}
+			<if test="map.teaName!=null">
+				AND t.tea_name like #{map.teaName}
+			</if>
+			<if test="map.status!=null">
+				AND tt.leader_status = #{map.status}
+			</if>
+		</trim>
+	</select>
+
+	<!--审核教师发布的课题更改专业负责人审核状态 -->
+	<update id="updateMajorLeaderStatus">
+		update teacher_title
+		<set>
+			<if test="leaderIdea!=null">
+				leader_idea = #{leaderIdea, jdbcType=VARCHAR},
+			</if>
+			leader_status = #{status, jdbcType=VARCHAR}
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 教学秘书按条件分页查找教师课题 -->
+	<select id="findPage" resultMap="BaseResultMap">
+		select tt.*, t.*
+		from teacher_title tt, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			tt.teacher_id = t.user_id
+			and tt.leader_status = 1
+			<if test="map.role=='student'">
+				AND tt.manager_status=1
+				AND tt.choose=0
+			</if>
+			<if test="map.teaName!=null and map.teaName!=''">
+				AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+			</if>
+			<if test="map.major!=null">
+				AND t.major = #{map.major}
+			</if>
+			<if test="map.status!=null">
+				AND tt.manager_status = #{map.status}
+			</if>
+		</trim>
+		order by t.tea_name
+		  <if test=" page.pageSize>0">
+		limit #{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+
+	<!-- 教学秘书按条件查找教师课题数量 -->
+	<select id="rowsSize" resultType="int">
+		select count(*) from teacher_title tt, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			tt.teacher_id = t.user_id
+			and tt.leader_status = 1
+			<if test="map.role=='student'">
+				AND tt.manager_status=1
+				AND tt.choose=0
+			</if>
+			<if test="map.teaName!=null and map.teaName!=''">
+				AND t.tea_name like CONCAT(CONCAT('%', #{map.teaName}), '%')
+			</if>
+			<if test="map.major!=null">
+				AND t.major = #{map.major}
+			</if>
+			<if test="map.status!=null">
+				AND tt.manager_status = #{map.status}
+			</if>
+		</trim>
+	</select>
+
+	<!-- 教学秘书审核教师发布的课题 -->
+	<update id="updateManagerStatus">
+		update teacher_title
+		<set>
+			<if test="managerIdea!=null">
+				manager_idea = #{managerIdea, jdbcType=VARCHAR},
+			</if>
+			manager_status = #{status, jdbcType=VARCHAR}
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<!-- 教师通过自己的userId查看已申请的课题 -->
+	<select id="findTeaTitleByTeaId" resultMap="BaseResultMap">
+		select *
+		from
+		teacher_title tt
+		where
+		tt.teacher_id=#{teaId}
+	</select>
+	<!-- 提交任务书 -->
+	<insert id="insert">
+		insert into teacher_title (id, title, teacher_id, title_form,
+		nature,title_reason,leader_status,leader_idea,manager_status,manager_idea,
+		choose,create_time,create_user)
+		values (#{id}, #{title} ,#{teacherId},#{titleForm},
+		#{nature},#{titleReason}, #{leaderStatus}, #{leaderIdea},
+		#{managerStatus}, #{managerIdea},#{choose},#{createTime},#{createUser}
+		)
+	</insert>
+	<!-- 通过教师课题Id删除课题 -->
+	<delete id="deleteById">
+		delete from teacher_title where id=#{id}
+	</delete>
+	<!-- 根据题目名称查询该题目条数 -->
+	<select id="selectTeaTitleByName" resultType="int">
+		select count(*) from 
+		teacher_title tt
+		where tt.title=#{titleName}
+	</select>
+	
+	<delete id="deleteAll">
+		TRUNCATE TABLE teacher_title;
+	</delete>
+	
+</mapper>

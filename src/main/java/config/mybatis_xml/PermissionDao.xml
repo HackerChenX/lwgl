@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.PermissionDao" >
+  <resultMap id="BaseResultMap" type="Permission" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="perm_name" property="permName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="rpId" property="rpId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectById" resultMap="BaseResultMap"  >
+    select *
+    from permission
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteById"  >
+    delete from permission
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 批量删除 -->
+	<update id="deleteBySomeId">
+	   delete from permission where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		 </foreach>
+	</update>
+
+  <insert id="insert"  >
+    insert into permission (id, perm_name, 
+      create_time, create_user,
+      description)
+    values (#{id,jdbcType=VARCHAR}, #{permName,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="list"  resultMap="BaseResultMap">
+       select * from permission
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         <if test="map.permName!=null">
+	        	AND perm_name = #{map.permName}
+	         </if> 
+	      
+	     </trim>
+	     order by create_time desc
+    </select>
+  
+    <select id="findPage"  resultMap="BaseResultMap">
+       <choose>
+       <when test="map.OPE_TYPE==null">
+         select * from permission
+       	 <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.permName!=null">
+	        	AND perm_name = #{map.permName}
+	        </if> 
+	     </trim>
+       </when>
+       <otherwise>
+        select p.*,rp.id as rpId from permission p left join role_permission rp
+        on p.id=rp.fk_permission 
+       	 <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.OPE_TYPE==1">
+	        	and rp.fk_role=#{map.fkRole}
+	         </if> 
+	          <if test="map.OPE_TYPE==2">
+	        	and rp.fk_role!=#{map.fkRole}
+	         </if> 	 
+	        	
+	     </trim>
+       </otherwise>
+       </choose>
+     
+	     order by create_time desc
+	    <if test=" page.pageSize>0">
+        limit #{page.recordNo},#{page.pageSize}
+        </if>
+    </select>
+  
+  <select id="rowsSize" resultType="int" >
+     <choose>
+       <when test="map.OPE_TYPE==null">
+         select count(*) from permission
+       	 <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.permName!=null">
+	        	AND perm_name = #{map.permName}
+	        </if> 
+	     </trim>
+       </when>
+       <otherwise>
+        select count(*) from permission p left join role_permission rp
+        on p.id=rp.fk_permission
+       	 <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.OPE_TYPE==1">
+	        	and rp.fk_role=#{map.fkRole}
+	         </if> 
+	          <if test="map.OPE_TYPE==2">
+	        	and rp.fk_role!=#{map.fkRole}
+	         </if> 	 
+	     </trim>
+       </otherwise>
+       </choose>
+  </select>
+ 
+
+  <update id="updateById"  >
+    update permission
+    <set >
+      <if test="permName != null" >
+        perm_name = #{permName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+	
+</mapper>

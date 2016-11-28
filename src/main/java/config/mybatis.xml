@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+     <typeAliases>
+     	<typeAlias alias="ApplyTeacher" type="com.hlzt.power.model.ApplyTeacher"/>
+     	<typeAlias alias="ApplyTitle" type="com.hlzt.power.model.ApplyTitle"/>
+     	<typeAlias alias="FinalPaper" type="com.hlzt.power.model.FinalPaper"/>
+     	<typeAlias alias="FirstPaper" type="com.hlzt.power.model.FirstPaper"/>
+     	<typeAlias alias="Grade" type="com.hlzt.power.model.Grade"/>
+     	<typeAlias alias="GradeWeight" type="com.hlzt.power.model.GradeWeight"/>
+     	<typeAlias alias="MidCheck" type="com.hlzt.power.model.MidCheck"/>
+     	<typeAlias alias="OpeningReport" type="com.hlzt.power.model.OpeningReport"/>
+     	<typeAlias alias="Paper" type="com.hlzt.power.model.Paper"/>
+     	<typeAlias alias="PublicNotice" type="com.hlzt.power.model.PublicNotice"/>
+     	<typeAlias alias="ReplyNote" type="com.hlzt.power.model.ReplyNote"/>
+     	<typeAlias alias="StagePlan" type="com.hlzt.power.model.StagePlan"/>
+     	<typeAlias alias="Student" type="com.hlzt.power.model.Student"/>
+     	<typeAlias alias="TaskBook" type="com.hlzt.power.model.TaskBook"/>
+     	<typeAlias alias="Teacher" type="com.hlzt.power.model.Teacher"/>
+     	<typeAlias alias="YxTeacher" type="com.hlzt.power.model.YxTeacher"/>
+     	<typeAlias alias="TitleForm" type="com.hlzt.power.model.TitleForm"/>
+        <typeAlias alias="Permission" type="com.hlzt.power.model.Permission"/> 
+        <typeAlias alias="Role" type="com.hlzt.power.model.Role"/> 
+    	<typeAlias alias="RolePermission" type="com.hlzt.power.model.RolePermission"/>
+    	<typeAlias alias="User" type="com.hlzt.power.model.User"/>
+    	<typeAlias alias="UserRole" type="com.hlzt.power.model.UserRole"/>
+    	<typeAlias alias="TeacherTitle" type="com.hlzt.power.model.TeacherTitle"/>
+    	<typeAlias alias="Major" type="com.hlzt.power.model.Major"/>
+    	<typeAlias alias="ClassName" type="com.hlzt.power.model.ClassName"/>
+    	<typeAlias alias="TitleNature" type="com.hlzt.power.model.TitleNature"/>
+    	<typeAlias alias="DbGroup" type="com.hlzt.power.model.DbGroup"/>
+    	<typeAlias alias="BackLog" type="com.hlzt.power.model.BackLog"/>
+    	<typeAlias alias="ZhiCheng" type="com.hlzt.power.model.ZhiCheng"/>
+    </typeAliases>
+</configuration>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.StagePlanDao" >
+  <resultMap id="BaseResultMap" type="StagePlan" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stage_name" property="stageName" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stage_name, start_time, end_time, create_time, create_user
+  </sql>
+  
+  <!-- 查询阶段时间安排 -->
+  <select id="findStagePlan" resultMap="BaseResultMap">
+  	select * from stage_plan
+  </select>
+  
+  <!-- 根据阶段名称查询阶段时间安排 -->
+  <select id="findStagePlanByStageName" resultMap="BaseResultMap">
+  	select * from stage_plan where stage_name = #{stageName, jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 更改阶段时间安排 -->
+  <update id="updateStagePlan">
+  	update stage_plan 
+  		<set>
+  			start_time = #{startTime, jdbcType=TIMESTAMP},
+  			end_time = #{endTime, jdbcType=TIMESTAMP}
+  		</set>
+  		where stage_name = #{stageName, jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 插入阶段时间安排 -->
+  <insert id="insert">
+  	insert into stage_plan (id,stage_name,start_time,end_time)
+  	values (#{id},#{stageName},#{startTime},#{endTime})
+  </insert>
+  
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.ReplyNoteDao" >
+  <resultMap id="BaseResultMap" type="ReplyNote" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="reply_note" property="replyNote" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="limit_time" property="limitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, tea_id, tea_status, leader_status, reply_note, create_user, create_time, limit_time
+  </sql>
+ 
+ 
+ <!-- 提交答辩记录 -->
+  <insert id="insert">
+  	insert into finalpaper (id, stu_id, tea_id, tea_status, leader_status, reply_note, create_user, create_time, limit_time)
+  	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
+  			#{leaderStatus, jdbcType=VARCHAR}, #{reply_note, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP}, 
+  			#{createUser, jdbcType=VARCHAR}, #{limitTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+  
+    <!-- 按条件（分页）查询学生答辩记录--><!--
+  <select id="findPage"  resultMap="com.hlzt.power.model.StuStageFile">
+    select s.stu_name as stuName, s.sex as sex, s.user_num as suNum, s.title as title, 
+    		  s.tel as tel, s.mail as mail, r.tea_status as status, r.reply_note as replyNote	
+    from replynote r, student s
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+      	 <if test="map.stuNum!=null">
+      	AND stu_num = #{map.stuNum}
+       </if>
+       <if test="map.stuName!=null">
+      	AND stuName like #{map.stuName}
+       </if>
+       <if test="map.status!=null">
+      	AND status = #{map.status}
+       </if>
+   </trim>
+   order by create_time desc
+    <if test=" page.pageSize>0">
+      limit #{page.recordNo},#{page.pageSize}
+      </if>
+ </select>
+ 
+   --><!-- 更新指导老师的审核状态 -->
+  <update id="updateStatus">
+  	update replynote 
+  		<set>
+  			status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where stu_id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+ 
+ <delete id="deleteAll">
+	TRUNCATE TABLE replynote;
+</delete>
+ 
+</mapper>

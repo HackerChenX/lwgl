@@ -1,0 +1,13 @@
+#mysql database setting dev
+jdbc.dbtype=mysql
+jdbc.driver=com.mysql.jdbc.Driver
+#jdbc.url=jdbc:mysql://127.0.0.1:3306/lunwen?useUnicode=true&characterEncoding=utf-8
+#jdbc.username=root
+#jdbc.password=Mm123456
+jdbc.url=jdbc:mysql://115.28.57.187:3306/lunwen?useUnicode=true&characterEncoding=utf-8
+jdbc.username=root
+jdbc.password=youshen001
+jdbc.pool.maxIdle=10
+jdbc.pool.maxActive=10
+jdbc.pool.minIdle=1
+jdbc.pool.initialSize=1

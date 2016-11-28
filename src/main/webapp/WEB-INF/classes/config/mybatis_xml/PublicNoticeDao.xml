@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.PublicNoticeDao" >
+  <resultMap id="BaseResultMap" type="PublicNotice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="notice_type" property="noticeType" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="top" property="top" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, notice_type, real_name, notice_path, top, crate_time, create_user
+  </sql>
+  
+  <!-- 添加公告 -->
+ <insert id="insert">
+    insert into public_notice (id, title, notice_type, real_name, content, file_path, top,create_time)
+	values (#{id}, #{title}, #{noticeType}, #{realName}, #{content}, #{filePath}, #{top},#{createTime})
+ </insert>
+  
+  <!-- 分页多条件查询公告 -->
+  <select id="findPage" resultMap="BaseResultMap">
+		select * FROM public_notice p
+		<trim prefix="WHERE" prefixOverrides="AND | OR">		
+			<if test="map.title!=null and map.title!=''">
+				AND p.title like CONCAT('%',#{map.title},'%')
+			</if>
+			<if test="map.realName!=null">
+				AND p.real_name = #{map.realName}
+			</if>
+			<if test="map.noticeType!=null">
+				AND p.notice_type = #{map.noticeType}
+			</if>
+			<if test="map.noticePath!=null">
+				AND p.notice_path = #{map.noticePath}
+			</if>
+			<if test="map.top!=null">
+				AND p.top = #{map.top}
+			</if>		
+		</trim>
+		order by p.notice_type,p.top DESC,p.create_time DESC
+		  <if test=" page.pageSize>0">
+		limit #{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+  	
+  	<!-- 分页多条件查询公告数量 -->
+  	<select id="rowsSize" resultType="int">
+		select count(*)
+		from public_notice p
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="map.title!=null">
+				AND p.title like CONCAT('%',#{map.title},'%')
+			</if>
+			<if test="map.realName!=null">
+				AND p.real_name = #{map.realName}
+			</if>
+			<if test="map.noticeType!=null">
+				AND p.notice_type = #{map.noticeType}
+			</if>
+			<if test="map.noticePath!=null">
+				AND p.notice_path = #{map.noticePath}
+			</if>
+			<if test="map.top!=null">
+				AND p.top = #{map.top}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="selectNotice" resultMap="BaseResultMap">
+		select * from public_notice 
+			<trim prefix="WHERE" prefixOverrides="AND | OR">
+				<if test="map.noticeType!=null">
+					AND notice_type = #{map.noticeType}
+				</if>
+			</trim>
+			order by notice_type,top DESC,create_time DESC
+	</select>
+	
+	<!-- 根据ID查询公告 -->
+	<select id="selectById" resultMap="BaseResultMap">
+		SELECT * FROM public_notice WHERE id=#{id}
+	</select>
+	
+	<!-- 删除公告 -->
+	<delete id="deleteById">
+		delete from public_notice where id=#{id}
+	</delete>
+	
+	<!-- 更新公告置顶 -->
+	<update id="updateNoticeById">
+		update public_notice p
+		<set>
+			<if test="top!=null">
+				p.top=(case p.top when 1 then 0  else p.top+1 end )
+			</if>
+		</set>
+		where p.id=#{id}
+	</update>
+	
+	<delete id="deleteAll">
+		TRUNCATE TABLE public_notice;
+	</delete>
+</mapper>

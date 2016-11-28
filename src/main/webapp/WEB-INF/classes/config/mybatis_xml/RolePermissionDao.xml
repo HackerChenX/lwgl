@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.RolePermissionDao" >
+  <resultMap id="BaseResultMap" type="RolePermission" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fk_permission" property="fkPermission" jdbcType="VARCHAR" />
+    <result column="fk_role" property="fkRole" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+  select * from role_permission where id=#{id}
+  </select>
+   <select id="list"  resultMap="BaseResultMap">
+       select * from role_permission
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         <!-- 	<if test="map.backgroupid!=null">
+	        	AND backgroupid = #{map.backgroupid}
+	         </if> -->
+	      
+	     </trim>
+	       order by create_time desc
+    </select>
+     
+     <select id="findPage"  resultMap="BaseResultMap">
+       select * from role_permission
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	<!-- <if test="map.backgroupid!=null">
+	        	AND backgroupid = #{map.backgroupid}
+	        </if>
+	        <if test="map.is_welcome!=null">
+	        	AND is_welcome = #{map.is_welcome}
+	         </if> -->
+	     </trim>
+	     order by create_time desc
+	       <if test=" page.pageSize>0">
+        limit #{page.recordNo},#{page.pageSize}
+        </if>
+    </select>
+    
+      <select id="rowsSize" resultType="int">
+      select count(1) from role_permission 
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	<!-- <if test="map.backgroupid!=null">
+	        	AND backgroupid = #{map.backgroupid}
+	        </if>
+	        <if test="map.is_welcome!=null">
+	        	AND is_welcome = #{map.is_welcome}
+	         </if> -->
+	     </trim>
+	      
+    </select>
+    
+    <insert id="insert"> 
+       insert into role_permission (id, fk_permission, fk_role, 
+      create_user, create_time, groupid
+      )
+    values (#{id,jdbcType=VARCHAR}, #{fkPermission,jdbcType=VARCHAR}, #{fkRole,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{groupid,jdbcType=VARCHAR}
+      )
+    </insert>
+    
+    <delete id="deleteById">
+		DELETE FROM role_permission WHERE id=#{id}	
+	</delete>
+	 <!-- 批量删除 -->
+	<update id="deleteBySomeId">
+	   delete from role_permission where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		 </foreach>
+	</update>
+	
+    <update id="updateById">
+    
+		update role_permission
+	    <set >
+	      <if test="fkPermission != null" >
+	        fk_permission = #{fkPermission,jdbcType=VARCHAR},
+	      </if>
+	      <if test="fkRole != null" >
+	        fk_role = #{fkRole,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="groupid != null" >
+	        groupid = #{groupid,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

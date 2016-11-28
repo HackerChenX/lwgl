@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.UserRoleDao" >
+  <resultMap id="BaseResultMap" type="com.hlzt.power.model.UserRole" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fk_role" property="fkRole" jdbcType="VARCHAR" />
+    <result column="fk_user" property="fkUser" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap">
+  select * from user_role where id=#{id}
+  </select>
+  <select id="list"  resultMap="BaseResultMap">
+       select * from user_role
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+          	<if test="map.fkUser!=null">
+	        	AND fk_user = #{map.fkUser}
+	         </if>
+	         <if test="map.fkRole!=null">
+	        	AND fk_role = #{map.fkRole}
+	         </if>
+	      
+	     </trim>
+	       order by create_time desc
+    </select>
+     
+     <select id="findPage"  resultMap="BaseResultMap">
+      
+       <!-- select r.* from role r left join user_role ur on r.id=ur.fk_role 
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.fkUser!=null">
+	        	AND ur.fk_user != #{map.fkUser}
+	        </if>
+	       
+	     </trim>
+	     order by ur.create_time desc
+        limit #{page.recordNo},#{page.pageSize} -->
+    </select>
+    
+      <select id="rowsSize" resultType="int">
+     <!--  select count(*) from role r left join user_role ur on r.id=ur.fk_role 
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.fkUser!=null">
+	        	AND ur.fk_user != #{map.fkUser}
+	        </if>
+	     </trim>
+	     -->
+	      
+    </select>
+    
+    <insert id="insert"> 
+       insert into user_role (id, fk_role, fk_user, 
+      create_user, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{fkRole,jdbcType=VARCHAR}, #{fkUser,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+    </insert>
+    
+    <delete id="deleteById">
+		DELETE FROM user_role WHERE id=#{id}	
+	</delete>
+	 <!-- 批量删除 -->
+	<update id="deleteBySomeId">
+	   delete from user_role where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		 </foreach>
+	</update>
+	
+    <update id="updateById">
+    
+					 update user_role
+		    <set >
+		      <if test="fkRole != null" >
+		        fk_role = #{fkRole,jdbcType=VARCHAR},
+		      </if>
+		      <if test="fkUser != null" >
+		        fk_user = #{fkUser,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createUser != null" >
+		        create_user = #{createUser,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createTime != null" >
+		        create_time = #{createTime,jdbcType=TIMESTAMP},
+		      </if>
+		    </set>
+		    where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findRoleNameListByUserId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+    	select uk.*,r.role_name as roleName from user_role uk, role r 
+		where uk.fk_user = #{userId,jdbcType=VARCHAR} and uk.fk_role = r.id;
+    </select>
+    
+    <select id="selectUserRoleByRole" resultMap="BaseResultMap">
+    	select * from user_role where fk_role = #{role}
+    </select>
+    
+    
+    <delete id="deleteUserRole">
+    	delete from user_role where fk_user in
+    		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		 	</foreach>
+    </delete>
+    
+    <delete id="deleteByUserIdAndRole">
+    	delete from user_role 
+    	where fk_user = #{userId} and fk_role = #{role}
+    </delete>
+    
+    <delete id="deleteStuRole">
+    	delete from user_role where fk_role = 4
+    </delete>
+     
+    <select id="findByFKUser" resultMap="BaseResultMap">
+    	select * from user_role where fk_user = #{fkUser}
+    </select>
+    
+    
+</mapper>

@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/9672404/Graduation-System.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "develop-guo"]
+	remote = origin
+	merge = refs/heads/develop-guo

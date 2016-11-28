@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<!-- 如果是教学秘书登录，则用下面的装饰器 -->
+    <mapping path="**/secretary.shtm" decorator="/WEB-INF/decorators/Secretary.jsp" />
+    
+    <mapping path="/user/*" decorator="/WEB-INF/decorators/Secretary.jsp" />
+    
+    <mapping path="/secretary/*" decorator="/WEB-INF/decorators/Secretary.jsp" />
+    
+    
+    
+    <!-- 如果是专业负责人登录，则用下面的装饰器 -->
+    <mapping path="**/majorLeader.shtm" decorator="/WEB-INF/decorators/Director.jsp" />
+    <mapping path="/majorLeader/*" decorator="/WEB-INF/decorators/Director.jsp" />
+    
+    <!-- 如果是指导老师登录，则用下面的装饰器 -->
+    <mapping path="**/zdTeacher.shtm" decorator="/WEB-INF/decorators/guideTeacher.jsp" />
+     <mapping path="**/guideTeacher/**" decorator="/WEB-INF/decorators/guideTeacher.jsp" />
+
+    
+    <!-- 如果是学生登录，则用下面的装饰器 -->
+    <mapping path="**/student.shtm" decorator="/WEB-INF/decorators/Student.jsp" />  
+    <mapping path="/student/*" decorator="/WEB-INF/decorators/Student.jsp" />
+    
+</sitemesh>

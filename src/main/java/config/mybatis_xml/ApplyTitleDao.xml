@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.ApplyTitleDao">
+	<resultMap id="BaseResultMap" type="ApplyTitle">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+		<result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="nature" property="nature" jdbcType="VARCHAR" />
+		<result column="title_source" property="titleSource" jdbcType="VARCHAR"/>
+		<result column="title_form" property="titleForm" jdbcType="VARCHAR" />
+		<result column="title_reason" property="titleReason" jdbcType="VARCHAR" />
+		<result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+		<result column="tea_idea" property="teaIdea" jdbcType="VARCHAR" />
+		<result column="leader_status" property="leaderStatus" jdbcType="VARCHAR"/>
+		<result column="leader_idea" property="leaderIdea" jdbcType="VARCHAR"/>
+		<result column="manager_status" property="managerStatus" jdbcType="VARCHAR"/>
+		<result column="manager_idea" property="managerIdea" jdbcType="VARCHAR"/>		
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="limit_time" property="limitTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<!-- 根据学生ID查找课题申报状态 -->
+	<select id="findByStuId" resultMap="BaseResultMap">
+		select * from apply_title where stu_id=#{stuId}
+	</select>
+	
+
+	<!-- 根据课题ID查询课题申报信息 -->
+	<select id="selectById" resultMap="BaseResultMap">
+		SELECT * FROM apply_title WHERE id=#{id}
+	</select>
+	
+	<!-- 添加课题 -->
+	<insert id="insert"> 
+       insert into apply_title (id, stu_id, tea_id, title,nature,title_source,title_form, title_reason, tea_status,leader_status,manager_status,create_time, create_user)
+      values (#{id}, #{stuId}, #{teaId},#{title},#{nature},#{titleSource},#{titleForm}, #{titleReason}, #{teaStatus}, #{leaderStatus},#{managerStatus},
+      #{createTime},#{createUser})
+    </insert>
+    
+    <!-- 根据学生ID更新课题 -->
+    <update id="updateApplyTitleById">
+    	UPDATE apply_title  
+    	<set>
+	    	<if test="map.teaId!=null">
+	    		tea_id=#{map.teaId},
+	    	</if>
+	    	<if test="map.title!=null">
+	    		title=#{map.title},
+	    	</if>
+	    	<if test="map.nature!=null">
+	    		nature=#{map.nature},
+	    	</if>
+	    	<if test="map.titleForm!=null">
+	    		title_form=#{map.titleForm},
+	    	</if>
+	    	<if test="map.titleSource!=null">
+	    		title_source=#{map.titleSource},
+	    	</if>
+	    	<if test="map.titleReason!=null">
+	    		title_reason=#{map.titleReason},
+	    	</if>
+	    	<if test="map.teaStatus!=null">
+	    		tea_status=#{map.teaStatus},
+	    	</if>
+	    	<if test="map.teaIdea!=null">
+	    		tea_idea = #{map.teaIdea},
+	    	</if>
+	    	<if test="map.leaderStatus!=null">
+	    		leader_status=#{map.leaderStatus},
+	    	</if>
+	    	<if test="map.leaderIdea!=null">
+	    		leader_idea = #{map.leaderIdea},
+	    	</if>
+	    	<if test="map.managerStatus!=null">
+	    		manager_status=#{map.managerStatus},
+	    	</if>
+	    	<if test="map.managerIdea!=null">
+	    		manager_idea = #{map.managerIdea},
+	    	</if>
+	    	<if test="map.createTime!=null">
+	    		create_time=#{map.createTime},
+	    	</if>
+	    	<if test="map.limitTime!=null">
+	    		limit_time=#{map.limitTime}
+	    	</if> 
+    	</set>
+    	WHERE stu_id=#{stuId}
+    </update>
+    
+    <!-- 删除课题 -->
+    <delete id="deleteById">
+    	DELETE FROM apply_title WHERE id=#{id}
+    </delete>
+	
+	<!-- 分页查询申请课题 -->
+	<select id="selectApplyTitle" resultMap="BaseResultMap">
+		select a.*, s.stu_name as stuName, s.user_num as stuNum, s.major as stuMajor, t.tea_name as teaName,t.major as teaMajor
+			from apply_title a, student s, teacher t
+			<trim prefix="WHERE" prefixOverrides="AND | OR">
+          	 a.stu_id = s.user_id
+          	 and a.tea_id = t.user_id
+          	 <if test="map.titleSource!=null">
+          	 	AND a.title_source = #{map.titleSource}        	 
+          	 </if>
+          	 <if test="map.major!=null">
+          	 	AND s.major = #{map.major}          	 
+          	 </if>
+         	 <if test="map.stuNum!=null">
+	        	AND s.user_num = #{map.stuNum}
+	         </if>
+			 <if test="map.stuName!=null">
+	        	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	        	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	         <if test="map.teaStatus!=null">
+	        	AND a.tea_status=#{map.teaStatus}
+	         </if>
+	         <if test="map.leaderStatus!=null">
+	        	AND a.leader_status = #{map.leaderStatus}
+	         </if>
+	         <if test="map.managerStatus!=null">
+	         	AND a.manager_status = #{map.managerStatus}
+	         </if>
+	     </trim>
+	      order by s.major,t.major,t.tea_name,s.stu_name
+	  <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>	
+	</select>
+	
+	<!-- 分页查询申请课题数量 -->
+	<select id="selectApplyTitleNum" resultType="int">
+		select count(*)
+			from apply_title a, student s, teacher t
+			<trim prefix="WHERE" prefixOverrides="AND | OR">
+          	  a.stu_id = s.user_id
+          	 and a.tea_id = t.user_id         	
+          	 <if test="map.major!=null">
+          	 	AND s.major = #{map.major}          	 
+          	 </if>
+          	 <if test="map.titleSource!=null">
+          	 	AND a.title_source = #{map.titleSource}        	 
+          	 </if>
+         	 <if test="map.stuNum!=null">
+	        	AND s.user_num = #{map.stuNum}
+	         </if>
+			 <if test="map.stuName!=null">
+	        	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	        	AND t.tea_name like #{map.zdTeaName}
+	         </if>
+	         <if test="map.teaStatus!=null">
+	        	AND a.tea_status=#{map.teaStatus}
+	         </if>
+	         <if test="map.leaderStatus!=null">
+	        	AND a.leader_status = #{map.leaderStatus}
+	         </if>
+	         <if test="map.managerStatus!=null">
+	         	AND a.manager_status = #{map.managerStatus}
+	         </if>
+	     </trim>
+	</select>
+
+
+	<!-- 专业负责人审核申请课题 -->
+	<update id="mlCheckApplyTitle">
+		update apply_title a, student s
+			<set>
+				a.leader_status = #{status}
+			</set>
+			where 
+			a.stu_id = s.user_id
+			and s.major = #{major}
+			and a.id in
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+	</update>
+	
+	<update id="managerCheckApplyTitle">
+		update apply_title a
+			<set>
+				a.manager_status = #{status},
+				<if test="managerIdea!=null">
+					a.manager_idea = #{managerIdea}
+				</if>
+			</set>
+			where a.id in
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap">
+		select a.*, s.stu_name as stuName, s.user_num as stuNum, s.major as stuMajor, t.tea_name as teaName
+			from apply_title a, student s, teacher t
+			where 
+				a.stu_id = s.user_id
+          	 	and a.tea_id = t.user_id
+				and a.id = #{id}
+	</select>
+	<!-- 指导老师通过/驳回学生课题 -->
+	<update id="zdTeacherCheckApplyTitle">
+		update apply_title a
+			<set>
+				a.tea_status = #{status},
+				<if test="teaIdea!=null">
+					a.tea_idea = #{teaIdea}
+				</if>
+			</set>
+			where a.id in
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>	
+	</update>
+	
+	<delete id="deleteAll">
+	TRUNCATE TABLE apply_title;
+</delete>
+</mapper>

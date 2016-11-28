@@ -1,0 +1,149 @@
+package com.hlzt.power.model;
+
+import java.util.List;
+
+import com.hlzt.commons.model.BaseBean;
+
+/**
+ * 教师表
+ * @author user
+ *
+ */
+public class Teacher extends BaseBean{
+	private String userId;//对应用户表中的ID
+	private String teaNum;//教师编号
+	private String teaName;
+	private String sex;
+	
+	private String zhicheng;//职称
+	private String zhiwu;//职务
+	private String tel;//手机号
+	private String mail;//邮箱
+	private String department;//院系
+	private String major;//专业
+	private int allStunum;//所带学生数
+	private int nowStunum;//当前带学生数
+	private int pyAllStunum;
+	private int pyNowStunum;
+	private String dbGroup;//答辩小组
+	
+	private String flag;//临时变量
+	private String userHasRole;//(角色拼接字符串)临时变量
+	private List<UserRole> roleList;//角色列表(忘记是否使用过,所以保留,教师角色用userHasRole变量)
+
+
+	public String getZhicheng() {
+		return zhicheng;
+	}
+	public void setZhicheng(String zhicheng) {
+		this.zhicheng = zhicheng;
+	}
+	public String getZhiwu() {
+		return zhiwu;
+	}
+	public void setZhiwu(String zhiwu) {
+		this.zhiwu = zhiwu;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getMajor() {
+		return major;
+	}
+	public void setMajor(String major) {
+		this.major = major;
+	}
+	public int getAllStunum() {
+		return allStunum;
+	}
+	public void setAllStunum(int allStunum) {
+		this.allStunum = allStunum;
+	}
+	public int getNowStunum() {
+		return nowStunum;
+	}
+	public void setNowStunum(int nowStunum) {
+		this.nowStunum = nowStunum;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getTeaNum() {
+		return teaNum;
+	}
+	public void setTeaNum(String teaNum) {
+		this.teaNum = teaNum;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getTeaName() {
+		return teaName;
+	}
+	public void setTeaName(String teaName) {
+		this.teaName = teaName;
+	}
+	public String getDbGroup() {
+		return dbGroup;
+	}
+	public void setDbGroup(String dbGroup) {
+		this.dbGroup = dbGroup;
+	}
+	public int getPyAllStunum() {
+		return pyAllStunum;
+	}
+	public void setPyAllStunum(int pyAllStunum) {
+		this.pyAllStunum = pyAllStunum;
+	}
+	public int getPyNowStunum() {
+		return pyNowStunum;
+	}
+	public void setPyNowStunum(int pyNowStunum) {
+		this.pyNowStunum = pyNowStunum;
+	}
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	public List<UserRole> getRoleList() {
+		return roleList;
+	}
+	public void setRoleList(List<UserRole> roleList) {
+		this.roleList = roleList;
+	}
+	public String getUserHasRole() {
+		return userHasRole;
+	}
+	public void setUserHasRole(String userHasRole) {
+		this.userHasRole = userHasRole;
+	}
+	
+
+	
+	
+	
+}

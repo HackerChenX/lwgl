@@ -1,0 +1,459 @@
+package com.hlzt.power.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.hlzt.commons.model.BasePage;
+import com.hlzt.power.model.ApplyDelay;
+import com.hlzt.power.model.ApplyTitle;
+import com.hlzt.power.model.BackLog;
+import com.hlzt.power.model.DbGroup;
+import com.hlzt.power.model.FinalPaper;
+import com.hlzt.power.model.FirstPaper;
+import com.hlzt.power.model.Grade;
+import com.hlzt.power.model.GradeWeight;
+import com.hlzt.power.model.MidCheck;
+import com.hlzt.power.model.OpeningReport;
+import com.hlzt.power.model.Paper;
+import com.hlzt.power.model.StagePlan;
+import com.hlzt.power.model.StuGraCollect;
+import com.hlzt.power.model.Student;
+import com.hlzt.power.model.TaskBook;
+import com.hlzt.power.model.Teacher;
+import com.hlzt.power.model.TeacherTitle;
+import com.hlzt.power.model.TitleForm;
+import com.hlzt.power.model.TitleNature;
+
+/**
+ * 学生流程管理
+ * @author user
+ *
+ */
+public interface StudentFlowManageSer {
+	
+	/**
+	 * 查询教师发布的未被选择的题目
+	 * @param map
+	 * @return
+	 */
+	public BasePage<TeacherTitle> findTeaTitle(Map<String, Object> map, BasePage<TeacherTitle> page);
+	
+	/**
+	 * @Title: findTeacherInfoById
+	 * @Description: 根据教师用户ID查询教师基本信息
+	 * @param teaId
+	 * @return Teacher 
+	 * @throws
+	 */
+	public Teacher findTeacherInfoByTeaId(String teaId);
+	
+	/**
+	 * @Title: findTeacherById
+	 * @Description: 根据teacher表ID查询教师
+	 * @param id
+	 * @return Teacher 
+	 * @throws
+	 */
+	public Teacher findTeacherById(String id);
+	
+	/**
+	 * @Title: findTeacherInfoByMajor
+	 * @Description: 根据专业查询教师信息
+	 * @param map
+	 * @param page
+	 * @return BasePage<Teacher> 
+	 * @throws
+	 */
+	public BasePage<Teacher> findTeacherInfoByMajor(Map<String, Object> map, BasePage<Teacher> page);
+	
+	/**
+	 * @Title: searchApplyTitleById
+	 * @Description: 查询学生课题申请状态
+	 * @param stuId
+	 * @return ApplyTitle 
+	 * @throws
+	 */
+	public ApplyTitle searchApplyTitleById(String stuId);
+	
+	/**
+	 * 根据Id查询教师申报的课题
+	 * @param id
+	 * @return
+	 */
+	public TeacherTitle findTeaTitleById(String id);
+	
+	/**
+	 * @Title: findTeaTitleByTitle
+	 * @Description: 根据课题名称查询课题信息
+	 * @param title
+	 * @return TeacherTitle 
+	 * @throws
+	 */
+	public TeacherTitle findTeaTitleByTitle(String title);
+	
+	/**
+	 * @Title: selectNature
+	 * @Description: 查询课题性质
+	 * @param major
+	 * @return TitleNature 
+	 * @throws
+	 */
+	public List<TitleNature> selectNature();
+	
+	/**
+	 * @Title: selectForm
+	 * @Description: 查询完成形式
+	 * @param major
+	 * @return TitleForm 
+	 * @throws
+	 */
+	public List<TitleForm> selectForm();
+	
+	/**
+	 * @Title: updateTitleChoose
+	 * @Description: 学生选题更改课题被选状态
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int updateTitleChoose(Map<String, Object> map);
+	
+	/**
+	 * @Title: searchApplyTitleByTitleId
+	 * @Description: 根据课题ID查找申报课题记录
+	 * @param titleId
+	 * @return ApplyTitle 
+	 * @throws
+	 */
+	public ApplyTitle searchApplyTitleByTitleId(String id);
+	
+	/**
+	 * 申请课题
+	 * @param applyTitle
+	 * @return
+	 */
+	public int addApplyTitle(ApplyTitle applyTitle);
+	
+	/**
+	 * @Title: updateTeacherNowStuNum
+	 * @Description: 更新teacher表当前所带学生数
+	 * @param teaId
+	 * @return int 
+	 * @throws
+	 */
+	public int updateTeacherNowStuNum(String teaId,String Status);
+	
+	/**
+	 * @Title: updateStudentTitle
+	 * @Description: 更新学生表中课题记录
+	 * @param applyTitle
+	 * @return int 
+	 * @throws
+	 */
+	public int updateStudentTitle(String stuId,Map<String,Object> map);
+	
+	/**
+	 * @Title: updateApplyTitleById
+	 * @Description: 学生重新申报课题,在已有记录上更新课题信息
+	 * @param stuId
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int updateApplyTitleById(String stuId,Map<String,Object> map);
+	
+	/**
+	 * @Title: removeApplyTitle
+	 * @Description: 退选课题
+	 * @param titleId
+	 * @return int 
+	 * @throws
+	 */
+	public int removeApplyTitle(String id);
+	
+	/**
+	 * @Title: removeStudentTitle
+	 * @Description: 删除学生表中课题记录
+	 * @param stuId
+	 * @return int 
+	 * @throws
+	 */
+	public int removeStudentTitle(String stuId);
+	/**
+	 * 提交任务书
+	 * @param taskBook
+	 * @return
+	 */
+	public int addTaskBook(TaskBook taskBook);
+	
+	/**
+	 * @Title: updateTaskBookById
+	 * @Description: 学生重新提交任务书,在原有记录上更新
+	 * @param stuId
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int updateTaskBookById(String stuId,Map<String,Object> map);
+		
+	/**
+	 * @Title: findTaskByStuId
+	 * @Description: 根据学号查询任务书信息
+	 * @param stuId
+	 * @return TaskBook 
+	 * @throws
+	 */
+	public TaskBook findTaskByStuId(String stuId);
+	
+	/**
+	 * @Title: deleteTaskBookById
+	 * @Description: 根据task_book表id删除记录
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int deleteTaskBookById(String id);
+	
+	/**
+	 * 提交开题报告
+	 * @param openingReport
+	 * @return
+	 */
+	public int addOpeningReport(OpeningReport openingReport);
+	
+	/**
+	 * @Title: findReportByStuId
+	 * @Description: 学生重新提交开题报告,在原有记录上更新
+	 * @param stuId
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int updateOpeningReportById(String stuId,Map<String,Object> map);
+		
+	/**
+	 * @Title: findReportByStuId
+	 * @Description: 根据学号查询开题报告信息
+	 * @param stuId
+	 * @return TaskBook 
+	 * @throws
+	 */
+	public OpeningReport findReportByStuId(String stuId);
+	
+	/**
+	 * @Title: deleteOpeningReporById
+	 * @Description: 根据opening_report表id删除记录
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int deleteOpeningReportById(String id);
+	
+	/**
+	 * 提交中期检查表
+	 * @param midCheck
+	 * @return
+	 */
+	public int addMidCheck(MidCheck midCheck);
+	
+	/**
+	 * @Title: updateMidCheckById
+	 * @Description: 学生重新提交中期检查,在原有记录上更新
+	 * @param stuId
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int updateMidCheckById(String stuId,Map<String,Object> map);
+		
+	/**
+	 * @Title: findMidCheckByStuId
+	 * @Description: 根据学号查询中期检查信息
+	 * @param stuId
+	 * @return TaskBook 
+	 * @throws
+	 */
+	public MidCheck findMidCheckByStuId(String stuId);
+	
+	/**
+	 * @Title: deleteMidCheckById
+	 * @Description: 根据midcheck表id删除记录
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int deleteMidCheckById(String id);
+	
+	/**
+	 * 提交论文初稿
+	 * @param firstPaper
+	 * @return
+	 */
+	public int addFirstPaper(FirstPaper firstPaper);
+	
+	/**
+	 * @Title: updateFirstPaperById
+	 * @Description: 学生重新提交中期检查,在原有记录上更新
+	 * @param stuId
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int updateFirstPaperById(String stuId,Map<String,Object> map);
+		
+	/**
+	 * @Title: findFirstPaperByStuId
+	 * @Description: 根据学号查询中期检查信息
+	 * @param stuId
+	 * @return TaskBook 
+	 * @throws
+	 */
+	public FirstPaper findFirstPaperByStuId(String stuId);
+	
+	/**
+	 * @Title: deleteFinalPaperById
+	 * @Description: 根据FinalPaper表id删除记录
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int deleteFirstPaperById(String id);
+	
+	/**
+	 * 提交论文定稿
+	 * @param finalPaper
+	 * @return
+	 */
+	public int addFinalPaper(FinalPaper finalPaper);
+	
+	/**
+	 * @Title: updateFinalPaperById
+	 * @Description: 学生重新提交中期检查,在原有记录上更新
+	 * @param stuId
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int updateFinalPaperById(String stuId,Map<String,Object> map);
+		
+	/**
+	 * @Title: findFirstPaperByStuId
+	 * @Description: 根据学号查询中期检查信息
+	 * @param stuId
+	 * @return TaskBook 
+	 * @throws
+	 */
+	public FinalPaper findFinalPaperByStuId(String stuId);
+	
+	/**
+	 * @Title: deleteFinalPaperById
+	 * @Description: 根据FinalPaper表id删除记录
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int deleteFinalPaperById(String id);
+	
+	/**
+	 * 根据ID查询自己的最终成绩
+	 * @param stuId
+	 * @return
+	 */
+	public Grade findFinalGrade(String stuId);
+	
+	/**
+	 * @Title: findDbGroupByStuId
+	 * @Description: 根据学生ID查询答辩安排
+	 * @param stuId
+	 * @return DbGroup 
+	 * @throws
+	 */
+	public DbGroup findDbGroupByStuId(String stuId);
+	
+	/**
+	 * 根据阶段名字查询阶段时间安排
+	 * @param stageName
+	 * @return
+	 */
+	public StagePlan findStagePlan(String stageName);
+	
+	/**
+	 * @Title: findStagePlans
+	 * @Description: 查询所有阶段安排
+	 * @return List<StagePlan> 
+	 * @throws
+	 */
+	public List<StagePlan> findStagePlans();
+	
+	/**
+	 * @Title: findApplyDelaysByStuId
+	 * @Description: 查询延期申请
+	 * @param stuId
+	 * @return List<ApplyDelay> 
+	 * @throws
+	 */
+	public List<ApplyDelay> findApplyDelaysByStuId(String stuId);
+	
+	/**
+	 * @Title: findGradeByStuId
+	 * @Description: 查询最终成绩
+	 * @param stuId
+	 * @return StuGraCollect 
+	 * @throws
+	 */
+	public Grade findGradeByStuId(String id);
+	
+	/**
+	 * @Title: findGradeWeightByMajor
+	 * @Description: 根据专业查询评分权重
+	 * @return GradeWeight 
+	 * @throws
+	 */
+	public GradeWeight findGradeWeightByMajor(String major);
+	
+	/**
+	 * @Title: insertApplyDelay
+	 * @Description: 添加延期申请
+	 * @param applyDelay
+	 * @return ApplyDelay 
+	 * @throws
+	 */
+	public int insertApplyDelay(ApplyDelay applyDelay);
+	
+	/**
+	 * @Title: findApplyDelaysById
+	 * @Description: 根据ID查询延期申请
+	 * @param id
+	 * @return ApplyDelay 
+	 * @throws
+	 */
+	public ApplyDelay findApplyDelaysById(String id);
+	
+	/**
+	 * @Title: deleteApplyDelay
+	 * @Description: 删除延期申请
+	 * @param id
+	 * @return int 
+	 * @throws
+	 */
+	public int deleteApplyDelay(String id);
+	
+	/**
+	 * @Title: submitAllFilePaper
+	 * @Description:提交项目文件，更新Paper表
+	 * @param paper
+	 * @return int 
+	 * @throws
+	 */
+	public int submitAllFilePaper(Paper paper);
+	
+	/**
+	 * @Title: selectPaperByStuNum
+	 * @Description: 根据学号查询Paper表
+	 * @param stuNum
+	 * @return Paper 
+	 * @throws
+	 */
+	public Paper selectPaperByStuNum(String stuNum);
+		
+}

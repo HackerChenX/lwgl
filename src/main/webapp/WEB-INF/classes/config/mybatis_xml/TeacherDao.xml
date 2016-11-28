@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.TeacherDao" >
+  <resultMap id="BaseResultMap" type="Teacher" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="tea_num" property="teaNum" jdbcType="VARCHAR" />
+    <result column="tea_name" property="teaName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="zhicheng" property="zhicheng" jdbcType="VARCHAR" />
+    <result column="zhiwu" property="zhiwu" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="mail" property="mail" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="all_stunum" property="allStunum" jdbcType="INTEGER" />
+    <result column="now_stunum" property="nowStunum" jdbcType="INTEGER" />
+    <result column="py_allstunum" property="pyAllStunum" jdbcType="INTEGER" />
+    <result column="py_nowstunum" property="pyNowStunum" jdbcType="INTEGER" />
+    <result column="db_group" property="dbGroup" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, zhicheng, zhiwu, tel, mail, department, major, all_stunum, 
+    now_stunum, create_time, create_user
+  </sql>
+  
+  <select id="selectByUserId" resultMap="BaseResultMap">
+  	select * from teacher where user_id = #{userId}
+  </select>
+  
+  <insert id="insert">
+  	insert into teacher(id, user_id, tea_num, tea_name, sex,zhicheng,department,major,all_stunum,create_user, create_time)
+  		values(#{id}, #{userId}, #{teaNum}, #{teaName}, #{sex},#{zhicheng},#{department},#{major},#{allStunum},#{createUser}, #{createTime})
+  </insert>
+  
+  <delete id="deleteTeacher">
+  	delete from teacher where user_id in 
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		 
+		</foreach>
+  </delete>
+  
+  <!-- 根据教师ID查询 -->
+  <select id="findByTeaId" resultMap="BaseResultMap">
+  	select * from teacher where user_id=#{teaId}
+  </select>
+  
+  <!-- 根据ID查询 -->
+  <select id="selectById" resultMap="BaseResultMap">
+  	select * from teacher where id=#{id}
+  </select>
+  
+  <!-- 更改教师 -->
+  <update id="updateTeacher">
+  	update teacher
+  		<set>
+  			<if test="teacher.teaNum!=null">
+  				tea_num = #{teacher.teaNum},
+  			</if>
+  			<if test="teacher.teaName!=null">
+  				tea_name = #{teacher.teaName},
+  			</if>
+  			<if test="teacher.sex!=null">
+  				sex = #{teacher.sex},
+  			</if>
+  			<if test="teacher.tel!=null">
+  				tel = #{teacher.tel},
+  			</if>
+  			<if test="teacher.mail!=null">
+  				mail = #{teacher.mail},
+  			</if>
+  			<if test="teacher.major!=null">
+  				major = #{teacher.major},
+  			</if>
+  			<if test="teacher.zhicheng!=null">
+  				zhicheng = #{teacher.zhicheng}
+  			</if>
+  		</set>
+  		where user_id = #{teacher.userId}
+  </update>
+  
+  <!-- 根据教师账号查询教师 -->
+  <select id="selectTeacherByTeaNum" resultMap="BaseResultMap">
+  	select * from teacher where tea_num = #{teaNum, jdbcType=VARCHAR}
+  </select>
+        
+ <!-- 给教师统一设置所带学生数 -->
+  <update id="updateAllTeaStuNum">
+  	update teacher 
+  		<set>
+  			all_stunum = #{num}
+  		</set>
+  		where major = #{major}
+  </update>
+  
+  <!-- 更新教师当前所带学生数 -->
+  <update id="updateTeacherNowStuNum">
+  	UPDATE teacher
+  	<set>
+  	<if test="Status=='Apply'"><!-- 申请课题 -->
+	  	now_stunum = coalesce(now_stunum,0)+1  	  	  	
+  	</if>
+  	<if test="Status=='unApply'"><!--退选课题 -->
+  		<![CDATA[now_stunum = if(now_stunum<1,0,now_stunum-1)]]>
+  	</if>
+  	</set>
+  	 WHERE user_id=#{teaId}
+  </update>
+  
+  <update id="updateTeaStuNumByIds">
+  	update teacher 
+  		<set>
+  			all_stunum = #{num}
+  		</set>
+  		where major = #{major} and user_id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+	<!-- 分页查询指导老师 -->
+  <select id="findPage" resultMap="BaseResultMap">
+  	select * from teacher t, user_role u
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		t.user_id = u.fk_user
+  		and u.fk_role = '3'
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName!=null and map.teaName!=''">
+	        AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+	    </if>
+  		<if test="map.teaZhicheng!=null">
+  			and t.zhicheng = #{map.teaZhicheng}
+  		</if>
+  		<if test="map.major!=null">
+	        and t.major = #{map.major}
+	    </if>		
+  	</trim>
+  	order by t.major,t.zhicheng,t.tea_name
+    <if test=" page.pageSize>0">
+    limit #{page.recordNo},#{page.pageSize}
+    </if>
+  </select>
+  
+  
+  <select id="rowsSize" resultType="int">
+  	select count(*) from teacher t, user_role u
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		t.user_id = u.fk_user
+  		and u.fk_role = '3'
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName!=null and map.teaName!=''">
+	        AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+	    </if>
+  		<if test="map.teaZhicheng!=null">
+  			and t.zhicheng = #{map.teaZhicheng}
+  		</if>
+  		<if test="map.major!=null">
+	        and t.major = #{map.major}
+	    </if>		
+  	</trim>
+  </select>
+  
+  <!-- 专业负责人查询自己专业的教师 -->
+  <select id="list" resultMap="BaseResultMap">
+  	select t.* from teacher t, user_role u
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		t.user_id = u.fk_user
+  		and u.fk_role = '3'
+  		<if test="map.major!=null">
+  			and t.major = #{map.major}
+  		</if>
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName">
+  			and t.tea_name like #{map.teaName}
+  		</if>
+  		<if test="map.zhicheng">
+  			and t.zhicheng = #{map.zhicheng}
+  		</if>	
+  	</trim>
+  	order by t.tea_name,t.zhicheng
+  </select>
+  
+  
+  <!-- 查询副高职称的教师 -->
+  <select id="selectSuperTeacher" resultMap="BaseResultMap">
+  	select * from teacher
+  	where (zhicheng = '教授' or zhicheng = '副教授' or zhicheng = '高级实验师')
+  		<if test="major!=null">
+  			and major = #{major}  		
+  		</if>
+  		<if test="groupId==null">
+  			and (db_group is null or db_group = '')
+  		</if>
+  		<if test="groupId!=null">
+  			and db_group = #{groupId}
+  		</if>
+  		order by zhicheng
+  </select>
+  
+  <select id="selectAllSuperTeacher" resultMap="BaseResultMap">
+  	select * from teacher
+  	where (zhicheng = '教授' or zhicheng = '副教授' or zhicheng = '高级实验师')
+  		<if test="major!=null">
+  			and major = #{major}  		
+  		</if>
+  		order by tea_num
+  </select>
+  
+   <!-- 查询普通高职称的教师 -->
+  <select id="selectGeneralTeacher" resultMap="BaseResultMap">
+  	select * from teacher
+  	where (zhicheng != '教授' and zhicheng != '副教授' and zhicheng != '高级实验师')
+  		<if test="major!=null">
+  			and major = #{major}  		
+  		</if>
+  		<if test="groupId==null">
+  			and (db_group is null or db_group = '')
+  		</if>
+  		<if test="groupId!=null">
+  			and db_group = #{groupId}
+  		</if>
+  		order by tea_num
+  </select>
+  
+  <!-- 根据小组id查询教师 -->
+  <select id="selectTeaByGroupId" resultMap="BaseResultMap">
+  	select * from teacher where 
+  		major = #{major}
+  		<if test="groupId==null">
+  			and (db_group is null or db_group = '')
+  		</if>
+  		<if test="groupId!=null">
+  			and db_group = #{groupId}
+  		</if>
+  		order by major,tea_name,zhicheng
+  </select>
+  
+  <select id="selectTeaByIdList" resultMap="BaseResultMap">
+  	select * from teacher where user_id in 
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </select>
+  
+  <!-- 给教师设置答辩小组 -->
+  <update id="setDbGroupForTea">
+  	update teacher 
+  		<set>
+  			db_group = #{dbGroupId}
+  		</set>
+  		where user_id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+  <!--通过答辩小组Id查询教师 -->
+ <select id="findTeaByDbId" resultMap="BaseResultMap">
+ select t.*
+ from
+ teacher t
+ where
+ t.db_group=#{dbId}
+ </select>
+  
+  <update id="resetTea">
+  	update teacher 
+  		<set>
+  			all_stunum = NULL,
+  			now_stunum = NULL,
+  			py_allstunum = NULL,
+  			py_nowstunum = NULL,
+  			db_group = NULL
+  		</set> 	
+  </update>
+  
+  <!--教学秘书查询教师(不同角色)-->
+  <select id="findUserByPage" resultMap="BaseResultMap">
+  	select * from teacher t, user_role u
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		t.user_id = u.fk_user
+  		<if test="map.role!=null">
+  			and u.fk_role = #{map.role}
+  		</if>
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName!=null and map.teaName!=''">
+	        AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+	    </if>
+  		<if test="map.teaZhicheng!=null">
+  			and t.zhicheng = #{map.teaZhicheng}
+  		</if>
+  		<if test="map.major!=null">
+	        and t.major = #{map.major}
+	    </if>		
+  	</trim>
+  	order by t.major,t.zhicheng,t.tea_name
+    <if test="page.pageSize>0">
+    limit #{page.recordNo},#{page.pageSize}
+    </if>
+  </select>
+  
+  <!-- 教学秘书多条件查询教师数量 -->
+  <select id="rowsSizeOfFindUser" resultType="int">
+  	select count(*) from teacher t, user_role u
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		t.user_id = u.fk_user
+  		<if test="map.role!=null">
+  			and u.fk_role = #{map.role}
+  		</if>
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName!=null and map.teaName!=''">
+	        AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+	    </if>
+  		<if test="map.teaZhicheng!=null">
+  			and t.zhicheng = #{map.teaZhicheng}
+  		</if>
+  		<if test="map.major!=null">
+	        and t.major = #{map.major}
+	    </if>		
+  	</trim>
+  </select>
+  
+  <!--教学秘书查询教师账号-->
+  <select id="findTeaAccountByPage" resultMap="BaseResultMap">
+  	select * from teacher t
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		<if test="map.role!=null">
+  			and u.fk_role = #{map.role}
+  		</if>
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName!=null and map.teaName!=''">
+	        AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+	    </if>
+  		<if test="map.teaZhicheng!=null">
+  			and t.zhicheng = #{map.teaZhicheng}
+  		</if>
+  		<if test="map.major!=null">
+	        and t.major = #{map.major}
+	    </if>		
+  	</trim>
+  	order by t.major,t.zhicheng,t.tea_name,t.tea_num
+    <if test="page.pageSize>0">
+    limit #{page.recordNo},#{page.pageSize}
+    </if>
+  </select>
+  
+  <!-- 教学秘书多条件查询教师数量 -->
+  <select id="rowsSizeOfFindTeaAccount" resultType="int">
+  	select count(*) from teacher t
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		<if test="map.role!=null">
+  			and u.fk_role = #{map.role}
+  		</if>
+  		<if test="map.teaNum!=null">
+  			and t.tea_num = #{map.teaNum}
+  		</if>
+  		<if test="map.teaName!=null and map.teaName!=''">
+	        AND t.tea_name like CONCAT('%',#{map.teaName},'%')
+	    </if>
+  		<if test="map.teaZhicheng!=null">
+  			and t.zhicheng = #{map.teaZhicheng}
+  		</if>
+  		<if test="map.major!=null">
+	        and t.major = #{map.major}
+	    </if>		
+  	</trim>
+  </select>
+  <!-- 查询拥有教师课题的教师信息 -->
+  <select id="findTeacherInfoHaveTitle" resultMap="BaseResultMap">
+  	 SELECT DISTINCT
+		t.*
+	 FROM
+		teacher t,
+		teacher_title tt
+	WHERE
+		t.user_id = tt.teacher_id
+		AND tt.choose = 0
+		<if test="map.teaName!=null and map.teaName!=''">
+			AND t.tea_name = #{map.teaName}
+		</if> 
+		order by t.major,t.zhicheng,t.tea_name
+    <if test=" page.pageSize>0">
+    limit #{page.recordNo},#{page.pageSize}
+    </if>
+  </select>
+  
+  <!-- 拥有教师课题的教师数量 -->
+  <select id="findTeacherInfoHaveTitleSize" resultType="int">
+	SELECT 
+		COUNT(DISTINCT tea_name)
+	FROM
+		teacher t,
+		teacher_title tt
+	WHERE
+		t.user_id = tt.teacher_id
+		AND tt.choose = 0 
+		<if test="map.teaName!=null and map.teaName!=''">
+			AND t.tea_name = #{map.teaName}
+		</if> 
+  </select>
+</mapper>

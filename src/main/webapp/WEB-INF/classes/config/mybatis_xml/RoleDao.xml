@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.RoleDao">
+	<resultMap id="BaseResultMap" type="Role">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="urId" property="urId" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 根据角色名查询角色 -->
+	<select id="findRoleByRoleName" resultMap="BaseResultMap">
+		select * from role where role_name=#{roleName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectById" resultMap="BaseResultMap">
+	    select * from role where id=#{id}
+	  </select>
+	<select id="list" resultMap="BaseResultMap">
+		select * from role
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="map.roleName!=null">
+				AND role_name = #{map.roleName}
+			</if>
+
+		</trim>
+		order by create_time desc
+	</select>
+
+	<select id="findPage" resultMap="BaseResultMap">
+		<choose>
+			<when test="map.OPE_TYPE==null">
+				select * from role
+				<trim prefix="WHERE" prefixOverrides="AND | OR">
+					<if test="map.roleName!=null">
+						AND role_name = #{map.roleName}
+					</if>
+				</trim>
+			</when>
+			<when test="map.OPE_TYPE==1">
+				select r.*,ur.id as urId from role r left join user_role ur
+				on r.id=ur.fk_role
+				<trim prefix="WHERE" prefixOverrides="AND | OR">
+					and ur.fk_user=#{map.fkUser}
+				</trim>
+			</when>
+			<otherwise>
+				select r.* from role r where r.id not in(select ur.fk_role from user_role
+				ur where ur.fk_user =#{map.fkUser} group by ur.fk_role)
+			</otherwise>
+		</choose>
+		order by create_time desc
+		  <if test=" page.pageSize>0">
+		limit #{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+
+	<select id="rowsSize" resultType="java.lang.Integer">
+		<choose>
+			<when test="map.OPE_TYPE==null">
+				select count(*) from role
+				<trim prefix="WHERE" prefixOverrides="AND | OR">
+					<if test="map.roleName!=null">
+						AND role_name = #{map.roleName}
+					</if>
+				</trim>
+			</when>
+			<when test="map.OPE_TYPE==1">
+				select count(*) from role r left join user_role ur on
+				r.id=ur.fk_role
+				<trim prefix="WHERE" prefixOverrides="AND | OR">
+					and ur.fk_user=#{map.fkUser}
+				</trim>
+			</when>
+			<otherwise>
+				select count(*) from role r where r.id not in(select ur.fk_role from user_role
+				ur where ur.fk_user =#{map.fkUser} group by ur.fk_role)
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		insert into role (id, role_name,
+		create_time, create_user,
+		description)
+		values (#{id,jdbcType=VARCHAR}, #{groupid,jdbcType=VARCHAR},
+		#{roleName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteById">
+		DELETE FROM role WHERE id=#{id}
+	</delete>
+	<!-- 批量删除 -->
+	<update id="deleteBySomeId">
+		delete from role where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<update id="updateById">
+
+		update role
+		<set>
+			<if test="roleName != null">
+				role_name = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

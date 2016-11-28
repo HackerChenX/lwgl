@@ -1,0 +1,86 @@
+package com.hlzt.commons.http;
+
+import java.util.Date;
+
+import net.sf.json.JSONObject;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ * 邯郸银行请求
+ * @author Administrator
+ *
+ */
+public class HdbankHttpClientUtils {
+
+	protected static Logger logger = LoggerFactory.getLogger(HdbankHttpClientUtils.class);
+	/**
+	  * 邯郸银行数据请求方法
+	  * @param transCode
+	  * @param entityJson
+	  * @param request
+	  * @return
+	  */
+	 @SuppressWarnings("deprecation")
+	public static  JSONObject postToHd(String transCode,JSONObject bodyJson)
+	 {    
+		
+		
+	      String url="";
+		  HttpPost httpost = new HttpPost(url); // 设置响应头信息
+		    httpost.addHeader("type", "J");
+		    httpost.addHeader("transCode", transCode);
+		  
+		    JSONObject headerData=new JSONObject();
+	
+		    headerData.put("packageType", "00");
+		    headerData.put("channelCode", "000");
+		    headerData.put("securityFlag", "0");
+		    headerData.put("macCode", "");
+		    headerData.put("rf", "JSON");
+		    headerData.put("type", "J");
+		    headerData.put("versionNo", "0.1");
+		    
+		
+		    JSONObject postEntity=new JSONObject();
+		    postEntity.put("header", headerData);
+		    postEntity.put("body", bodyJson);
+		    RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(4000).setConnectTimeout(4000).build();//设置请求和传输超时时间
+		    httpost.setConfig(requestConfig);
+		   httpost.setEntity(new StringEntity(postEntity.toString(), "UTF-8"));
+		 String returnStr=null;
+		
+       try {
+    	   long startTime=new Date().getTime();
+  		logger.info("******************************开始时间"+startTime/1000);
+  		 HttpClient httpClient=WxHttpClientUtils.createHttpClient();
+	      logger.info("###################发送数据"+postEntity.toString());
+		  HttpResponse response = httpClient.execute(httpost);
+		  long startTime1=new Date().getTime();
+		   returnStr = EntityUtils.toString(response.getEntity(), "utf-8");
+		   
+	
+ 		} catch (Exception e) {
+ 			//e.printStackTrace();
+ 			logger.info("################# 向邯郸的 HttpPost请求出错");
+ 		}
+       finally{
+    	   
+    	   httpost.releaseConnection();
+       }
+     
+		return postEntity;
+		 
+	 }
+	 
+	 
+	 
+}

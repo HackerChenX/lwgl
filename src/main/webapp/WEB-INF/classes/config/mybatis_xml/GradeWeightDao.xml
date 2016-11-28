@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.GradeWeightDao" >
+  <resultMap id="BaseResultMap" type="GradeWeight" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="zd_pingfen" property="zdPingfen" jdbcType="REAL" />
+    <result column="py_pingfen" property="pyPingfen" jdbcType="REAL" />
+    <result column="db_pingfen" property="dbPingfen" jdbcType="REAL" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, major, zd_pingfen, py_pingfen, db_pingfen, create_user, create_time
+  </sql>
+  
+  <!-- 增加一条专业评分记录 -->
+  <insert id="insert">
+  	insert into gradeweight (id, major, zd_pingfen, py_pingfen, db_pingfen,create_user,create_time)
+  		values(#{id}, #{major}, #{zdPingfen}, #{pyPingfen}, #{dbPingfen}, #{createUser}, #{createTime})
+  </insert>
+  
+  <!-- 删除 -->
+  <delete id="deleteGradeWeight">
+  	delete from gradeweight where major = #{majorName}
+  </delete>
+  
+  <!-- 查询权重评分 -->
+  <select id="findGradeWeight" resultMap="BaseResultMap">
+	select * from gradeweight  
+  </select>
+  
+  <!-- 根据专业查询评分权重 -->
+  <select id="findGradeWeightByMajor" resultMap="BaseResultMap">
+  	select * from gradeweight  where major=#{major}
+  </select>
+  
+  <!-- 给全部专业设置评分 -->
+  <update id="setGradeWeight">
+  	update gradeweight 
+  		<set>
+  			zd_pingfen = #{zdPingfen, jdbcType=REAL},
+  			py_pingfen = #{pyPingfen, jdbcType=REAL},
+  			db_pingfen = #{dbPingfen, jdbcType=REAL}
+  		</set>
+  		<trim prefix="WHERE" prefixOverrides="AND | OR">
+  			<if test="list!=null">
+  				id in 
+  				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+					#{item}  
+				</foreach>
+  			</if>
+  		</trim>
+  </update>
+  
+  <!-- 取消评分权重设置 -->
+  <update id="cancelSetGradeWeight">
+  	update gradeweight
+  		<set>
+  			zd_pingfen = null,
+  			py_pingfen = null,
+  			db_pingfen = null
+  		</set>
+  		<trim prefix="WHERE" prefixOverrides="AND | OR">
+  			<if test="list!=null">
+  				id in 
+  				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+					#{item}  
+				</foreach>
+  			</if>
+  		</trim>
+  </update>
+  
+  
+</mapper>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.FirstPaperDao" >
+  <resultMap id="BaseResultMap" type="FirstPaper" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="first_paper" property="firstPaperPath" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="limit_time" property="limitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, tea_id, tea_status, leader_status, first_paper, create_user, create_time, limit_time
+  </sql>
+  
+  <!-- 提交初稿 -->
+  <insert id="insert">
+  	insert into firstpaper (id, stu_id, tea_id, tea_status, leader_status, first_paper, create_user, create_time, limit_time)
+  	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
+  			#{leaderStatus, jdbcType=VARCHAR}, #{firstPaperPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
+  			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
+  </insert>
+  
+   <!-- 根据学生ID查询初稿信息 -->
+  <select id="findFirstPaperByStuId" resultMap="BaseResultMap">
+  	SELECT * FROM firstpaper WHERE stu_id=#{stuId}
+  </select>
+  <select id="selectById" resultMap="BaseResultMap">
+  	SELECT * FROM firstpaper WHERE id=#{id}
+  </select>
+  
+  <!-- 重新提交,在原有记录上修改 -->
+   <update id="updateFirstPaperById">
+  	UPDATE firstpaper
+  	<set>
+  		<if test="map.teaStatus!=null">
+  			tea_status=#{map.teaStatus},
+  		</if>
+  		<if test="map.leaderStatus!=null">
+  			leader_status=#{map.leaderStatus},
+  		</if>
+  		<if test="map.firstPaper!=null">
+  			first_paper=#{map.firstPaper},
+  		</if>
+  		<if test="map.createTime!=null">
+  			create_time=#{map.createTime}
+  		</if>
+  	</set> 
+  	WHERE stu_id=#{stuId}
+  </update>
+  
+   <!-- 删除记录 -->
+  <delete id="deleteById">
+  	DELETE FROM firstpaper WHERE id=#{id}
+  </delete>
+  
+  <!-- 按条件（分页）查询学生论文初稿 --><!--
+  <select id="findPage"  resultMap="com.hlzt.power.model.StuStageFile">
+    select s.stu_name as stuName, s.sex as sex, s.user_num as suNum, s.title as title, 
+    		  s.tel as tel, s.mail as mail, f.tea_status as status, f.first_paper as firstPaper	
+    from firstpaper f, student s
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+      	 <if test="map.stuNum!=null">
+      	AND stu_num = #{map.stuNum}
+       </if>
+       <if test="map.stuName!=null">
+      	AND stuName like #{map.stuName}
+       </if>
+       <if test="map.status!=null">
+      	AND status = #{map.status}
+       </if>
+   </trim>
+   order by create_time desc
+  <if test=" page.pageSize>0">
+      limit #{page.recordNo},#{page.pageSize}
+      </if>
+ </select>
+  
+    --><!-- 更新指导老师的审核状态 -->
+  <update id="updateStatus">
+  	update firstpaper 
+  		<set>
+  			tea_status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+  
+  
+  <!-- 查询未提交论文初稿的学生数量 -->
+    <select id="selectNotSubmitNum" resultType="int">
+    	SELECT distinct COUNT(*) from student s 
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 s.user_id NOT in (SELECT f.stu_id from firstpaper f)
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+   	<!-- 查询专业审核中论文初稿的学生数量 -->
+    <select id="selectCheckingNum" resultType="int">
+    	select count(*) from firstpaper f, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 f.first_paper is NOT NULL
+    		 and f.first_paper != ""
+    		 and f.leader_status = 0
+    		 and f.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询专业退回中论文初稿的学生数量 -->
+    <select id="selectCheckNotNum" resultType="int">
+    	select count(*) from firstpaper f, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 f.first_paper is NOT NULL
+    		 and f.first_paper != ""
+    		 and f.leader_status = 2
+    		 and f.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    
+    <!-- 查询论文初稿专业审核通过的学生数量 -->
+    <select id="selectCheckPassNum" resultType="int">
+    	select count(*) from firstpaper f, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 f.first_paper is NOT NULL
+    		 and f.first_paper != ""
+    		 and f.leader_status = 1
+    		 and f.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+  
+  <delete id="deleteAll">
+	TRUNCATE TABLE firstpaper;
+</delete>
+<!-- 根据指导老师Id和Tea状态查找 -->
+<select id="findFirstPaperByKey" resultMap="BaseResultMap">
+select fp.* 
+from
+firstpaper fp
+<trim prefix="WHERE" prefixOverrides="AND | OR">
+fp.tea_id=#{teaId}
+ <if test="status!=null">
+ AND fp.tea_status=#{status}
+ </if>
+</trim>
+</select>
+</mapper>

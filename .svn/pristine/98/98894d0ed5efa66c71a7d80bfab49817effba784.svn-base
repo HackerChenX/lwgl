@@ -1,0 +1,39 @@
+package com.hlzt.power.dao;
+
+
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.hlzt.commons.dao.BaseDao;
+import com.hlzt.power.model.Paper;
+
+
+public interface PaperDao extends BaseDao<Paper>{
+    
+	/**
+	 * 更新paper
+	 * @param paper
+	 * @return
+	 */
+	public int updatePaper(@Param("paper")Paper paper);
+	
+	/**
+	 * 根据学号查询
+	 * @param stuNum
+	 * @return
+	 */
+	public Paper selectByStuNum(@Param("stuNum")String stuNum);
+	
+	/**
+	 * 根据学号删除
+	 * @param stuNum
+	 * @return
+	 */
+	public int deleteByStuNum(@Param("stuNum")String stuNum);
+
+	public List<Paper> findStuFileForteacher(@Param("map")Map<String, Object> map);
+	
+}

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="user_num" property="userNum" jdbcType="VARCHAR"/>
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="locked" property="locked" jdbcType="BIT" />
+    <result column="super_admin" property="superAdmin" jdbcType="BIT"/> 
+  </resultMap>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+  select * from user where id=#{id}
+  </select>
+  
+  <select id="list"  resultMap="BaseResultMap">
+       select * from user
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+        	<if test="map.userNum!=null">
+	        	AND user_num = #{map.userNum}
+	         </if> 	      
+	     </trim>
+	       order by create_time desc
+    </select>
+    
+    <!-- 更改用户 -->
+    <update id="updateUser">
+    	update user u
+    		<set>
+    			<if test="user.userNum!=null">
+    				u.user_num = #{user.userNum},
+    			</if>
+    			<if test="user.realName!=null">
+    				u.real_name = #{user.realName},
+    			</if>
+    			<if test="user.sex!=null">
+    				u.sex = #{user.sex},
+    			</if>
+    			<if test="user.idCard!=null">
+    				u.id_card = #{user.idCard},
+    			</if>
+    			<if test="user.password!=null">
+    				u.`password` = #{user.password},
+    			</if>
+    		</set>
+    		where u.id = #{user.id}
+    </update>
+    
+    <!-- 根据用户账号查询用户 -->
+ 	<select id="selectUserByUserNum" resultMap="BaseResultMap">
+ 		select * from user where user_num = #{userNum, jdbcType=VARCHAR}
+ 	</select>
+ 	
+     <!-- 按条件分页查找用户列表 -->
+     <select id="findPage"  resultMap="BaseResultMap">
+       select u.*,ur.fk_role as userRole 
+       from user u, user_role ur 
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 u.id = ur.fk_user
+         	 <if test="map.userNum!=null">
+	        	AND u.user_num = #{map.userNum}
+	         </if>
+	         <if test="map.userName!=null">
+	        	AND u.real_name like CONCAT('%',#{map.userName},'%')
+	         </if>
+	         <if test="map.roleName!=null">
+	        	AND ur.fk_role = #{map.roleName}
+	         </if>
+	     </trim>
+	     order by user_num
+	        <if test=" page.pageSize>0">
+        limit #{page.recordNo},#{page.pageSize}
+        </if>
+    </select>
+    <!-- 按条件查找用户数量 -->
+      <select id="rowsSize" resultType="int">
+      select count(*) from user u, user_role ur  
+     	<trim prefix="WHERE" prefixOverrides="AND | OR">
+         	  u.id = ur.fk_user
+         	 <if test="map.userNum!=null">
+	        	AND u.user_num = #{map.userNum}
+	         </if>
+	         <if test="map.userName!=null">
+	        	AND u.real_name like CONCAT('%',#{map.userName},'%')
+	         </if>
+	         <if test="map.roleName!=null">
+	        	AND ur.fk_role = #{map.roleName}
+	         </if>
+	     </trim>
+	      
+    </select>
+    
+    
+    <!-- 增加用户 -->
+    <insert id="insert"> 
+       insert into user (id, real_name, sex, id_card, user_num ,password, create_time, create_user, role_name, locked, super_admin)
+      values (#{id,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR},
+      #{userNum,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{roleName, jdbcType=VARCHAR}, #{locked,jdbcType=BIT}, #{superAdmin,jdbcType=BIT}
+      )
+    </insert>
+    
+    <delete id="deleteById">
+		DELETE FROM user WHERE id=#{id}	
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteUser">
+	   delete from user where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		 </foreach>
+	</delete>
+	
+	<delete id="deleteStuUser">
+		delete from user where role_name = "student"
+	</delete>
+   
+</mapper>

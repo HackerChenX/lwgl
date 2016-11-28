@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.BackLogDao" >
+  <resultMap id="BaseResultMap" type="BackLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="back_log" property="backLog" jdbcType="VARCHAR" />
+    <result column="numbers" property="numbers" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="stu_status" property="stuStatus" jdbcType="VARCHAR" />    
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="manager_status" property="managerStatus" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- 添加代办事项记录 -->
+  <insert id="insert"> 
+       insert into backlog (id, back_log,numbers,stu_id, stu_status,major,tea_id,tea_status,leader_status,manager_status,create_time, create_user)
+      values (#{id}, #{backLog},#{numbers}, #{stuId},#{stuStatus},#{major},#{teaId},#{teaStatus},#{leaderStatus},#{managerStatus},#{createTime}, #{createUser})
+  </insert>
+  
+  <!-- 根据用户ID查询待办事项 -->
+  <select id="selectBackLog" resultMap="BaseResultMap">
+  	SELECT * FROM backlog
+  	<if test='role=="teacher"'>
+  		WHERE tea_id = #{userId} AND tea_status = 0
+  	</if>
+  	<if test='role=="student"'>
+  		WHERE stu_id = #{userId} AND stu_status = 0
+  	</if>
+  	<if test='role=="leader"'>
+  		WHERE major = #{major} AND leader_status = 0
+  	</if>
+  	<if test='role=="manager"'>
+  		WHERE manager_status = 0
+  	</if>
+  </select>
+  
+  <delete id="deleteById">
+  	 delete from backlog
+  	 where id=#{id}
+  </delete>
+  
+  <!-- 根据类型查询待办事项 -->
+  <select id="selectBackLogOfDelay" resultMap="BaseResultMap">
+  	 SELECT * FROM backlog
+  	 <if test="teaId!=null">
+  	 	WHERE back_log=#{backLogInfo} AND tea_id = #{teaId}
+  	 </if>
+  	 <if test="stuId!=null">
+  	 	WHERE back_log=#{backLogInfo} AND stu_id = #{stuId}
+  	 </if>
+  </select>
+  
+  <!-- 根据ID改变待办事项次数 -->
+  <update id="updateBackLogNumById">	
+  	UPDATE backlog
+  	<set>
+  	<if test='status=="add"'><!-- 添加 -->
+	  	numbers = coalesce(numbers,0)+1  	  	  	
+  	</if>
+  	<if test='status=="remove"'><!--减少 -->
+  		<![CDATA[numbers = if(numbers<1,0,numbers-1)]]>
+  	</if>
+  	</set>
+  	 WHERE id=#{id}
+  </update>
+  
+  <!-- 根据类型查询 未选指导老师情况 -->
+  <select id="findBackLogByType" resultMap="BaseResultMap">
+  	SELECT * FROM backlog
+  	WHERE back_log=#{status} AND tea_id=null
+  </select>
+  
+  <delete id="deleteAll">
+	TRUNCATE TABLE backlog;
+  </delete>
+</mapper>

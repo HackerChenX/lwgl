@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.TitleFormDao" >
+  <resultMap id="BaseResultMap" type="TitleForm" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="form_name" property="formName" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 	
+ 	<insert id="insert">
+ 		insert into title_form (id, form_name, create_user, create_time)
+ 			values (#{id, jdbcType=VARCHAR}, #{formName, jdbcType=VARCHAR},
+  			#{createUser, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP})
+ 	</insert>
+  
+  <select id="selectForm" resultMap="BaseResultMap">
+  	select * from title_form 
+  	order by create_time desc
+  </select>
+  
+  <delete id="deleteFrom">
+  	delete from title_form 
+  	 where id in
+  	 <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        #{item}   
+    </foreach>
+  </delete>
+   
+</mapper>

@@ -1,0 +1,207 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page import="com.hlzt.commons.model.GlobalVar"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title></title>
+	</head>
+
+	<body>
+		<base href="<%=basePath %>"/>	 
+		<script type="text/javascript" src="<%=basePath %>js/jquery.form.js"></script>
+		<script type="text/javascript" src="<%=basePath %>js/uploadExcel.js"></script>
+		<script type="text/javascript" src="<%=basePath %>js/page.js"></script>
+		<script type="text/javascript">
+		window.onload=function(){
+			/*刷新页面下拉框值不变*/	
+	   		if(document.getElementById("roleHid").value==""){
+	   			document.getElementById("role").value=5;
+	   		}else{
+	   			document.getElementById("role").value=document.getElementById("roleHid").value;
+	   		}
+	   		/*弹窗提示异常消息*/
+		   		var error = $("#error").val();
+		   		if(!(error==''|| error==undefined || error==null)){
+				$(".modal-title").html("错误提示");
+				$(".modal-body").html(error);
+				$("#mymodal-error").modal("toggle");
+				}
+		   		
+		   		/*弹窗提示成功消息*/
+		   		var success = $("#success").val();
+		   		if(!(success==''|| success==undefined || success==null)){
+				$(".modal-title").html("提示");
+				$(".modal-body").html(success);
+				$("#mymodal-error").modal("toggle"); 
+				}
+   		}
+		</script>
+		
+		<div class="row" style="margin-top: 50px;">
+			<div class="col-xs-12 col-md-12">
+				<div class="panel panel-primary">
+					<div class="panel-body">
+						<form role="form" class="form-inline" action="<%=basePath %>user/findTeaRole.shtm" method="post" id="select">
+							<div class="form-group">
+								<label>工号:</label>
+								<input class="form-control input-sm" type="text" value="${userNum }" name="userNum"/>
+							</div>
+							<div class="form-group">
+								<label>姓名：</label>
+								<input class="form-control input-sm" type="text" value="${userName}" name="userName"/>
+							</div>
+							<div class="form-group">
+								<label>角色:</label>
+								<input type="hidden" value="${role}" id="roleHid">
+								<select class="form-control input-sm" type="text" name="role" id="role">
+									<option value="5">查询全部</option>
+									<option value="3">指导老师</option>
+									<option value="2">专业负责人</option>
+									<option value="1">教学秘书</option>
+								</select>
+							</div>
+							<input name="pageNo" type="hidden" value="${page.pageNo}" id="pageNow" /><!-- /记录当前页 -->
+							<input type="hidden" value="${page.pageSize}" name="pageSize" id="pageSize"><!-- /记录每页的大小 -->
+							<button class="btn btn-primary" type="submit">查询</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12 col-md-12 ">
+					<form role="form" action="<%=basePath %>user/findTeaRole_setRoleForTea.shtm" method="post">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<span class="fa fa-check-square-o"></span>&nbsp;&nbsp;教师账号
+							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped table-hover" style="text-align: center;">
+									<thead>
+										<tr>
+											<th>选择</th>
+											<th>工号</th>
+											<th>姓名</th>
+											<th>性别</th>
+											<th>角色</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="user" items="${page.results}">
+										<tr>
+											<td style="text-align: center;"><input type="checkbox" name="ids" value="${user.id}"></td>
+											<td>${user.userNum}</td>
+											<td>${user.realName}</td>
+											<td>${user.sex}</td>
+											<td>${user.userHasRole}</td>
+											<td>
+												<a href="<%=basePath %>user/findTeaRole_deleteTeaRole.shtm?userId=${user.id}&role=${user.userRole}">删除</a>
+											</td>
+										</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+							<div class="panel-footer">
+								<input type="hidden" value="" name="role" id="setRole">
+								<script type="text/javascript">
+									function zdTea(){
+										document.getElementById("setRole").value = 3;
+									}
+									function majorTea(){
+										document.getElementById("setRole").value = 2;
+									}
+									function adminTea(){
+										document.getElementById("setRole").value = 1;
+									}
+								</script>
+								
+						       <div class="row" style="padding-left:15px">
+								<input type="button" class="btn btn-default" id="check_all" value="全选"></input>&nbsp;	
+								<button class="btn btn-primary" type="submit" onclick="zdTea()">设置指导老师</button>&nbsp;
+								<button class="btn btn-primary" type="submit" onclick="majorTea()">设置专业负责人</button>&nbsp;
+								<button class="btn btn-primary" type="submit" onclick="adminTea()">设置教学秘书</button>&nbsp;
+							
+							
+							<div class="col-xs-8 col-md-7 " style="float: right; padding-left:0px!important;padding-right:0px!important;text-align:center;">
+								<script type="text/javascript" src="<%=basePath%>js/page.js"></script>
+								<c:if test="${page.isAjax==0}">
+									<c:if test="${page.pageNo-1>0 }">
+										<a href="javascript:upPage()" class="btn btn-default btn-sm">&laquo;上一页</a>
+									</c:if>
+
+									<a class="btn btn-default btn-sm">第${page.pageNo }页</a>
+
+									<c:if test="${page.pageNo+1<=page.totalPage }">
+										<a href="javascript:nextPage()" class="btn btn-default btn-sm">下一页&raquo;</a>
+									</c:if>
+										&nbsp;&nbsp;共${page.totalRecord }条&nbsp;共${page.totalPage}页 &nbsp;&nbsp;跳转到&nbsp;
+										<input type="text" value="" id="zc_tz_text"
+										style="width:28px;height:28px" />&nbsp;页<input type="button"
+										value="跳转" id="zc_tz_button" class="btn btn-default btn-sm"
+										onclick="zcTzClick(${page.totalPage})" /> &nbsp;&nbsp;每页&nbsp;<input type="text" value="" id="page_size_text"
+										style="width:28px;height:28px" />&nbsp;条<input type="button"
+										value="设置" id="zc_size_button" class="btn btn-default btn-sm"
+										onclick="pageSizeClick()" />
+								</c:if>
+							</div>
+						</div><!-- /row -->
+							</div><!-- /panel-footer -->
+						</div>
+					</form>
+				</div>
+			</div>
+
+		
+		
+		<div class="modal fade" id="mymodal-error" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+		 <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+				<p></p>
+				</div>
+				<div class="modal-footer">			
+					<button type="button" class="btn btn-primary"
+						data-dismiss="modal">确认</button>
+				</div>
+			</div>
+		</div>
+	</div><!-- /modal -->
+		
+		<script>
+			var a = 1;
+			$('#check_all').click(function(){
+				if(a == 1) {
+					$('[name=ids]:checkbox').prop('checked', true);
+					a--;
+				} else {
+					$('[name=ids]:checkbox').attr('checked', false);
+					a++;
+				}
+			})
+			$('#chackInvert').click(function(){
+				$('[name=ids]:checkbox').each(function(){
+					this.checked = !this.checked; 
+				})
+			})
+		</script>		
+	</body>
+
+</html>

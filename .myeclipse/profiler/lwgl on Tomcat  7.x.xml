@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="profiler.settings.instrument.empty.methods">true</entry>
+<entry key="ProfilerCPUSettings_profile_runnables">true</entry>
+<entry key="profiler.settings.n.profiled.threads.limit">32</entry>
+<entry key="ProfilerCPUSettings_filter_type">2</entry>
+<entry key="profiler.settings.obj.alloc.stack.sampling.depth">-1</entry>
+<entry key="profiler.settings.instrument.method.invoke">true</entry>
+<entry key="profiler.settings.instr.scheme">1</entry>
+<entry key="ProfilerMemorySettings_track_every">10</entry>
+<entry key="ProfilerMemorySettings_mode">4</entry>
+<entry key="ProfilerCPUSettings_root_classes">com.hlzt.commons.context.**
+com.hlzt.commons.dao.**
+com.hlzt.commons.exception.**
+com.hlzt.commons.filter.**
+com.hlzt.commons.helper.**
+com.hlzt.commons.http.**
+com.hlzt.commons.interceptor.**
+com.hlzt.commons.listener.**
+com.hlzt.commons.model.**
+com.hlzt.commons.service.**
+com.hlzt.power.dao.**
+com.hlzt.power.filter.**
+com.hlzt.power.model.**
+com.hlzt.power.service.**
+com.hlzt.power.shiro.**
+com.hlzt.power.web.**
+</entry>
+<entry key="ProfilerCPUSettings_filter_value">com.hlzt.commons.context.*,&#13;
+com.hlzt.commons.dao.*,&#13;
+com.hlzt.commons.exception.*,&#13;
+com.hlzt.commons.filter.*,&#13;
+com.hlzt.commons.helper.*,&#13;
+com.hlzt.commons.http.*,&#13;
+com.hlzt.commons.interceptor.*,&#13;
+com.hlzt.commons.listener.*,&#13;
+com.hlzt.commons.model.*,&#13;
+com.hlzt.commons.service.*,&#13;
+com.hlzt.power.dao.*,&#13;
+com.hlzt.power.filter.*,&#13;
+com.hlzt.power.model.*,&#13;
+com.hlzt.power.service.*,&#13;
+com.hlzt.power.shiro.*,&#13;
+com.hlzt.power.web.*</entry>
+<entry key="profiler.settings.istrument.getter.setter.methods">true</entry>
+<entry key="myeclipse.profiling.mode">0</entry>
+<entry key="ProfilerMemorySettings_stacktraces">-1</entry>
+<entry key="profiler.settings.sampling.interval">10</entry>
+<entry key="profiler.settings.cpu.profiling.type">0</entry>
+</properties>

@@ -1,0 +1,90 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/context  
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+     http://www.springframework.org/schema/mvc  
+     http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+
+
+	<!-- 设置使用注解的类扫描的包 -->
+	<context:component-scan base-package="com.hlzt.**.web" />
+ <!-- 启用spring mvc 注解  ,设置返回字符编码-->
+	 <mvc:annotation-driven>
+       <mvc:message-converters>
+           <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+               <constructor-arg value="#{T(java.nio.charset.Charset).forName('UTF-8')}"/>
+               <property name="supportedMediaTypes">
+                   <list>
+                       <value>text/plain;charset=UTF-8</value>
+                       <value>text/html;charset=UTF-8</value>
+                       <value>applicaiton/javascript;charset=UTF-8</value>
+                   </list>
+               </property>
+               <property name="writeAcceptCharset"><value>false</value></property>
+           </bean>
+           <bean
+               class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+               <property name="supportedMediaTypes">
+                   <list>
+                       <value>application/json; charset=UTF-8</value>
+                       <value>application/x-www-form-urlencoded; charset=UTF-8</value>
+                   </list>
+               </property>
+           </bean>
+       </mvc:message-converters>
+   </mvc:annotation-driven>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:message_zh_CN</value>
+            </list>
+      </property>
+      <property name="defaultEncoding" value="utf-8" />
+      <property name="useCodeAsDefaultMessage" value="true" /> 
+    </bean>
+	
+	
+	<!--不被spring mvc过滤器 DispatcherServlet，前提文件不能放在WEB-INF下，引用必须使用jstl的c标签 -->
+	<mvc:default-servlet-handler />
+
+	<!--指定自定义 <mvc:default-servlet-handler default-servlet-name="StaticServlet"/> -->
+
+	<!-- 指定静态文件的路径映射 可以访问 WEB-INF下 访问直接src=static1/js/1.js -->
+	<!-- <mvc:resources mapping="/" location="/resource"/> -->
+
+	<!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/page/</value>
+		</property>
+		<!-- <property name="suffix"> <value>.jsp</value> </property> -->
+	</bean>
+	<mvc:interceptors>
+		<!-- <bean class="com.host.app.web.interceptor.AllInterceptor"/> -->
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*.htm" /><!-- 只拦截htm后缀的路径  -->
+			<bean class="com.hlzt.commons.interceptor.WxInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<!-- <mvc:exclude-mapping path="/admin/login"/> 不拦截的url -->
+			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+			<bean class="com.hlzt.commons.interceptor.SpringMVCInterceptor" />
+		</mvc:interceptor>
+		
+	</mvc:interceptors>
+
+	<!-- <bean id="csmDataCountService" name="/CsmDataCountSer.shtm" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter"> 
+		<property name="service" ref="csmDataCountSerImpl"></property> <property 
+		name="serviceInterface" value="com.hlzt.csm.service.CsmDataCountSer"> </property> 
+		</bean> 远程服务的URL <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"> 
+		<property name="mappings"> <props> <prop key="/CsmDataCountSer.shtm">csmDataCountService</prop> 
+		</props> </property> </bean> -->
+
+</beans>

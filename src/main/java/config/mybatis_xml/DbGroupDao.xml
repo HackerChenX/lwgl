@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.DbGroupDao" >
+  <resultMap id="BaseResultMap" type="DbGroup" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="group_num" property="groupNum" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="group_site" property="groupSite" jdbcType="VARCHAR" />
+    <result column="db_time" property="dbTime" jdbcType="TIMESTAMP" />
+    <result column="group_leader" property="groupLeader" jdbcType="VARCHAR" />
+    <result column="group_secretary" property="groupSecretary" jdbcType="VARCHAR" />
+    <result column="group_member" property="groupMember" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <!-- 查询答辩小组 -->
+  <select id="selectDbGroup" resultMap="BaseResultMap">
+  	select d.*,t.tea_name as groupLeaderName
+  	from db_group d, teacher t
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+          	 d.group_leader = t.user_id
+	         <if test="major!=null">
+	        	AND d.major = #{major}
+	         </if>
+	     </trim>
+	      order by d.group_num
+  </select>
+  
+  <!-- 查询答辩小组 数量-->
+  <select id="selectDbGroupNum" resultType="int">
+  	select count(*)
+  	from db_group d, teacher t
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+          	 d.group_leader = t.user_id
+	         <if test="major!=null">
+	        	AND d.major = #{major}
+	         </if>
+	     </trim>
+  </select>
+  
+  
+  <select id="selectByDbGroupInfoById" resultMap="BaseResultMap">
+  	select d.*,t.tea_name as groupLeaderName
+  		from db_group d, teacher t
+  		where 
+  			  d.group_leader = t.user_id
+			  and d.major = #{major}
+  			  and d.id = #{id}
+  </select>
+  
+  <!-- 增加答辩小组 -->
+  <insert id="insert">
+  	insert into db_group (id, group_num, major, group_name, group_site, db_time, group_leader, group_secretary, create_time, create_user)
+  	values (#{id, jdbcType=VARCHAR}, #{groupNum, jdbcType=VARCHAR}, #{major, jdbcType=VARCHAR}, #{groupName, jdbcType=VARCHAR}, 
+  			#{groupSite, jdbcType=VARCHAR}, #{dbTime, jdbcType=TIMESTAMP}, #{groupLeader, jdbcType=VARCHAR}, #{groupSecretary, jdbcType=VARCHAR}, 
+  			#{createTime, jdbcType=TIMESTAMP}, #{createUser, jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 删除答辩小组 -->
+  <delete id="deleteDbGroup">
+  	delete from db_group where id=#{id} and major = #{major}
+  </delete>
+  
+  <!-- 学生查询答辩安排 -->
+   <select id="findDbGroupByStuId" resultMap="BaseResultMap" >
+  	SELECT db.group_name,db.db_time,db.group_site,t.tea_name AS groupSecretaryName 
+  	FROM db_group db,teacher t,student s
+  	WHERE s.db_group=db.group_num AND t.user_id = db.group_secretary AND s.user_id=#{stuId}
+  </select>
+  
+  <!-- 更新答辩小组 -->
+  <update id="updateDbGroup">
+  	update db_group 
+  		<set>
+  			<if test="dbGroup.groupNum!=null">
+  				group_num = #{dbGroup.groupNum},
+  			</if>
+  			<if test="dbGroup.major!=null">
+  				major = #{dbGroup.major},
+  			</if>
+  			<if test="dbGroup.groupName!=null">
+  				group_name = #{dbGroup.groupName},
+  			</if>
+  			<if test="dbGroup.groupSite!=null">
+  				group_site = #{dbGroup.groupSite},
+  			</if>
+  			<if test="dbGroup.dbTime!=null">
+  				db_time = #{dbGroup.dbTime},
+  			</if>
+  			<if test="dbGroup.groupLeader!=null">
+  				group_leader = #{dbGroup.groupLeader},
+  			</if>
+  			<if test="dbGroup.groupSecretary!=null">
+  				group_secretary = #{dbGroup.groupSecretary},
+  			</if>
+  			<if test="dbGroup.groupMember!=null">
+  				group_member = #{dbGroup.groupMember},
+  			</if>
+
+  		</set>
+  		where id = #{dbGroup.id}
+  </update>
+  <!-- 通过教师userId查看自己是否是答辩秘书 -->
+  <select id="checkDbMishu" resultMap="BaseResultMap">
+  select dbg.*
+  from 
+  db_group dbg
+  where
+   dbg.group_secretary=#{map.teaId}
+  </select>
+    <!-- 教师查询答辩安排 -->
+   <select id="findDbGroupByTeaId" resultMap="BaseResultMap" >
+  	SELECT dbg.*
+  	FROM db_group dbg,teacher t
+  	WHERE t.db_group=dbg.id
+  	AND t.user_id=#{teaId}
+  </select>
+  
+  <delete id="deleteAll">
+	TRUNCATE TABLE db_group;
+</delete>
+  
+  <!-- 分页查询 -->
+  <select id="findPage" resultMap="BaseResultMap">
+  	select d.*,t.tea_name as groupLeaderName
+  	from db_group d, teacher t
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+          	 d.group_leader = t.user_id
+	         <if test="map.major!=null">
+	        	AND d.major = #{map.major}
+	         </if>
+   </trim>
+    order by d.group_num
+  <if test=" page.pageSize>0">
+   limit #{page.recordNo},#{page.pageSize}
+   </if>
+  </select>
+  
+</mapper>

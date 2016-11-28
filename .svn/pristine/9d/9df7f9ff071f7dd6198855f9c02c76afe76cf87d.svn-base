@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="lwgl"
+  id="myeclipse.1468037100067"
+  context-root="/lwgl"
+  j2ee-spec="5.0"
+  archive="lwgl.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

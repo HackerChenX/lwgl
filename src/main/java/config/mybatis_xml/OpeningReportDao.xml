@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.OpeningReportDao" >
+  <resultMap id="BaseResultMap" type="OpeningReport" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
+    <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
+    <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="opening_report" property="openingReportPath" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="limit_time" property="limitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, tea_id, tea_status, leader_status, opening_report, create_user, create_time, limit_time
+  </sql>
+ 
+  <!-- 提交开题报告 -->
+  <insert id="insert">
+  	insert into openingreport (id, stu_id, tea_id, tea_status, leader_status, opening_report, create_user, create_time, limit_time)
+  	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
+  			#{leaderStatus, jdbcType=VARCHAR}, #{openingReportPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
+  			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
+  </insert>
+ 
+  <!-- 根据学生ID查询开题报告信息 -->
+  <select id="findOpeningReportByStuId" resultMap="BaseResultMap">
+  	SELECT * FROM openingreport WHERE stu_id=#{stuId}
+  </select>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+  	SELECT * FROM openingreport WHERE id=#{id}
+  </select>
+  
+  <!-- 重新提交,在原有记录上修改 -->
+  <update id="updateOpeningReportById">
+  	UPDATE openingreport
+  	<set>
+  		<if test="map.teaStatus!=null">
+  			tea_status=#{map.teaStatus},
+  		</if>
+  		<if test="map.leaderStatus!=null">
+  			leader_status=#{map.leaderStatus},
+  		</if>
+  		<if test="map.openingReport!=null">
+  			opening_report=#{map.openingReport},
+  		</if>
+  		<if test="map.createTime!=null">
+  			create_time=#{map.createTime}
+  		</if>
+  	</set> 
+  	WHERE stu_id=#{stuId}
+  </update>
+  
+   <!-- 删除记录 -->
+  <delete id="deleteById">
+  	DELETE FROM openingreport WHERE id=#{id}
+  </delete>
+ 
+    <!-- 按条件（分页）查询学生开题报告--><!--
+     <select id="findPage"  resultMap="com.hlzt.power.model.StuStageFile">
+       select s.stu_name as stuName, s.sex as sex, s.user_num as suNum, s.title as title, 
+       		  s.tel as tel, s.mail as mail, o.tea_status as status, o.opening_report as openingReport	
+       from openingreport o, student s
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 <if test="map.stuNum!=null">
+	        	AND stu_num = #{map.stuNum}
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND stuName like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND status = #{map.status}
+	         </if>
+	     </trim>
+	     order by s.user_num
+	     <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>
+    </select>
+ 
+   --><!-- 更新指导老师的审核状态 -->
+  <update id="updateStatus">
+  	update openingreport 
+  		<set>
+  			tea_status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  </update>
+ 
+ <!-- 查询未提交开题报告的学生数量 -->
+    <select id="selectNotSubmitNum" resultType="int">
+    	SELECT distinct COUNT(*) from student s 
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 s.user_id NOT in (SELECT o.stu_id from openingreport o)
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    
+   	<!-- 查询专业审核中开题报告的学生数量 -->
+    <select id="selectCheckingNum" resultType="int">
+    	select count(*) from openingreport o, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 o.opening_report is NOT NULL
+    		 and o.opening_report != ""
+    		 and o.leader_status = 0
+    		 and o.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询指导审核中开题报告的学生数量 -->
+    <select id="selectZdCheckingNum" resultType="int">
+    	select count(*) from openingreport o, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 o.opening_report is NOT NULL
+    		 and o.opening_report != ""
+    		 and o.tea_status = 0
+    		 and o.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询专业退回中开题报告的学生数量 -->
+    <select id="selectCheckNotNum" resultType="int">
+    	select count(*) from openingreport o, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 o.opening_report is NOT NULL
+    		 and o.opening_report != ""
+    		 and o.leader_status = 2
+    		 and o.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    <!-- 查询指导退回中开题报告的学生数量 -->
+    <select id="selectZdCheckNotNum" resultType="int">
+    	select count(*) from openingreport o, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 o.opening_report is NOT NULL
+    		 and o.opening_report != ""
+    		 and o.tea_status = 2
+    		 and o.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+    
+    <!-- 查询开题报告专业审核通过的学生数量 -->
+    <select id="selectCheckPassNum" resultType="int">
+    	select count(*) from openingreport o, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 o.opening_report is NOT NULL
+    		 and o.opening_report != ""
+    		 and o.leader_status = 1
+    		 and o.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+    
+     <!-- 查询开题报告指导审核通过的学生数量 -->
+    <select id="selectZdCheckPassNum" resultType="int">
+    	select count(*) from openingreport o, student s
+    	<trim prefix="WHERE" prefixOverrides="AND | OR">
+    		 o.opening_report is NOT NULL
+    		 and o.opening_report != ""
+    		 and o.tea_status = 1
+    		 and o.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className">
+	         	AND s.class = #{map.className}
+	         </if>
+	     </trim>
+    </select>
+ 
+ <!-- 专业负责人查询本专业开题报告 -->
+ <select id="mLSelectOpeningReport" resultType="com.hlzt.power.model.StuStageFile">
+ 	select s.stu_name as stuName, s.sex as sex, s.user_num as stuNum, s.title as title, 
+       		t.tea_name as teaName, s.tel as tel, s.mail as mail, o.leader_status as status, o.opening_report as openingReport, o.id as id
+       from openingreport o, student s,teacher t
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 o.tea_status = 1
+         	 AND
+          	 s.user_id = o.stu_id
+          	 AND t.user_id = o.tea_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+         	 <if test="map.stuNum!=null">
+	        	AND s.user_num = #{map.stuNum}	
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND o.leader_status = #{map.status}
+	         </if>
+	         <if test="map.titleName">
+	         	AND s.title = #{map.titleName}
+	         </if>
+	     </trim>
+	     order by s.user_num
+	     <if test=" page.pageSize>0">
+         limit #{page.recordNo},#{page.pageSize}
+         </if>
+ </select>
+ <!-- 专业负责人查询本专业任务书数量 -->
+ <select id="mLSelectOpeningReportNum" resultType="int">
+ 	select count(*)	
+       from openingreport o, student s
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+          	 o.tea_status = 1
+          	 AND
+          	 s.user_id = o.stu_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+         	 <if test="map.stuNum!=null">
+	        	AND s.user_num = #{map.stuNum}	
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.status!=null">
+	        	AND o.leader_status = #{map.status}
+	         </if>
+	         <if test="map.titleName">
+	         	AND s.title = #{map.titleName}
+	         </if>
+	     </trim>
+ </select>
+ 
+ <!-- 专业负责人审核本专业开题报告 -->
+ <update id="mLCheckOpeningReport">
+ 	update openingreport o, student s
+  		<set>
+  			o.leader_status = #{status, jdbcType=VARCHAR}
+  		</set>
+  		where 
+  		o.stu_id = s.user_id
+  		and o.tea_status = 1
+  		and s.major = #{major}
+  		and o.id in
+  		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+ </update>
+ 
+ <delete id="deleteAll">
+	TRUNCATE TABLE openingreport;
+</delete>
+<!-- 根据指导老师Id和Tea状态查找 -->
+<select id="findOpeningReportByKey" resultMap="BaseResultMap">
+select op.* 
+from
+openingreport op
+<trim prefix="WHERE" prefixOverrides="AND | OR">
+ op.tea_id=#{teaId}
+ <if test="status!=null">
+ AND op.tea_status=#{status}
+ </if>
+</trim>
+
+</select>
+ 
+</mapper>

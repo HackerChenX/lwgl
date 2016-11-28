@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.GradeDao" >
+  <resultMap id="BaseResultMap" type="Grade" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="zd_teacher" property="zdTeacher" jdbcType="VARCHAR" />
+   	<result column="zd_zhicheng" property="zdZhiCheng" jdbcType="VARCHAR" />
+    <result column="py_teacher" property="pyTeacher" jdbcType="VARCHAR" />
+    <result column="py_zhicheng" property="pyZhiCheng" jdbcType="VARCHAR" />
+    <result column="stu_num" property="stuNum" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR"/>
+    <result column="stu_Major" property="stuMajor" jdbcType="VARCHAR" />
+    <result column="py_grade" property="pyGrade" jdbcType="REAL" />
+    <result column="sy_grade" property="syGrade" jdbcType="REAL" />
+    <result column="db_grade" property="dbGrade" jdbcType="REAL" />
+    <result column="final_grade" property="finalGrade" jdbcType="REAL" />
+    <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
+    <result column="recommend" property="recommend" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, stu_num, stu_Major, py_grade, sy_grade, db_grade, final_grade, evaluate, recommend, create_time, create_user
+  </sql>
+  <insert id="insert">
+  	insert into grade (id, stu_id, zd_teacher,zd_zhicheng, py_teacher,py_zhicheng, stu_num, title, stu_Major, py_grade, 
+  				sy_grade, db_grade, final_grade, evaluate, create_time, create_user)
+  		 values (#{id}, #{stuId},#{zdTeacher},#{zdZhiCheng},#{pyTeacher},#{pyZhiCheng},#{stuNum}, #{title},#{stuMajor},#{pyGrade},
+  		 		#{syGrade}, #{dbGrade},#{finalGrade},#{evaluate}, #{createTime}, #{createUser})
+  </insert>
+  
+  <update id="updateByStuId">
+  	update grade
+  		<set>
+  			<if test="grade.zdTeacher!=null">
+  				zd_teacher=#{grade.zdTeacher},
+  			</if>
+  			<if test="grade.zdZhiCheng!=null">
+  				zd_zhicheng=#{grade.zdZhiCheng},
+  			</if>
+  			<if test="grade.pyTeacher!=null">
+  				py_teacher=#{grade.pyTeacher},
+  			</if>
+  			<if test="grade.pyZhiCheng!=null">
+  				py_zhicheng=#{grade.pyZhiCheng},
+  			</if>
+  			<if test="grade.stuNum!=null">
+  				stu_num=#{grade.stuNum},
+  			</if>
+  			<if test="grade.title!=null">
+  				title=#{grade.title},
+  			</if>
+  			<if test="grade.stuMajor!=null">
+  				stu_Major=#{grade.stuMajor},
+  			</if>
+  			<if test="grade.pyGrade>0.0">
+  				py_grade=#{grade.pyGrade},
+  			</if>
+  			<if test="grade.syGrade>0.0">
+  				sy_grade=#{grade.syGrade},
+  			</if>
+  			<if test="grade.dbGrade>0.0">
+  				db_grade=#{grade.dbGrade},
+  			</if>
+  			<if test="grade.finalGrade!=0.0">
+  				final_grade=#{grade.finalGrade},
+  			</if>
+  			<if test="grade.evaluate!=null">
+  				evaluate=#{grade.evaluate},
+  			</if>
+  		</set>
+  		where
+  			<if test="grade.stuId!=null">
+  				stu_id = #{grade.stuId}  			
+  			</if>
+  			<if test="grade.stuNum!=null">
+  				stu_num = #{grade.stuNum}  			
+  			</if>
+  </update>
+  
+  <!-- 查询所有有效学生的数量 -->
+  <select id="findAllnum" resultType="int">
+  	select count(*) from grade g, student s 
+  		where 
+  			g.stu_id = s.user_id
+  			and s.major=#{major}
+  </select>
+  <!-- 查询所有>=90分的数量 -->
+  <select id="findExcellentNum" resultType="int">
+  	select count(*) from grade g, student s 
+  		where 
+  			g.stu_id = s.user_id
+  			and s.major=#{major}
+  			and g.final_grade >=90 ;
+  </select>
+  <!-- 查询所有80-89分的数量 -->
+   <select id="findWellNum" resultType="int">
+  select count(*) from grade g, student s 
+  		where 
+  			g.stu_id = s.user_id
+  			and s.major=#{major}
+  			and 80<![CDATA[<=]]>g.final_grade and g.final_grade<![CDATA[<=]]>89;
+  </select>
+  <!-- 查询所有70-79分学生的数量 -->
+  <select id="findMediumNum" resultType="int">
+  select count(*) from grade g, student s 
+  		where 
+  			g.stu_id = s.user_id
+  			and s.major=#{major}
+  			and 70<![CDATA[<=]]>g.final_grade and g.final_grade<![CDATA[<=]]>79;
+  </select>
+  
+  <select id="findPassNum" resultType="int">
+  	select count(*) from grade g, student s 
+  		where 
+  			g.stu_id = s.user_id
+  			and s.major=#{major}
+  			and 60<![CDATA[<=]]>g.final_grade and g.final_grade<![CDATA[<=]]>69;
+  </select>
+  
+  <select id="findNotPassNum" resultType="int">
+  	select count(*) from grade g, student s 
+  		where 
+  			g.stu_id = s.user_id
+  			and s.major=#{major}
+  			and final_grade <![CDATA[<]]> 60;
+  </select>
+  
+  <!-- 查询自己最终成绩 -->
+   <select id="selectById" resultMap="BaseResultMap">
+  	select g.*, t.tea_name as zdTeacherName
+  	 from grade g,teacher t where
+  	 g.zd_teacher = t.id and g.stu_id = #{id, jdbcType=VARCHAR}
+  </select>
+ 
+ <select id="selectByStuId" resultType="int">
+ 	select count(*) from grade where stu_id = #{stuId}
+ </select>
+ 
+ <select id="selectGradeByStuNum" resultMap="BaseResultMap">
+ 	select * from grade where stu_num = #{stuNum}
+ </select>
+ 
+ <!-- 成绩汇总查询 -->
+ <select id="findPage" resultMap="BaseResultMap">
+ 	select g.*, 
+ 		   t.tea_name as zdTeacherName, 
+ 		   s.user_num as stuNum,
+ 		   s.stu_name as stuName, 
+ 		   s.sex as stuSex,
+ 		   s.major as stuMajor,
+ 		   s.class as stuClass
+ 	from grade g, teacher t, student s
+ 	<trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 g.zd_teacher = t.user_id
+         	 and g.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className!=null">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND	t.tea_name like #{map.zdTeaName}
+	         </if>
+	         <if test="map.stuName!=null">
+	         	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.stuNum!=null">
+	         	AND s.user_num = #{map.stuNum}
+	         </if>
+	         <if test="map.grade">
+	         	AND g.final_grade >= #{map.grade}
+	         </if>
+	     </trim>
+	     order by create_time desc
+	  <if test=" page.pageSize>0">
+        limit #{page.recordNo},#{page.pageSize} 
+        </if>
+ </select>
+ 
+ <!-- 成绩汇总查询总条数 -->
+ <select id="rowsSize" resultType="int">
+ 	select count(*)
+ 	from grade g, teacher t, student s
+ 	<trim prefix="WHERE" prefixOverrides="AND | OR">
+         	 g.zd_teacher = t.user_id
+         	 and g.stu_id = s.user_id
+         	 <if test="map.major!=null">
+	        	AND s.major = #{map.major}
+	         </if>
+	         <if test="map.className!=null">
+	         	AND s.class = #{map.className}
+	         </if>
+	         <if test="map.zdTeaName!=null">
+	         	AND	t.tea_name like #{map.zdTeaName}
+	         </if>
+	         <if test="map.stuName!=null">
+	         	AND s.stu_name like #{map.stuName}
+	         </if>
+	         <if test="map.stuNum">
+	         	AND s.user_num = #{map.stuNum}
+	         </if>
+	         <if test="map.grade">
+	         	AND g.final_grade >= #{map.grade}
+	         </if>
+	     </trim>
+ </select>
+ 
+ <!-- 更改论文推荐状态 -->
+ <update id="updateRecommendYxPaper">
+ 	update grade 
+ 		<set>
+ 			recommend = #{status}
+ 		</set>
+ 		where id in
+ 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+ </update>
+ <!--
+ <select id="" resultMap="BaseResultMap">
+ 	select g.*,s.stu_name as stuName 
+ 		from grade g, student s
+ 		<trim prefix="WHERE" prefixOverrides="AND | OR">
+ 			and g.stu_id = s.user_id
+ 			<if test="map.zdTeaId!=null">
+ 				and g.zd_teacher = #{map.zdTeaId}
+ 			</if>
+ 			<if test="map.pyTeaId!=null">
+ 				and g.py_teacher = #{map.pyTeaId}
+ 			</if>
+ 			<if test="map.dbGroup!=null">
+ 				and s.db_group = #{map.dbGroup}
+ 			</if>
+ 		</trim>
+ 		order by s.user_num
+ </select>
+ 
+ 
+ 
+ -->
+ <delete id="deleteAll">
+	TRUNCATE TABLE grade;
+</delete>
+ <!-- 查询各阶段成绩 -->
+	<select id="findStageGrade" resultMap="BaseResultMap">
+		select g.*,s.stu_name as stuName
+		from grade g,
+		student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+		s.user_id=g.stu_id
+			<if test="map.syGrade!=null">
+			AND	g.zd_teacher=#{map.teaId}
+			<if test="map.status==1">
+			AND g.sy_grade IS NOT NULL
+			</if>
+			<if test="map.status==2">
+			ANd (g.sy_grade IS NULL or g.sy_grade='')
+			</if>			
+			</if>
+			<if test="map.pyGrade!=null">
+			AND	g.py_teacher=#{map.teaId}
+			<if test="map.status==1">
+			AND g.py_grade IS NOT NULL
+			</if>
+			<if test="map.status==2">
+			ANd (g.py_grade IS NULL or g.py_grade='')
+			</if>
+			</if>
+			<if test="map.stuNum!=null">
+			AND s.user_num like #{map.stuNum}
+			</if>
+			<if test="map.stuName">
+			AND s.stu_name like #{map.stuName}
+			</if>
+			
+		</trim>
+
+	</select>
+ 
+ 	<select id="findPyGrade" resultMap="BaseResultMap">
+ 		select g.*,s.stu_name as stuName, s.title as title
+		from grade g, student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id=g.stu_id
+			<if test="map.teaId!=null">
+				and s.py_teacher = #{map.teaId}			
+			</if>
+			<if test="map.stuName!=null">
+				and s.stu_name like #{map.stuName}			
+			</if>
+			<if test="map.stuNum!=null">
+				and s.user_num = #{map.stuNum}			
+			</if>
+		</trim>
+		order by s.user_num
+	     <if test=" page.pageSize>0">
+         	limit #{page.recordNo},#{page.pageSize}
+         </if>
+ 	</select>
+ 	
+ 	<select id="findPyGradeNum" resultType="int">
+ 		select count(*)
+		from grade g, student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id=g.stu_id
+			<if test="map.teaId!=null">
+				and s.py_teacher = #{map.teaId}			
+			</if>
+			<if test="map.stuName!=null">
+				and s.stu_name like #{map.stuName}			
+			</if>
+			<if test="map.stuNum!=null">
+				and s.user_num = #{map.stuNum}			
+			</if>
+		</trim>
+ 	</select>
+ 
+ 	
+ 	<select id="findSyGrade" resultMap="BaseResultMap">
+ 		select g.*,s.stu_name as stuName, s.title as title
+		from grade g, student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id=g.stu_id
+			<if test="map.teaId!=null">
+				and s.zd_teacher = #{map.teaId}			
+			</if>
+			<if test="map.stuName!=null">
+				and s.stu_name like #{map.stuName}			
+			</if>
+			<if test="map.stuNum!=null">
+				and s.user_num = #{map.stuNum}			
+			</if>
+		</trim>
+		order by s.user_num
+	     <if test=" page.pageSize>0">
+         	limit #{page.recordNo},#{page.pageSize}
+         </if>
+ 	</select>
+ 	
+ 	<select id="findSyGradeNum" resultType="int">
+ 		select count(*)
+		from grade g, student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id=g.stu_id
+			<if test="map.teaId!=null">
+				and s.zd_teacher = #{map.teaId}			
+			</if>
+			<if test="map.stuName!=null">
+				and s.stu_name like #{map.stuName}			
+			</if>
+			<if test="map.stuNum!=null">
+				and s.user_num = #{map.stuNum}			
+			</if>
+		</trim>
+ 	</select>
+ 	
+ 	<select id="findDbGrade" resultMap="BaseResultMap">
+ 		select g.*,s.stu_name as stuName, s.title as title
+		from grade g, student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id=g.stu_id
+			<if test="map.teaId!=null">
+				and s.db_group = #{map.teaId}			
+			</if>
+			<if test="map.stuName!=null">
+				and s.stu_name like #{map.stuName}			
+			</if>
+			<if test="map.stuNum!=null">
+				and s.user_num = #{map.stuNum}			
+			</if>
+		</trim>
+		order by s.user_num
+	     <if test=" page.pageSize>0">
+         	limit #{page.recordNo},#{page.pageSize}
+         </if>
+ 	</select>
+ 	
+ 	<select id="findDbGradeNum" resultType="int">
+ 		select count(*)
+		from grade g, student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id=g.stu_id
+			<if test="map.teaId!=null">
+				and s.db_group = #{map.dbGroup}			
+			</if>
+			<if test="map.stuName!=null">
+				and s.stu_name like #{map.stuName}			
+			</if>
+			<if test="map.stuNum!=null">
+				and s.user_num = #{map.stuNum}			
+			</if>
+		</trim>
+ 	</select>
+ </mapper>

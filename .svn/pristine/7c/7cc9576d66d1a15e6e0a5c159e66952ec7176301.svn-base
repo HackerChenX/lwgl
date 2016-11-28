@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlzt.power.dao.StudentDao">
+	<resultMap id="BaseResultMap" type="Student">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+		<result column="user_num" property="userNum" jdbcType="VARCHAR" />
+		<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="department" property="department" jdbcType="VARCHAR" />
+		<result column="major" property="major" jdbcType="VARCHAR" />
+		<result column="class" property="stuClass" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="mail" property="mail" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="zd_teacher" property="zdTeacher" jdbcType="VARCHAR" />
+		<result column="py_teacher" property="pyTeacher" jdbcType="VARCHAR" />
+		<result column="db_group" property="dbGroup" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, stu_name, user_num, id_card, sex, user_id, department,
+		major, class,
+		title, grade, tel, mail, create_time,
+		zd_teacher,
+		py_teacher, create_user
+	</sql>
+
+	<!-- 增加学生 -->
+	<insert id="insert">
+		insert into student (id, stu_name, user_num, id_card,
+		sex, user_id, create_user, create_time)
+		values (#{id}, #{stuName},
+		#{userNum}, #{idCard}, #{sex}, #{userId},
+		#{createUser}, #{createTime})
+	</insert>
+
+	<select id="selectStuByUserId" resultMap="BaseResultMap">
+		select * from student
+		where user_id = #{userId}
+	</select>
+
+	<!-- 更改学生 -->
+	<update id="updateStuInfo">
+		update student
+		<set>
+			<if test="student.stuName!=null">
+				stu_name = #{student.stuName},
+			</if>
+			<if test="student.userNum!=null">
+				user_num = #{student.userNum},
+			</if>
+			<if test="student.sex!=null">
+				sex = #{student.sex},
+			</if>
+			<if test="student.idCard!=null">
+				id_card = #{student.idCard},
+			</if>
+			<if test="student.tel!=null">
+				tel = #{student.tel},
+			</if>
+			<if test="student.mail!=null">
+				mail = #{student.mail},
+			</if>
+			<if test="student.major!=null">
+				major = #{student.major},
+			</if>
+			<if test="student.stuClass">
+				class = #{student.stuClass},
+			</if>
+		</set>
+		WHERE user_id=#{student.userId}
+	</update>
+
+	<!-- 删除学生 -->
+	<delete id="deleteStudent">
+		delete from student where user_id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 根据学生账号查询学生 -->
+	<select id="selectStuByStuNum" resultMap="BaseResultMap">
+		select s.* from student s
+		where s.user_num = #{stuNum, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 更新学生表中课题信息 (课题名称,指导老师,评阅老师) -->
+	<update id="updateTitleByMap">
+		UPDATE student
+		<set>
+			<if test="map.title!=null">
+				title = #{map.title},
+			</if>
+			<if test="map.teaId!=null">
+				zd_teacher=#{map.teaId},
+			</if>
+			<if test="map.pyTeacher!=null">
+				py_teacher=#{map.pyTeacher},
+			</if>
+		</set>
+		WHERE user_id=#{stuId}
+	</update>
+
+	<!-- 删除申报课题信息 -->
+	<update id="deleteTitleById">
+		UPDATE student SET title =
+		null,zd_teacher=null,py_teacher=null WHERE user_id=#{stuId}
+	</update>
+
+
+	<!-- 多条件成绩汇总查询 -->
+	<select id="findStuGraColllectByCondition" resultType="com.hlzt.power.model.StuGraCollect">
+		select
+		s.stu_num as stuNum,
+		s.`name`, s.sex, s.major, s.class, g.title,
+		g.py_grade as pyGrade,
+		g.sy_grade as syGrade,
+		g.db_grade as dbGrade,
+		g.final_grade as finalGrade,
+		g.evaluate,
+		t.`name` as zdTeaName,
+		t.`name`
+		as pyTeaName
+		from student s, grade g, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.id = g.stu_id
+			and s.zd_teacher = t.id
+			and s.py_teacher = t.id
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.class!=null">
+				AND s.class = #{map.class}
+			</if>
+			<if test="map.zdTeacherName!=null">
+				AND zdTeaName = #{map.zdTeacherName}
+			</if>
+			<if test="map.sutName!=null">
+				AND s.`name` = #{map.stuName}
+			</if>
+			<if test="map.userNum!=null">
+				AND user_num = #{map.userNum}
+			</if>
+		</trim>
+	</select>
+	<!-- 根据专业查询学生数量 -->
+	<select id="findStuNumByMajor" resultType="int">
+		select count(*) from
+		student where major=#{majorName, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据班级查询学生数量 -->
+	<select id="findStuNumByClass" resultType="int">
+		select count(*) from
+		student where class=#{className, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 多条件查询毕设学生信息 -->
+	<select id="findPage" resultMap="BaseResultMap">
+		select s.stu_name, s.user_num, s.sex,s.major,s.class, s.tel, s.mail,
+		s.title, t.tea_name as zdTeaName
+		from student s, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.zd_teacher = t.user_id
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.zdTeaName!=null">
+				AND t.tea_name like #{map.zdTeaName}
+			</if>
+			<if test="map.zdTeacherId!=null">
+				AND s.zd_teacher = #{map.zdTeacherId}
+			</if>
+			<if test="map.stuName!=null">
+				AND s.stu_name like #{map.stuName}
+			</if>
+			<if test="map.stuNum!=null">
+				AND s.user_num = #{map.userNum}
+			</if>
+		</trim>
+		order by s.user_num
+		<if test="page.pageSize>0">
+		limit #{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+	<!-- 多条件查询毕设学生信息数量 -->
+	<select id="rowsSize" resultType="int">
+		select count(*)
+		from student s, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.zd_teacher = t.user_id
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.zdTeaName!=null">
+				AND t.tea_name like #{map.zdTeaName}
+			</if>
+			<if test="map.zdTeacherId!=null">
+				AND s.zd_teacher = #{map.zdTeacherId}
+			</if>
+			<if test="map.stuName!=null">
+				AND s.stu_name like #{map.stuName}
+			</if>
+			<if test="map.stuNum!=null">
+				AND s.user_num = #{map.userNum}
+			</if>
+		</trim>
+	</select>
+	<!-- 查询未提交任务书学生 -->
+	<select id="findTaskBookNotSubmit" resultMap="BaseResultMap">
+		SELECT distinct s.* from student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id NOT in (SELECT t.stu_id from taskbook t)
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+	<!-- 根据任务书审核状态查询学生 -->
+	<select id="findTaskBookByLeaderStatus" resultMap="BaseResultMap">
+		select s.* from student s, taskbook t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id = t.stu_id
+			and t.task_book is not null
+			and t.task_book !=""
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.leaderStatus!=null">
+				AND t.leader_status = #{map.leaderStatus}
+			</if>
+			<if test="map.zdTeaStatus!=null">
+				AND t.tea_status = #{map.zdTeaStatus}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+	   limit #{page.recordNo},#{page.pageSize}
+	   </if>
+	</select>
+
+
+	<!-- 查询未提交开题报告学生 -->
+	<select id="findOpeningReportNotSubmit" resultMap="BaseResultMap">
+		SELECT distinct s.* from student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id NOT in (SELECT o.stu_id from openingreport o)
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+	<!-- 根据开题报告审核状态查询学生 -->
+	<select id="findOpeningReportByLeaderStatus" resultMap="BaseResultMap">
+		select s.* from student s, openingreport o
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id = o.stu_id
+			and o.opening_report is not null
+			and
+			o.opening_report !=""
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.leaderStatus!=null">
+				AND o.leader_status = #{map.leaderStatus}
+			</if>
+			<if test="map.zdTeaStatus!=null">
+				AND o.tea_status = #{map.zdTeaStatus}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+
+	<!-- 查询未提交中期检查表学生 -->
+	<select id="findMidCheckNotSubmit" resultMap="BaseResultMap">
+		SELECT distinct s.* from student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id NOT in (SELECT m.stu_id from midcheck m)
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+	<!-- 根据中期检查表专业审核状态查询学生 -->
+	<select id="findMidCheckByLeaderStatus" resultMap="BaseResultMap">
+		select s.* from student s, midcheck m
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id = m.stu_id
+			and m.mid_check is not null
+			and m.mid_check = ""
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.leaderStatus!=null">
+				AND m.leader_status = #{map.leaderStatus}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+
+	<!-- 查询未提交论文初稿学生 -->
+	<select id="findFirstPaperNotSubmit" resultMap="BaseResultMap">
+		SELECT distinct s.* from student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id NOT in (SELECT p.stu_id from firstpaper p)
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+	<!-- 根据论文初稿专业审核状态查询学生 -->
+	<select id="findFirstPaperByLeaderStatus" resultMap="BaseResultMap">
+		select s.* from student s, firstpaper f
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id = f.stu_id
+			and f.first_paper is not null
+			and f.first_paper =
+			""
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.leaderStatus!=null">
+				AND f.leader_status = #{map.leaderStatus}
+			</if>
+			<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+		</trim>
+	</select>
+	
+	<select id="zdTeaFindPyStu" resultMap="BaseResultMap">
+		select s.*,f.final_paper as finalPaperPath
+			from student s, finalpaper f
+			where 
+				s.py_teacher = #{pyTeaId}
+				and s.user_id = f.stu_id
+			order by s.zd_teacher,s.user_num
+			  <if test=" page.pageSize>0">
+			limit
+			#{page.recordNo},#{page.pageSize}
+			</if>
+	</select>
+	
+	<select id="zdTeaFindPyStuNum" resultType="int">
+		select count(*)
+			from student s, finalpaper f
+			where 
+				s.py_teacher = #{pyTeaId}
+				and s.user_id = f.stu_id
+			order by s.zd_teacher,s.user_num
+	</select>
+
+	<!-- 查询未提交论文定稿学生 -->
+	<select id="findFinalPaperNotSubmit" resultMap="BaseResultMap">
+		SELECT distinct s.* from student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id NOT in (SELECT p.stu_id from finalpaper p)
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+		</trim>
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+	<!-- 根据论文定稿专业审核状态查询学生 -->
+	<select id="findFinalPaperByLeaderStatus" resultMap="BaseResultMap">
+		select s.* from student s, finalpaper f
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.user_id = f.stu_id
+			and f.final_paper is not null
+			and f.final_paper
+			!=""
+			<if test="map.major!=null">
+				AND s.major = #{map.major}
+			</if>
+			<if test="map.className!=null">
+				AND s.class = #{map.className}
+			</if>
+			<if test="map.leaderStatus!=null">
+				AND f.leader_status = #{map.leaderStatus}
+			</if>
+		</trim>	
+		<if test="page.pageSize>0">
+   			limit #{page.recordNo},#{page.pageSize}
+   		</if>
+	</select>
+
+	<!-- 查询所有评阅学生 -->
+	<select id="selectAllPyStu" resultMap="BaseResultMap">
+		select s.* from student s
+		where
+		s.zd_teacher != #{teaId}
+		and s.major = #{major}
+		and (s.zd_teacher
+		is not null
+		and s.zd_teacher !="")
+		and (s.title
+		is not null
+		and s.title !="")
+		and (s.py_teacher
+		is null
+		or s.py_teacher ="")
+		ORDER BY
+		s.zd_teacher,s.user_num
+		  <if test=" page.pageSize>0">
+		limit
+		#{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+
+	<!-- 根据评阅老师查询 -->
+	<select id="findStuByPyTea" resultMap="BaseResultMap">
+		select * from student
+		where py_teacher = #{pyTeaId}
+		and major = #{major}
+	</select>
+	<select id="findStuNumByPyTea" resultType="int">
+		select count(*) from
+		student
+		where py_teacher = #{pyTeaId}
+		and major = #{major}
+	</select>
+
+	<!-- 查询所有评阅学生数量 -->
+	<select id="selectAllPyStuNum" resultType="int">
+		select count(*) from
+		student s
+		where
+		s.zd_teacher != #{teaId}
+		and s.major = #{major}
+		and (s.zd_teacher
+		is not null
+		and s.zd_teacher !="")
+		and (s.title
+		is not null
+		and s.title !="")
+		and (s.py_teacher
+		is null
+		or s.py_teacher ="")
+	</select>
+
+	<!-- 给学生设置评阅老师 -->
+	<update id="setPyTea">
+		update student
+		<set>
+			py_teacher = #{teaId}
+		</set>
+		where
+		major = #{major}
+		and user_id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 根据答辩小组查询学生 -->
+	<select id="selectStuByDbGroup" resultMap="BaseResultMap">
+		select * from student where db_group = #{dbGroup}
+		order by user_num
+		  <if test=" page.pageSize>0">
+			limit #{page.recordNo},#{page.pageSize}
+		</if>
+	</select>
+
+	<!-- 根据答辩小组查询学生 -->
+	<select id="selectStuNumByDbGroup" resultType="int">
+		select count(*)
+		from student where db_group = #{dbGroup}
+	</select>
+
+	<!-- 根据答辩小组查询学生 不分页 -->
+	<select id="findStuByDbGroup" resultMap="BaseResultMap">
+		select s.*, t.tea_name as zdTeaName
+		from student s, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.zd_teacher = t.user_id
+			<if test="major!=null">
+				AND s.major = #{major}
+			</if>
+			<if test="dbGroup!=null">
+				AND s.db_group = #{dbGroup}
+			</if>
+			<if test="dbGroup==null">
+				AND (s.db_group = ''
+				OR s.db_group is null)
+			</if>
+		</trim>
+		order by s.user_num
+	</select>
+
+
+	<!-- 根据答辩小组查询学生数量 -->
+	<select id="findStuNumByDbGroup" resultType="int">
+		select count(*)
+		from student s, teacher t
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.zd_teacher = t.user_id
+			<if test="major!=null">
+				AND s.major = #{major}
+			</if>
+			<if test="dbGroup!=null">
+				AND s.db_group = #{dbGroup}
+			</if>
+			<if test="dbGroup==null">
+				AND (s.db_group = ''
+				OR s.db_group is null)
+			</if>
+		</trim>
+	</select>
+
+	<!-- 给学生设置答辩小组 -->
+	<update id="setDbGroupForStu">
+		update student
+		<set>
+			db_group = #{dbGroupId}
+		</set>
+		where user_id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<!-- 根据指导老师Id查询学生信息 -->
+	<select id="findStuByZdTeacherId" resultMap="BaseResultMap">
+		select *
+		from
+		student
+		s
+		where
+		s.zd_teacher=#{map.teaId}
+		order by user_num 
+		  <if test=" page.pageSize>0">
+    	limit #{page.recordNo},#{page.pageSize}
+    	</if>
+	</select>
+	
+	<select id="findStuNumByZdTeacherId" resultType="int">
+		select count(*)
+		from
+		student
+		s
+		where
+		s.zd_teacher=#{map.teaId}
+	</select>
+
+	<!-- 通过条件查看学生申报 -->
+	<select id="findStuTitle" resultMap="BaseResultMap">
+		select s.*,apt.title_source as titleSourse,apt.title as
+		titleName,apt.tea_status as teaStatus,apt.id as applyTitleId
+		from
+		student s,apply_title apt
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			apt.tea_id=#{map.teaId}
+			AND apt.stu_id=s.user_id
+			<if test="map.stuNum!=null">
+				AND s.user_num like #{map.stuNum}
+			</if>
+			<if test="map.stuName!=null">
+				AND s.stu_name like #{map.stuName}
+			</if>
+			<if test="map.teaStatus!=null">
+				AND apt.tea_status=#{map.teaStatus}
+			</if>
+		</trim>
+	</select>
+	<!-- 通过答辩组id查学生 -->
+	<select id="findStuByDbkey" resultMap="BaseResultMap">
+		select s.*
+		from
+		student s
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			s.db_group=#{map.dbGroupId}
+			<if test="map.stuName!=null">
+				AND s.stu_name like #{map.stuName}
+			</if>
+			<if test="map.stuNum!=null">
+				AND s.user_num like #{map.stuNum}
+			</if>
+		</trim>
+	</select>
+	<!-- 通过答辩小组Id查找学生 -->
+	<select id="findStuByDbId" resultMap="BaseResultMap">
+	select s.*
+	from
+	student s
+	where
+	s.db_group=#{dbId}
+	</select>
+ <delete id="deleteAll">
+	TRUNCATE TABLE student;
+</delete>
+<!-- 通过关键词查找学生 -->
+<select id="findStuByKey" resultMap="BaseResultMap">
+select  s.*
+from student s,
+teacher t
+	<trim prefix="WHERE" prefixOverrides="AND | OR">
+	s.zd_teacher=t.user_id
+	AND t.user_id=#{map.zdTeacherId}
+	<if test="map.stuNum!=null">
+	AND s.user_num like #{map.stuNum}
+	</if>
+	<if test="map.stuName!=null">
+	AND s.stu_name like #{map.stuName}
+	</if>	
+	</trim>
+</select>
+<!-- 通过stuNum，stuName/stuId查询学生 -->
+<select id="findStuForTeacher" resultMap="BaseResultMap">
+select s.*
+from
+student s
+	<trim prefix="WHERE" prefixOverrides="AND | OR">
+s.user_id=#{map.stuId}
+<if test="map.stuNum!=null">
+AND s.user_num like #{map.stuNum}
+</if>
+<if test="map.stuName!=null">
+AND s.stu_name like #{map.stuName}
+</if>
+</trim>
+</select>
+	
+	
+</mapper>
