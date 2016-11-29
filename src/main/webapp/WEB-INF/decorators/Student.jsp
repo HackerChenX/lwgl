@@ -136,6 +136,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<span class="fa fa-tag"></span>&nbsp;课题文件提交
 									</a>
 								</li>
+								<li >
+									<a href="<%=basePath %>student/InitCreateDoc.shtm">
+										<span class="fa fa-tag"></span>&nbsp;测试
+									</a>
+								</li>								
 							</ul>
 						</li>
 						<li>

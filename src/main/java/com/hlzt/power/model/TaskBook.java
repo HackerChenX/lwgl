@@ -12,6 +12,10 @@ import com.hlzt.commons.model.BaseBean;
 public class TaskBook extends BaseBean{
 	private String stuId;//学生ID
 	private String teaId;//教师ID
+	private String mainTask;//毕业论文（设计）要求完成的主要任务及其时间安排
+	private String zhiBiao;//毕业论文（设计）的主要技术指标
+	private String yaoQiu;//毕业论文（设计）的基本要求及应完成的成果形式
+	private String wenXian;//毕业论文（设计）应收集的资料及主要参考文献
 	private String teaStatus;//教师审核状态（0待审核  1通过 2驳回）
 	private String leaderStatus;//专业负责人审核状态（0待审核 1通过 2驳回）
 	private String taskBookPath;//任务书路径
@@ -60,6 +64,30 @@ public class TaskBook extends BaseBean{
 	}
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	public String getMainTask() {
+		return mainTask;
+	}
+	public void setMainTask(String mainTask) {
+		this.mainTask = mainTask;
+	}
+	public String getZhiBiao() {
+		return zhiBiao;
+	}
+	public void setZhiBiao(String zhiBiao) {
+		this.zhiBiao = zhiBiao;
+	}
+	public String getYaoQiu() {
+		return yaoQiu;
+	}
+	public void setYaoQiu(String yaoQiu) {
+		this.yaoQiu = yaoQiu;
+	}
+	public String getWenXian() {
+		return wenXian;
+	}
+	public void setWenXian(String wenXian) {
+		this.wenXian = wenXian;
 	}
 	
 	

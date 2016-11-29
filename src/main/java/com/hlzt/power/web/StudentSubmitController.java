@@ -210,6 +210,10 @@ public class StudentSubmitController {
      			map.put("leaderStatus","0");
      			map.put("taskBook",filePath);
      			map.put("createTime", nowDate);
+     			map.put("mainTask", null);
+     			map.put("zhiBiao", null);
+     			map.put("yaoQiu", null);
+     			map.put("wenXian", null);
      			try{
 	     			int j = studentFlowManageSer.updateTaskBookById(student.getUserId(), map);
 	     			if(j==0){
@@ -256,6 +260,10 @@ public class StudentSubmitController {
              taskBook.setId(UuidHelper.getRandomUUID());
              taskBook.setStuId(student.getUserId());
              taskBook.setTeaId(student.getZdTeacher());
+             taskBook.setMainTask(null);
+             taskBook.setZhiBiao(null);
+             taskBook.setYaoQiu(null);
+             taskBook.setWenXian(null);
              taskBook.setTeaStatus("0");
              taskBook.setLeaderStatus("0");
              taskBook.setTaskBookPath(filePath);
@@ -294,9 +302,8 @@ public class StudentSubmitController {
  				backLog.setCreateUser(student.getStuName());
  				int b = publiSer.insertBackLog(backLog);
  				int m = publiSer.updateBackLogNumById(backLog.getId(),"add");			
- 			}
-            
-             return "redirect:taskBook.shtm";
+ 			}            
+            return "redirect:taskBook.shtm";
 		}
 		model.addAttribute("errorMsg","系统错误");
 		return "error/error.jsp";
@@ -381,7 +388,21 @@ public class StudentSubmitController {
 		}
 		return "redirect:taskBook.shtm";
 	}
+	
+	/**
+	 * @Title: taskBookOnline
+	 * @Description:在线填写任务书--页面初始化
+	 * @param request
+	 * @param response
+	 * @return String 
+	 * @throws
+	 */
+	@RequestMapping("/taskBookOnline.shtm")
+	public String taskBookOnline(HttpServletRequest request, HttpServletResponse response){
 		
+		return "Student/taskBookOnline.jsp";
+	}
+	
      @RequestMapping("/downloadFile.shtm")    
      public ResponseEntity<byte[]> download(Model model,String filePath,
  			HttpServletRequest request, HttpServletResponse response){     

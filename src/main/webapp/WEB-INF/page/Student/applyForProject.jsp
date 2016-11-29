@@ -273,10 +273,7 @@
 			$("#dataBody").html("审核后无法修改，确认提交？");
 			$("#mymodal-data").modal("toggle");
 		});
-	}); 
-	$("#mymodal-error").on("hidden.bs.modal", function() {
-   		 $(this).removeData("bs.modal");
-	});     
+	});    
     </script>
 </body>
 </html>
