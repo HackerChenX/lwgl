@@ -79,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									 		<td>${item.student.title }</td>
 											<td>${item.student.stuClass }</td>											
 											<td>${item.student.tel}</td>
-											<td>${item.student.mail }</td>
+											<td>${item.student.mail}</td>
 											<td>
 												<c:if test="${item.teaStatus==0}">
 													未审核

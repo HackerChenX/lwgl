@@ -27,6 +27,7 @@ public class YuLanController {
 //			model.addAttribute("errorMsg", "预览文件不存在！");
 //			return "error/error.jsp";
 //		}
+		String localPath=path;
 		String formatPath = new String(path.getBytes("iso8859-1"), "UTF-8");// get数据中文转码
 		String yulanPath=null;
 		try {
@@ -42,7 +43,7 @@ public class YuLanController {
 			return "office/xx.jsp";
 		}
 		
-		File f=new File(yulanPath);//如果数据库中存在路径，源文件可能不存在，此处检测文件是否存在。
+		File f=new File(localPath);//如果数据库中存在路径，源文件可能不存在，此处检测文件是否存在。
 		if(f.exists()){
 			model.addAttribute("filePath", yulanPath);
 			return "office/xx.jsp";

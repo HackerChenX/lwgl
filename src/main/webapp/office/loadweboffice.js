@@ -36,15 +36,16 @@ function openDoc() {
 		//	var wordUrl=encodeURIComponent(uri);  
 //	var localhostPath=curWwwPath.substring(0,pos); 
             //加载控件
-				
+	//var wordUrl="C:/Users/Harker/Desktop/11.doc";
 			try{
-            document.all.WebOffice1.LoadOriginalFile(wordUrl, "doc");
+				document.all.WebOffice1.LoadOriginalFile(wordUrl, "doc");
 			}catch(e)
 			{
-				
+				alert(e.message); 
 				var r=confirm("检测到您的电脑没有安装ActiveX插件,或者没有启用，请点击确定，安装后使用");
 				if (r==true)
 				  {
+					
 				    window.location.href="../office/ffactivex-setup-r39/ffactivex-setup-r39.exe";
 				  }
 				else

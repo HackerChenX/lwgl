@@ -21,6 +21,7 @@
 <script type="text/javascript" src="<%=basePath%>office/main.js"></script>
 <script language="javascript" type="text/javascript">
 	//WebOffice1_NotifyCtrlReady();
+	alter(document.getElementById("filePath").value)
 </script>
 <title>毕业设计管理系统</title>
 </head>
@@ -29,12 +30,13 @@
 		<button style="margin-left:50px;" class="btn btn-primary" type="button" id="selectSave" >保存文件</button>
 	如果ActiveX已启用，仍不能进行预览时请下载<a href="<%=basePath%>office/weboffice.exe">此插件</a>
 		<input	hidden="hidden" id="filePath" name="filePath" value="${filePath}" />
+		
 	</div>
 	
 	<form id="form1" runat="server">
 		<div id="webofficeDiv" style="position:relative top：60px">
 			<!--
-       <object id="WebOffice1" height="768" width='100%' style='left: 0px; top: 0px' classid='clsid:E77E049B-23FC-4DB8-B756-60529A35FAD5'
+       <object id="WebOffice1"  width='100%' style='left: 0px; top: 0px' classid='clsid:E77E049B-23FC-4DB8-B756-60529A35FAD5'
             codebase='weboffice/WebOffice.ocx'>
             <param name='_ExtentX' value='6350'>
             <param name='_ExtentY' value='6350'>            

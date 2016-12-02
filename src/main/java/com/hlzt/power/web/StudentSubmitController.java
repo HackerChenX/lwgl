@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -350,28 +351,36 @@ public class StudentSubmitController {
 				model.addAttribute("errorMsg","任务书未在审核状态中,不能撤回");
 				return "forward:taskBook.shtm";
 			}
-			try{
-				//删除服务器文件
-				File serverFile = new File(taskBook.getTaskBookPath());
-				if(serverFile.exists()){
-					Boolean bool = serverFile.delete();
-					if(!bool){
-						model.addAttribute("errorMsg","执行删除操作失败,请稍后重试");
+			if(StringUtils.isNotBlank(taskBook.getTaskBookPath()))
+			{
+				//任务书路径不为空,是提交实体方式，所以执行删除文件操作
+				try{
+					//删除服务器文件
+					File serverFile = new File(taskBook.getTaskBookPath());
+					if(serverFile.exists()){
+						Boolean bool = serverFile.delete();
+						if(!bool){
+							model.addAttribute("errorMsg","执行删除操作失败,请稍后重试");
+							return "forward:taskBook.shtm";
+						}
+					}else{
+						model.addAttribute("errorMsg","服务器中找不到相关文件,任务书记录已删除");
+						studentFlowManageSer.deleteTaskBookById(id);
 						return "forward:taskBook.shtm";
 					}
-				}else{
-					model.addAttribute("errorMsg","服务器中找不到相关文件,任务书记录已删除");
-					studentFlowManageSer.deleteTaskBookById(id);
-					return "forward:taskBook.shtm";
+				}catch (Exception e){
+					e.printStackTrace();
 				}
+			 }
+			try{
 				int i = studentFlowManageSer.deleteTaskBookById(id);		
 				if(i==0){
 					model.addAttribute("errorMsg","系统错误");
 					return "error/error.jsp";
-				}
-			}catch (Exception e) {
+				}			
+			}catch (Exception e){
 				e.printStackTrace();
-			}
+			}			
 		}
 		//删除待办事项记录
 		List<BackLog> backLogs = publiSer.findBackLog(student.getZdTeacher(),null,"teacher");
@@ -398,10 +407,187 @@ public class StudentSubmitController {
 	 * @throws
 	 */
 	@RequestMapping("/taskBookOnline.shtm")
-	public String taskBookOnline(HttpServletRequest request, HttpServletResponse response){
-		
+	public String taskBookOnline(Model model, String id,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response){
+		Student student = (Student) request.getSession().getAttribute("student");
+		if(StringUtils.isBlank(student.getZdTeacher())){
+			model.addAttribute("errorMsg","尚未选择导师,若确认已选导师,请尝试重新登录");
+			return "forward:taskBook.shtm";
+		}
+		//获取阶段安排时间
+		StagePlan stagePlan = null;
+		TaskBook taskBook = null;
+		try{
+			stagePlan =	studentFlowManageSer.findStagePlan("task_book");	
+			taskBook = studentFlowManageSer.findTaskByStuId(student.getUserId());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		Date limitDate =null;
+		Date nowDate = new Date();//当前时间
+		if(stagePlan!=null){
+			Date startDate = stagePlan.getStartTime();//阶段安排开始时间
+			Date endDate = stagePlan.getEndTime();//阶段安排结束时间
+			//判断是否重复提交
+			if(taskBook!=null){
+				if((!taskBook.getTeaStatus().equals("2"))&&(!taskBook.getLeaderStatus().equals("2"))){
+					model.addAttribute("errorMsg","已提交过任务书,不能重复提交");
+					return "forward:taskBook.shtm";
+				}
+				limitDate=taskBook.getLimitTime();
+			}
+			//判断时间限制
+			if(nowDate.getTime()<startDate.getTime()){//比较开始时间
+				model.addAttribute("errorMsg","任务书提交尚未开始");
+				return "forward:taskBook.shtm";
+			}
+			if(nowDate.getTime()>endDate.getTime()){//比较结束时间
+				if(limitDate!=null){//判断是否存在特殊延期时间
+					if(nowDate.getTime()>limitDate.getTime()){//若有,比较延期时间
+						model.addAttribute("errorMsg","任务书提交延期已结束");
+						return "forward:taskBook.shtm";
+					}
+				}else{//无,直接返回超时提示
+					model.addAttribute("errorMsg","任务书提交已结束");
+					return "forward:taskBook.shtm";
+				}
+			}
+		}else{
+			model.addAttribute("errorMsg","未查询到阶段时间安排,该阶段尚未开始");
+			return "forward:taskBook.shtm";
+		}
+		model.addAttribute("taskBook", taskBook);
 		return "Student/taskBookOnline.jsp";
 	}
+	
+	@RequestMapping("/taskBookOnline_submit.shtm")
+	public String taskBookOnlineSubmit(String mainTask,String zhiBiao,String yaoQiu,String wenXian,Model model,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response)
+	{
+		Student student = (Student) request.getSession().getAttribute("student");
+
+		TaskBook taskBook = null;
+		try{
+			taskBook = studentFlowManageSer.findTaskByStuId(student.getUserId());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		if(taskBook!=null){//记录不为空,之前上传过任务书,重新上传,update覆盖原有记录
+			if(StringUtils.isNoneBlank(taskBook.getTaskBookPath()))
+			{
+				//任务书路径不为空,是提交实体方式，所以执行删除文件操作
+				try{
+					//删除服务器文件
+					File serverFile = new File(taskBook.getTaskBookPath());
+					if(serverFile.exists()){
+						Boolean bool = serverFile.delete();	
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			Enumeration<String> paramNames = request.getParameterNames();
+			// 通过循环将表单参数放入键值对映射中
+			//前台name需要与模板占位符对应
+			while(paramNames.hasMoreElements()){
+				String key = paramNames.nextElement();
+				String value = request.getParameter(key);
+				map.put(key, value);
+			}
+			map.put("teaStatus","0");
+ 			map.put("leaderStatus","0");
+ 			map.put("taskBook",null);
+ 			map.put("createTime", new Date());
+			try{
+     			int j = studentFlowManageSer.updateTaskBookById(student.getUserId(), map);
+     			if(j==0){
+     				model.addAttribute("errorMsg","系统错误");
+     				return "error/error.jsp";
+     			}
+ 			}catch (Exception e){
+				e.printStackTrace();
+				model.addAttribute("errorMsg","系统错误");
+ 				return "error/error.jsp";
+			}
+			
+			//添加代办事项记录
+ 			List<BackLog> backLogs  = null;
+ 			try{
+ 				backLogs = publiSer.findBackLog(student.getZdTeacher(),null,"teacher");
+ 			}catch (Exception e) {
+				e.printStackTrace();
+			}
+ 			Boolean bool = false;
+ 			if(!backLogs.isEmpty()){
+ 				for(int q=0;q<backLogs.size();q++){
+ 					if(backLogs.get(q).getBackLog().equals("taskBook")){
+ 						int m = publiSer.updateBackLogNumById(backLogs.get(q).getId(),"add");
+ 						bool=true;						
+ 						break;
+ 					}
+ 				}		
+ 			}
+ 			if(!bool){		
+ 				BackLog backLog = new BackLog();
+ 				backLog.setId(UuidHelper.getRandomUUID());
+ 				backLog.setBackLog("taskBook");
+ 				backLog.setTeaId(student.getZdTeacher());
+ 				backLog.setTeaStatus("0");
+ 				backLog.setCreateTime(new Date());
+ 				backLog.setCreateUser(student.getStuName());
+ 				int b = publiSer.insertBackLog(backLog);
+ 				int m = publiSer.updateBackLogNumById(backLog.getId(),"add");			
+ 			}    			
+ 			return "redirect:taskBook.shtm";
+		}
+		//数据表中不存在记录,重新创建对象并insert表中
+        taskBook = new TaskBook();
+        taskBook.setId(UuidHelper.getRandomUUID());
+        taskBook.setStuId(student.getUserId());
+        taskBook.setTeaId(student.getZdTeacher());
+        taskBook.setMainTask(mainTask);
+        taskBook.setZhiBiao(zhiBiao);
+        taskBook.setYaoQiu(yaoQiu);
+        taskBook.setWenXian(wenXian);
+        taskBook.setTeaStatus("0");
+        taskBook.setLeaderStatus("0");
+        taskBook.setTaskBookPath(null);
+        taskBook.setCreateUser(student.getStuName());
+        taskBook.setCreateTime(new Date());
+        try{
+       	 int i =studentFlowManageSer.addTaskBook(taskBook);
+       	 if(i==0){
+           	 model.addAttribute("errorMsg","系统错误");
+    			 return "error/error.jsp";
+            }
+        }catch (Exception e){
+			e.printStackTrace();
+			model.addAttribute("errorMsg","系统错误");
+			return "error/error.jsp";
+		}
+        //添加代办事项记录
+		List<BackLog> backLogs = publiSer.findBackLog(student.getZdTeacher(),null,"teacher");
+		Boolean bool = false;
+		if(!backLogs.isEmpty()){
+			for(int q=0;q<backLogs.size();q++){
+				if(backLogs.get(q).getBackLog().equals("taskBook")){
+					int m = publiSer.updateBackLogNumById(backLogs.get(q).getId(),"add");
+					bool=true;						
+					break;
+				}
+			}		
+		}
+		if(!bool){		
+			BackLog backLog = new BackLog();
+			backLog.setId(UuidHelper.getRandomUUID());
+			backLog.setBackLog("taskBook");
+			backLog.setTeaId(student.getZdTeacher());
+			backLog.setTeaStatus("0");
+			backLog.setCreateTime(new Date());
+			backLog.setCreateUser(student.getStuName());
+			int b = publiSer.insertBackLog(backLog);
+			int m = publiSer.updateBackLogNumById(backLog.getId(),"add");			
+		}            
+       return "redirect:taskBook.shtm";
+	}	
 	
      @RequestMapping("/downloadFile.shtm")    
      public ResponseEntity<byte[]> download(Model model,String filePath,
@@ -418,7 +604,7 @@ public class StudentSubmitController {
          String fileName = null;
          try {
 			fileName = new String(name.getBytes("UTF-8"),"iso-8859-1");
-         } catch (UnsupportedEncodingException e) {
+         } catch (UnsupportedEncodingException e){
 			e.printStackTrace();
          }//为了解决中文名称乱码问题  
          headers.setContentDispositionFormData("attachment", fileName);   

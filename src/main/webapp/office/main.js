@@ -1082,44 +1082,7 @@ function affixCopy_onclick()
 		alert("异常\r\nError:"+e+"\r\nError Code:"+e.number+"\r\nError Des:"+e.description);
 	}
 }
-/****************************************************
-*			
-*	---电子印章
-*
-/****************************************************/
 
-
-function hideSeal(){
-	var obj;
-	try{
-        obj = new Object(document.all.WebOffice1.GetDocumentObject());
-         if(obj !=null){
-         obj.Application.CommandBars("电子印章").Visible = !obj.CommandBars("电子印章").Visible;
-        
-					}
-	
-	
-	    delete obj;
-    }catch(e){
-    	alert("隐藏显示印章工具栏出错");
-    	}
-}
-
-function write2(){
-	var obj1;
-	try{
-        obj1 = new Object(document.all.WebOffice1.GetDocumentObject());
-         if(obj1 !=null){
-         obj1.Application.CommandBars("电子印章").Controls("盖章").Execute();
-        
-					}
-	
-	
-	delete obj1;
-	}catch(e){
-    	alert("盖章出错");
-    	}
-}
 /****************************************************
 *			
 *	---换肤

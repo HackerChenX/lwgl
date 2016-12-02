@@ -29,9 +29,9 @@ a:hover {
 </head>
 
 <body style="font-family: '微软雅黑'; font-size: 17px;">
-	<div class="container col-md-offset-1" style="margin-top: 50px;">
+	<div style="margin-top: 50px;">
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-sm-12 col-md-11 col-md-offset-1">
 				<div class="panel panel-info">
 					<div class="panel-body">
 						<div class="alert alert-info" role="alert">
@@ -61,7 +61,7 @@ a:hover {
 			</div>
 		</div>
 		<div class="row" style="margin-top: 30px;">
-			<div class="col-md-10">
+			<div class="col-sm-12 col-md-11 col-md-offset-1">
 				
 					<div class="panel panel-primary">
 						<div class="panel-heading">
@@ -138,7 +138,7 @@ a:hover {
 			</div>
 		</div>		
 		<div class="row" style="margin-top: 30px;">
-			<div class="col-md-10">
+			<div class="col-sm-12 col-md-11 col-md-offset-1">
 				<div class="panel panel-success">
 					<div class="panel-heading">
 						<span class="fa fa-check-square-o"></span>&nbsp;&nbsp;已选课题

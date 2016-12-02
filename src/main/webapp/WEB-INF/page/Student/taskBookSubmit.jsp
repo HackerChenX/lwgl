@@ -60,7 +60,7 @@
 							</div>
 						</div>
 						<div class="panel-footer">					
-							<button id="submitTaskBook" class="btn btn-primary" type="button">提交</button>
+							<button id="submitTaskBook" class="btn btn-primary" type="button">提交附件</button>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<a class="btn btn-primary" href="<%=basePath%>student/taskBookOnline.shtm">在线填写</a>
 						</div>
@@ -114,7 +114,15 @@
 							<c:if test="${taskBook!=null}">
 								<tr>
 									<td>${taskBook.createUser}</td>
-									<td><a href="<%=basePath%>student/downloadFile.shtm?filePath=${taskBook.taskBookPath}">许昌学院本科毕业论文（设计）任务书</a></td>
+									<td>
+									<c:if test="${taskBook.taskBookPath!=null}">
+										<a href="<%=basePath%>student/downloadFile.shtm?filePath=${taskBook.taskBookPath}">许昌学院本科毕业论文（设计）任务书</a>
+									</c:if>
+									<c:if test="${taskBook.mainTask!=null}">
+										<a href="<%=basePath%>student/StudentFreeMarker.shtm?stage=taskBook">许昌学院本科毕业论文（设计）任务书</a>
+									</c:if>
+									
+									</td>
 									<td><c:if test="${taskBook.teaStatus==0}">审核中</c:if>
 										<c:if test="${taskBook.teaStatus==1}">通过</c:if>
 										<c:if test="${taskBook.teaStatus==2}">退回</c:if>
@@ -174,33 +182,8 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="mymodal-reAsk" tabindex="-1"
-	role="dialog" aria-labelledby="mySmallModalLabel"
-	aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<h4 class="modal-title"></h4>
-			</div>
-			<div class="modal-body">
-				<p></p>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-primary" type="button" id="reAsk-ok">确认</button>
-				&nbsp;&nbsp;									
-				<button type="button" class="btn btn-default"
-					data-dismiss="modal">取消</button>
-			</div>
-		</div>
-	</div>
-</div>
 	</div>
 	<input id="ErrorMsg" value="${errorMsg}" hidden="hidden"/>
-	<!-- js判断是否在线填写过任务书 -->
-	<input id="mainTask" value="${taskBook.mainTask}" hidden="hidden"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var ErrorMsg=$("#ErrorMsg").val();
@@ -218,34 +201,13 @@
 					$(".modal-body").html("请选择一个文件");
 					$("#mymodal-error").modal("toggle");
 					return false;
-			    }
-			    var mainTask = $("#mainTask").val();
-			    if(!(mainTask==''|| mainTask==undefined || mainTask==null))
-			    {
-			    	$(".modal-title").html("提示");
-					$(".modal-body").html("任务书已通过在线填写方式提交,是否继续提交文件覆盖原纪录？");
-					$("#mymodal-reAsk").modal("toggle");
-					return false;
-			    }
+			    }			 
 		        $(".modal-title").html("提交任务书");
 				$(".modal-body").html("审核后无法撤回,确认提交?");
 				$("#mymodal-data").modal("toggle");	    
 				return true;
 			});
 		});	
-		$(function(){
-			$("#reAsk-ok").click(function(){
-			    var file = $("#taskFile").val();			    
-			    if(file==''|| file==undefined || file==null){
-				    $(".modal-title").html("提示");
-					$(".modal-body").html("请选择一个文件");
-					$("#mymodal-error").modal("toggle");
-					return false;
-			    }
-				document.forms["submitTask"].submit();
-				return true;
-			});
-		});
 		$(function(){
 			$("#cancelTaskBook").click(function(){
 				$(".modal-title").html("撤回提示");

@@ -19,7 +19,7 @@
 		<div class="container" style="margin-top: 50px;">
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">
-					<form method="post" action="<%=basePath%>createDoc.chtm">
+					<form method="post" action="<%=basePath%>student/taskBookOnline_submit.shtm">
 						<div class="panel panel-primary">
 							<div class="panel-heading"><span class="fa fa-edit"></span>&nbsp;&nbsp;填写许昌学院本科毕业论文（设计）任务书</div>
 							<div class="panel-body">
@@ -29,59 +29,59 @@
 								<div>
 									<label>毕业论文（设计）要求完成的主要任务及其时间安排:</label>
 									<div>
-										<textarea class="form-control" rows="6" name="taskBook_PartOne" id="taskBook_PartOne"></textarea>
+										<textarea class="form-control" rows="6" name="mainTask" id="mainTask"></textarea>
 									</div>
 								</div>
 								<div style="margin-top: 20px;">
 									<label>毕业论文（设计）的主要技术指标:</label>
 									<div>
-										<textarea class="form-control" rows="6" name="taskBook_PartTwo" id="taskBook_PartTwo"></textarea>
+										<textarea class="form-control" rows="6" name="zhiBiao" id="zhiBiao"></textarea>
 									</div>
 								</div>
 								<div style="margin-top: 20px;">
 									<label>毕业论文（设计）的基本要求及应完成的成果形式:</label>
 									<div>
-										<textarea class="form-control" rows="6" name="taskBook_PartThree" id="taskBook_PartThree"></textarea>
+										<textarea class="form-control" rows="6" name="yaoQiu" id="yaoQiu"></textarea>
 									</div>
 								</div>
 								<div style="margin-top: 20px;">
 									<label>毕业论文（设计）应收集的资料及主要参考文献:</label>
 									<div>
-										<textarea class="form-control" rows="6" name="taskBook_PartFour" id="taskBook_PartFour"></textarea>
+										<textarea class="form-control" rows="6" name="wenXian" id="wenXian"></textarea>
 									</div>
 								</div>
 							</div>
 							<div class="panel-footer text-center">
-								<button class="btn btn-primary" type="submit" id="taskBookOnlineSubmit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<input class="btn btn-primary" type="button" id="taskBookOnlineSubmit" value="提交"></input>&nbsp;&nbsp;&nbsp;&nbsp;
 								<button class="btn btn-default" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;
 								<a class="btn btn-default" onclick="<%=basePath %>student/taskBook.shtm">返回</a>
+							</div>
+						</div>
+						<div class="modal fade" id="mymodal-data" tabindex="-1" role="dialog"
+							aria-labelledby="mySmallModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="dataTitle"></h4>
+									</div>
+									<div class="modal-body" id="dataBody">
+										<p></p>
+									</div>
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-primary">确认</button>
+										<button type="button" class="btn btn-default "
+											data-dismiss="modal">取消</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
-		</div>
-		<div class="modal fade" id="mymodal-data" tabindex="-1" role="dialog"
-			aria-labelledby="mySmallModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">
-							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<h4 class="modal-title" id="dataTitle"></h4>
-					</div>
-					<div class="modal-body" id="dataBody">
-						<p></p>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">确认</button>
-						<button type="button" class="btn btn-default "
-							data-dismiss="modal">取消</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		</div>		
 		<div class="modal fade" id="mymodal-error" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	   <div class="modal-dialog">
@@ -105,11 +105,11 @@
 		<script type="text/javascript">
 		$(function(){
 			$("#taskBookOnlineSubmit").click(function(){
-				var taskBook_PartOne=$("#taskBook_PartOne").val().trim();
-				var taskBook_PartTwo=$("#taskBook_PartTwo").val();
-				var taskBook_PartThree=$("#taskBook_PartThree").val();
-				var taskBook_PartFour=$("#taskBook_PartFour").val().trim();
-				if(taskBook_PartOne==""||taskBook_PartTwo==""||taskBook_PartThree==""||taskBook_PartFour=="")
+				var mainTask=$("#mainTask").val().trim();
+				var zhiBiao=$("#zhiBiao").val();
+				var yaoQiu=$("#yaoQiu").val();
+				var wenXian=$("#wenXian").val().trim();
+				if(mainTask==""||zhiBiao==""||yaoQiu==""||wenXian=="")
 				{
 			       $("#error-title").html("错误提示");
 				   $("#error-body").html("当前表单不能有空项!");
