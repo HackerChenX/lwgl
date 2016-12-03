@@ -9,6 +9,7 @@ import org.ansj.domain.Result;
 import org.apache.ibatis.annotations.Param;
 
 import com.hlzt.commons.dao.BaseDao;
+import com.hlzt.commons.model.BasePage;
 import com.hlzt.power.model.Paper;
 
 
@@ -52,4 +53,24 @@ public interface PaperDao extends BaseDao<Paper>{
 	 * @throws
 	 */
 	public List<Paper> findRepeatByAnsj(@Param("keyWords")List<String> keyWords,@Param("nowTerm")String nowTerm,@Param("threeTerm")String threeTerm);
+
+	/**
+	 * @Title: formTermByPage
+	 * @Description: 分页查询往届信息
+	 * @param map
+	 * @param page
+	 * @return List<Paper> 
+	 * @throws
+	 */
+	public List<Paper> formTermByPage(@Param("map")Map<String, Object> map,@Param("page") BasePage<Paper> page);
+
+	/**
+	 * @Title: formTermOfSize
+	 * @Description: 往届信息数量
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int formTermOfSize(@Param("map")Map<String, Object> map);
+
 }
