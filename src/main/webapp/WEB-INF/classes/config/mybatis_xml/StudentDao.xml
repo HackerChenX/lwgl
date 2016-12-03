@@ -694,7 +694,7 @@ select * from student s
 		<if test="map.stuName!=null">
 			AND s.stu_name like #{map.stuName}
 		</if>
-		<if test="map.stuNum!=null">
+		<if test="map.userNum!=null">
 			AND s.user_num = #{map.userNum}
 		</if>
 	</trim>
@@ -716,7 +716,7 @@ select count(*) from student s
 		<if test="map.stuName!=null">
 			AND s.stu_name like #{map.stuName}
 		</if>
-		<if test="map.stuNum!=null">
+		<if test="map.userNum!=null">
 			AND s.user_num = #{map.userNum}
 		</if>
 	</trim>

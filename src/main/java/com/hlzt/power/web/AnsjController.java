@@ -159,11 +159,16 @@ public class AnsjController
         	}        	
 		} catch (Exception e) {
 			e.printStackTrace();
-		}    
+		}            
+        if(papers.size()==0)
+        {
+        	papers.add(null);
+        }
         //将查重得出的课题传入JSON
         JSONArray jsonArray = JSONArray.fromObject(papers);
         //将前面得到的关键词List<String> spiltJSON传入JSON,放在jsonArray最后一位
         jsonArray.add(jsonArray.size(),keyWordJson);
+        System.out.println(jsonArray.toString());
         return jsonArray.toString();        
 	}
 }

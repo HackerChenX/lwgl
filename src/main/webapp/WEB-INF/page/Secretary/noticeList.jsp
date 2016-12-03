@@ -54,7 +54,7 @@
 				  		</select>&nbsp;&nbsp;
 				  		<input name="pageNo"  type="hidden"  value="${page.pageNo}"   id="pageNow" />
 						<input name="pageSize"type="hidden"  value="${page.pageSize}" id="pageSize">
-						<button class="btn btn-primary btn-sm" id="searchBtn" type="submit">查询</button>
+						<button class="btn btn-primary btn-sm" id="keyWordSelect" type="submit">查询</button>
 				  </div>
 			    </form>
 	 		</div>

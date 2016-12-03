@@ -50,7 +50,7 @@
 						id="select">				
 						<div class="form-group">
 							<label>学号:</label> <input class="form-control input-sm"
-								type="text" name="userNum" id="userNum" value="${userNum }" />
+								type="text" name="userNum" id="userNum" value="${userNum}" />
 						</div>
 						<div class="form-group">
 							<label>姓名：</label> <input class="form-control input-sm"
@@ -59,7 +59,7 @@
 						<input name="roleName" type="hidden" value="student" /> 
 						<input name="pageSize"type="hidden"  value="${page.pageSize}" id="pageSize">					
 						<input name="pageNo"  type="hidden"  value="${page.pageNo}"   id="pageNow" />					
-						<input class="btn btn-primary" type="submit" value="查询">
+						<input class="btn btn-primary" type="submit" id="keyWordSelect" value="查询">
 					</form>
 				</div>
 			</div>

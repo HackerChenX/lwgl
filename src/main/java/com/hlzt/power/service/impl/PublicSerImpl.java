@@ -78,8 +78,9 @@ public class PublicSerImpl implements PublicSer {
 			BasePage<Paper> page) {
 		
 		int total = paperDao.rowsSize(map, null);
- 		page.setTotalRecord(total);
+		page.setTotalRecord(total);
 		List<Paper> list = null;
+		int sum = 0;
 		List<Paper> pageList = new ArrayList<Paper>();		
 		try{
 			list  = paperDao.findPage(map, page,null);
@@ -90,12 +91,13 @@ public class PublicSerImpl implements PublicSer {
 			for(int i=0;i<list.size();i++){
 				if(StringUtils.isNotBlank(list.get(i).getTitle())){
 					pageList.add(list.get(i));
+					sum++;
 				}
 			}
 		}	
 		if(pageList.size()<1){
 			page.setTotalRecord(0);
-		}
+		}		
 		page.setResults(pageList);		
 		return page;
 	}

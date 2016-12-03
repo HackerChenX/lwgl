@@ -80,7 +80,7 @@ th {
 							<label>学生学号：</label> <input type="text" name="stuNum"
 								value="${stuNum }" class="form-control input-sm" />
 						</div>
-						<button class="btn btn-primary" type="submit">查询</button>
+						<button class="btn btn-primary" type="submit" id="keyWordSelect">查询</button>
 
 					</div>
 				</div>
