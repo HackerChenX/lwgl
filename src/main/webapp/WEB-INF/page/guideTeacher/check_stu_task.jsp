@@ -126,7 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					a++;
 				}
 
-			})
+			});
 		</script>
 	</body>
 </html>
