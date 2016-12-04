@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<input name="pageNo"  type="hidden"  value="${page.pageNo}"   id="pageNow" />
 						<input name="pageSize"type="hidden"  value="${page.pageSize}" id="pageSize">
-						<button class="btn btn-primary" type="submit">查询</button>
+						<button class="btn btn-primary" type="submit" id="keyWordSelect">查询</button>
 					</form>
 				</div>
 			</div>	
@@ -56,7 +56,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<table class="table table-bordered table-striped table-hover" style="text-align: center;">
 								<thead>
 									<tr>
-										<th>学号</th>
 										<th>姓名</th>							
 										<th>专业名称</th>
 										<th>班级</th>
@@ -64,14 +63,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<th>课题名称</th>			
 										<th>最终成绩</th>
 										<th>指导老师</th>
-										<th>评阅老师</th>
+										<th>职称</th>
 									</tr>
 								</thead>
 								<tbody>
 								<c:if test="${page.results!=null}">
 									<c:forEach var="paper" items="${page.results}">
 										<tr>
-											<td>${paper.stuNum}</td>
 											<td>${paper.stuName}</td>
 											<td>${paper.stuMajor}</td>
 											<td>${paper.stuClass}</td>
@@ -79,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td><a href="<%=basePath%>${url}/formerTermInfo.shtm?id=${paper.id}">${paper.title}</a></td>
 											<td>${paper.finalGrade}</td>
 											<td>${paper.zdTeacher}</td>
-											<td>${paper.pyTeacher}</td>											
+											<td>${paper.zdZhiCheng}</td>											
 										</tr>	
 								    </c:forEach>	
 							    </c:if>														

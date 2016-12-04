@@ -161,7 +161,7 @@
 	        	AND zd_teanum = #{map.zdTeaNum}
 	         </if>	      
 	     </trim>
-   	order by term,stu_num
+   	order by term desc,stu_major,zd_teacher,stu_name,stu_class
    	  <if test=" page.pageSize>0">
     limit #{page.recordNo},#{page.pageSize}
     </if>
@@ -241,5 +241,80 @@
 	GROUP BY title
 	HAVING sumNum>0
 	ORDER BY sumNum DESC
+  </select>
+  
+  <select id="formTermByPage" resultMap="BaseResultMap">
+  	select *   		 
+  	from paper 
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  			NOT ISNULL(title) AND title !=''
+  			<if test="map.term!=null">
+  				and term = #{map.term}
+  			</if>
+  			<if test="map.major!=null">
+	        	AND stu_major = #{map.major}
+	         </if>
+	         <if test="map.teaName!=null">
+	        	AND zd_teacher like CONCAT('%',#{map.teaName},'%')
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND stu_name like CONCAT('%',#{map.stuName},'%')
+	         </if>
+	         <if test="map.stuNum!=null">
+	        	AND stu_num like CONCAT('%',#{map.stuNum},'%')
+	         </if>
+	         <if test="map.title!=null">
+	        	AND title like CONCAT('%',#{map.title},'%')
+	         </if>
+	         <if test="map.className!=null">
+	        	AND stu_class = #{map.className}
+	         </if>
+        	<if test="map.endNum!=null">
+	        	AND stu_num regexp #{map.endNum}
+	         </if>
+	         <if test="map.zdTeaNum!=null">
+	        	AND zd_teanum = #{map.zdTeaNum}
+	         </if>	      
+	     </trim>
+   	 order by term desc,stu_major,zd_teacher,stu_name,stu_class
+   	  <if test=" page.pageSize>0">
+    limit #{page.recordNo},#{page.pageSize}
+    </if>
+  
+  </select>
+  
+  <select id="formTermOfSize" resultType="int">
+  	select count(*)
+  	from paper
+  	<trim prefix="WHERE" prefixOverrides="AND | OR">
+  		NOT ISNULL(title) AND title !=''
+  			<if test="map.term!=null">
+  				and term = #{map.term}
+  			</if>
+  			<if test="map.major!=null">
+	        	AND stu_major = #{map.major}
+	         </if>
+	         <if test="map.teaName!=null">
+	        	AND zd_teacher like CONCAT('%',#{map.teaName},'%')
+	         </if>
+	         <if test="map.stuName!=null">
+	        	AND stu_name like CONCAT('%',#{map.stuName},'%')
+	         </if>
+	         <if test="map.stuNum!=null">
+	        	AND stu_num like CONCAT('%',#{map.stuNum},'%')
+	         </if>
+	         <if test="map.title!=null">
+	        	AND title like CONCAT('%',#{map.title},'%')
+	         </if>
+	         <if test="map.className!=null">
+	        	AND stu_class = #{map.className}
+	         </if>
+        	<if test="map.endNum!=null">
+	        	AND stu_num regexp #{map.endNum}
+	         </if>
+	         <if test="map.zdTeaNum!=null">
+	        	AND zd_teanum = #{map.zdTeaNum}
+	         </if>	
+	     </trim>    
   </select>
 </mapper>

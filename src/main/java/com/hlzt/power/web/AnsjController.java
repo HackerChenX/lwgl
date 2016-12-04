@@ -149,8 +149,8 @@ public class AnsjController
 		}
 		//查询近三年课题,获取当前学年
 		String nowTerm = SysConfig.getValue("term");
-		//获取三年前学年
-		String threeTerm = String.valueOf((Integer.parseInt(nowTerm)-3));
+		//获取两年前学年
+		String threeTerm = String.valueOf((Integer.parseInt(nowTerm)-2));
         //将关键词传至后台，查询重复后返回的结果
         List<Paper> papers = null;
         try {
@@ -159,11 +159,16 @@ public class AnsjController
         	}        	
 		} catch (Exception e) {
 			e.printStackTrace();
-		}    
+		}            
+        if(papers.size()==0)
+        {
+        	papers.add(null);
+        }
         //将查重得出的课题传入JSON
         JSONArray jsonArray = JSONArray.fromObject(papers);
         //将前面得到的关键词List<String> spiltJSON传入JSON,放在jsonArray最后一位
         jsonArray.add(jsonArray.size(),keyWordJson);
+        System.out.println(jsonArray.toString());
         return jsonArray.toString();        
 	}
 }

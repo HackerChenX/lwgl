@@ -36,7 +36,7 @@
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
       <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-        <property name="globalSessionTimeout" value="900000"/>
+        <property name="globalSessionTimeout" value="3600000"/>
         <property name="deleteInvalidSessions" value="true"/>
         <property name="sessionValidationSchedulerEnabled" value="false"/>
         <!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>-->

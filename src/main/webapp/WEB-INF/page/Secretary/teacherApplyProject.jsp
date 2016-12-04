@@ -82,7 +82,7 @@
 							<option value="2">未通过</option>
 						</select>&nbsp;&nbsp; <input name="pageNo" type="hidden"
 							value="${page.pageNo}" id="pageNow" />
-						<button class="btn btn-primary" type="submit" id="search">
+						<button class="btn btn-primary" type="submit" id="keyWordSelect">
 							<span class="fa fa-search">查询</span>
 						</button>
 					</div>

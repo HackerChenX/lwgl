@@ -71,7 +71,7 @@ public class UserController {
 	 public String findStudent(Model model, String userNum, String userName,
 			 BasePage<Student> page, HttpServletRequest request, HttpServletResponse response){
 		 Subject currentUser = SecurityUtils.getSubject();
-			if (!currentUser.hasRole("manager")) {
+			if (!currentUser.hasRole("manager")){
 				model.addAttribute("errorMsg", "无权限！");
 				return "error/error.jsp";
 			}

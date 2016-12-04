@@ -63,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</select>&nbsp;&nbsp;
 							<input name="pageNo" type="hidden" value="${page.pageNo}" id="pageNow" />
 							<input type="hidden" value="${page.pageSize}" name="pageSize" id="pageSize">
-							<button class="btn btn-primary" type="submit" id="search"><span class="fa fa-search">查询</span></button>
+							<button class="btn btn-primary" type="submit" id="keyWordSelect"><span class="fa fa-search">查询</span></button>
 						</div>
 					</div>
 				</form>

@@ -19,8 +19,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="row" style="margin-top: 50px;">
 		<div class="col-xs-12 col-md-10 col-md-offset-1">
 			<div class="panel panel-primary">
-				<div class="panel-body">
-					<form role="form" class="form-inline" method="post" action="<%=basePath%>${url}/formerTerm.shtm" id="select">
+			<form role="form" class="form-inline" method="post" action="<%=basePath%>${url}/formerTerm.shtm" id="select">
+				<div class="panel-body">					
 						<div class="form-group">
 							<label>往届年份：</label>
 							<input type="text" name="formerTerm" class="form-control input-sm" value="${formerTerm}"/>
@@ -29,14 +29,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<label>课题名称：</label>
 							<input type="text" name="title" class="form-control input-sm" value="${title}" placeholder="请输入课题关键字"/>
 						</div>
-						<input name="pageNo"  type="hidden"  value="${page.pageNo}"   id="pageNow" />
-						<input name="pageSize"type="hidden"  value="${page.pageSize}" id="pageSize">
-						<button class="btn btn-primary" type="submit">查询</button>
+						<input name="pageNo" type="hidden"  value="${page.pageNo}"   id="pageNow"/>
+						<input name="pageSize" type="hidden"  value="${page.pageSize}" id="pageSize"/>
+						<button class="btn btn-primary" type="submit" id="keyWordSelect">查询</button>
 						<div class="form-group">
 							<div class="alert alert-info" style="margin-bottom:0px;padding:10px"><p>课题三年不能重复,请输入关键字查询往届课题</p></div>
-						</div>
-					</form>
-				</div>
+						</div>					
+				   </div>
+				</form>
 			</div>	
 			</div>
 		</div>
@@ -47,6 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel-heading">
 							<span class="fa fa-check-square-o"></span>&nbsp;&nbsp;往届信息查询
 						</div>
+						<div class="panel-body">
 						<div class="table-responsive">
 							<table class="table table-bordered table-striped table-hover" style="text-align: center;">
 								<thead>
@@ -72,6 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							    </c:if>														
 								</tbody>
 							</table>
+						</div>
 						</div>
 						<div class="panel-footer">
 						 	<input type="hidden" value="${formerTerm}" name="formerTerm">

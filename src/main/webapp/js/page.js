@@ -58,5 +58,9 @@ function upPage(){
 	$("#pageNow").val(pageNow)
 	document.forms["select"].submit();
 }
-
+$(function(){
+	$("#keyWordSelect").click(function(){
+		$("#pageNow").val("1");		
+	})	
+});
 

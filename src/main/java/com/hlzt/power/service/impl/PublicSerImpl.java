@@ -77,26 +77,15 @@ public class PublicSerImpl implements PublicSer {
 	public BasePage<Paper> findFormerTerm(Map<String, Object> map,
 			BasePage<Paper> page) {
 		
-		int total = paperDao.rowsSize(map, null);
- 		page.setTotalRecord(total);
-		List<Paper> list = null;
-		List<Paper> pageList = new ArrayList<Paper>();		
+		int total = paperDao.formTermOfSize(map);
+		page.setTotalRecord(total);
+		List<Paper> list = null;	
 		try{
-			list  = paperDao.findPage(map, page,null);
+			list  = paperDao.formTermByPage(map, page);
 		}catch (Exception e) {
 			e.printStackTrace();
-		}
-		if(!(list.isEmpty())){
-			for(int i=0;i<list.size();i++){
-				if(StringUtils.isNotBlank(list.get(i).getTitle())){
-					pageList.add(list.get(i));
-				}
-			}
 		}	
-		if(pageList.size()<1){
-			page.setTotalRecord(0);
-		}
-		page.setResults(pageList);		
+		page.setResults(list);		
 		return page;
 	}
 

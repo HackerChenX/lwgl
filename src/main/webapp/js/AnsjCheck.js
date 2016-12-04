@@ -56,7 +56,12 @@ function checkTitle()
 			        		 } 		
 			        	 }
 			        	 
-			        }			        	
+			        },
+			        error: function (data){
+			        	 $("#ansj-tbody").empty();
+		        		 $("#ansj-tbody").append("<tr><td colspan='2' class='text-center'>"+"往届无相似课题"+"</td></tr>");
+			        }
+			        
 			 });
 		}
 }
