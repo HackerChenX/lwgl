@@ -131,6 +131,38 @@
      <location>/closeSystemInfo.jsp</location>
 
   </error-page> 
+ <!-- 400错误 -->  
+	<error-page>
+<error-code>400</error-code>  
+<location>/error.jsp</location>  
+</error-page>  
+<!-- 404 页面不存在错误 -->  
+<error-page>  
+<error-code>404</error-code>  
+<location>/error/404.html</location>  
+</error-page>  
+<!-- 500 服务器内部错误 -->  
+<error-page>  
+<error-code>500</error-code>  
+<location>/error/500.html</location>  
+</error-page>  
+<!-- java.lang.Exception异常错误,依据这个标记可定义多个类似错误提示 -->  
+<error-page>
+<exception-type>java.lang.Exception</exception-type>  
+<location>/error.jsp</location>  
+</error-page>  
+<!-- java.lang.NullPointerException异常错误,依据这个标记可定义多个类似错误提示 -->  
+<error-page>  
+<exception-type>java.lang.NullPointerException </exception-type>  
+<location>/error.jsp</location>  
+</error-page>  
+  
+<error-page>  
+<exception-type>javax.servlet.ServletException</exception-type>  
+<location>/error.jsp</location>  
+</error-page>
+
+  
 	
 	<welcome-file-list>
 		<welcome-file>index.shtm</welcome-file>

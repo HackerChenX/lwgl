@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-sm-12 col-md-11 col-md-offset-1">
 					<div class="panel panel-primary">
 						<div class="panel-body">
-							<form role="form" class="form-inline" method="post" action="<%=basePath %>majorLeader/findOpeningReportInfo.shtm" id="select">
+							<form role="form" class="form-inline" method="post" action="<%=basePath %>majorLeader/OpeningReportInfo.shtm" id="select">
 								<div class="form-group">
 									<label>班级：</label>
 									<input type="hidden" value="${className }" id="selHid">

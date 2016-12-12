@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 				});
 	
-			}	
+			}
 		</script>
 		<input type="hidden" value="${errorMsg }" id="error">
 		<input type="hidden" value="${successMsg }" id="success">
@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-12 col-md-10 col-md-offset-1">
 					<div class="panel panel-primary">
 						<div class="panel-body">
-							<form role="form" class="form-inline" action="<%=basePath %>majorLeader/selectTaskBookInfo.shtm" method="post" id="select">
+							<form role="form" class="form-inline" action="<%=basePath %>majorLeader/TaskBookInfo.shtm" method="post" id="select">
 								<div class="form-group">
 									<label>班级：</label>
 									<input type="hidden" value="${className }" id="selHid">
