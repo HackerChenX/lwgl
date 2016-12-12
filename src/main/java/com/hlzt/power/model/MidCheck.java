@@ -15,6 +15,7 @@ public class MidCheck extends BaseBean{
 	private String teaStatus;//教师审核状态（0待审核  1通过  2驳回）
 	private String leaderStatus;//指导老师审核状态（0待审核  1通过  2驳回）
 	private String midCheckPath;//中期检查表路径
+	private String midCheckSrc;//中期检查表网络路径
 	private Date limitTime;//限时
 	
 	private Student student;
@@ -60,6 +61,12 @@ public class MidCheck extends BaseBean{
 	}
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	public String getMidCheckSrc() {
+		return midCheckSrc;
+	}
+	public void setMidCheckSrc(String midCheckSrc) {
+		this.midCheckSrc = midCheckSrc;
 	}
 	
 }

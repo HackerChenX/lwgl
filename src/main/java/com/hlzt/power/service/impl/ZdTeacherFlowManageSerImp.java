@@ -357,9 +357,12 @@ public class ZdTeacherFlowManageSerImp implements ZdTeacherFlowManageSer{
 	}
 
 	@Override
-	public List<Student> findStuTitle(Map<String, Object> map) {
-		List<Student> students=studentDao.findStuTitle(map);	
-		return students;
+	public BasePage<Student> findStuTitle(Map<String, Object> map,BasePage<Student> page) {
+		
+		int totalRecord = studentDao.findStuTitleNum(map);		
+		page.setTotalRecord(totalRecord);
+		page.setResults(studentDao.findStuTitle(map,page));		
+		return page;
 	}
 
 	@Override

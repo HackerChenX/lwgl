@@ -18,7 +18,7 @@
   
   <!-- 提交中期检查表 -->
   <insert id="insert">
-  	insert into midcheck (id, stu_id, tea_id, tea_status, leader_status, mid_check, create_user, create_time, limit_time)
+  	insert into midcheck (id, stu_id, tea_id,tea_status, leader_status, mid_check, create_user, create_time, limit_time)
   	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
   			#{leaderStatus, jdbcType=VARCHAR}, #{midCheckPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
   			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
@@ -48,7 +48,7 @@
   		</if>
   		<if test="map.createTime!=null">
   			create_time=#{map.createTime}
-  		</if>
+  		</if>  		
   	</set> 
   	WHERE stu_id=#{stuId}
   </update>

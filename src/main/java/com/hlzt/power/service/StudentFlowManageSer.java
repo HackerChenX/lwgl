@@ -293,7 +293,7 @@ public interface StudentFlowManageSer {
 	
 	/**
 	 * @Title: updateFirstPaperById
-	 * @Description: 学生重新提交中期检查,在原有记录上更新
+	 * @Description: 学生重新提交初稿,在原有记录上更新
 	 * @param stuId
 	 * @param map
 	 * @return int 
@@ -303,7 +303,7 @@ public interface StudentFlowManageSer {
 		
 	/**
 	 * @Title: findFirstPaperByStuId
-	 * @Description: 根据学号查询中期检查信息
+	 * @Description: 根据学生ID查询初稿信息
 	 * @param stuId
 	 * @return TaskBook 
 	 * @throws
@@ -312,7 +312,7 @@ public interface StudentFlowManageSer {
 	
 	/**
 	 * @Title: deleteFinalPaperById
-	 * @Description: 根据FinalPaper表id删除记录
+	 * @Description: 根据FirstPaper表id删除记录
 	 * @param id
 	 * @return int 
 	 * @throws
@@ -328,7 +328,7 @@ public interface StudentFlowManageSer {
 	
 	/**
 	 * @Title: updateFinalPaperById
-	 * @Description: 学生重新提交中期检查,在原有记录上更新
+	 * @Description: 学生重新提交论文定稿,在原有记录上更新
 	 * @param stuId
 	 * @param map
 	 * @return int 
@@ -338,7 +338,7 @@ public interface StudentFlowManageSer {
 		
 	/**
 	 * @Title: findFirstPaperByStuId
-	 * @Description: 根据学号查询中期检查信息
+	 * @Description: 根据学号查询论文定稿信息
 	 * @param stuId
 	 * @return TaskBook 
 	 * @throws

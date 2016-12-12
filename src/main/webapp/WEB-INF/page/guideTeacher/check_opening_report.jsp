@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!--<link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.min.css">-->
 		<!--CDN_CSS ↑↑↑↑-->
-		<title>审核学生课题</title>
+		<title>审阅开题报告</title>
 
 	</head>
 
@@ -63,9 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>性别</th>
 											<th>学号</th>
 											<th>课题名</th>
-											<th>班级</th>
-											<th>电话</th>
-											<th>邮箱</th>
+											<th>专业</th>
 											<th>审核状态</th>
 											<th>开题报告</th>
 
@@ -79,9 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>${item.student.sex}</td>
 											<td>${item.student.userNum }</td>
 									 		<td>${item.student.title }</td>
-											<td>${item.student.stuClass }</td>											
-											<td>${item.student.tel}</td>
-											<td>${item.student.mail }</td>
+											<td>${item.student.major }</td>											
 											<td>
 												<c:if test="${item.teaStatus==0}">
 													未审核
@@ -94,8 +90,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												</c:if>
 											</td>											
 											<td>
-												<a class="btn btn-primary" href="<%=basePath %>downloadFile.chtm?filePath=${item.openingReportPath}" target="_blank">下载</a>&nbsp;&nbsp;
-												<a class="btn btn-primary" href="<%=basePath %>stagePaper/yulan.shtm?path=${item.openingReportPath}" target="_blank">预览</a>
+												<a class="btn btn-primary" href="<%=basePath %>downloadFile.chtm?filePath=${item.openingReportPath}">下载</a>&nbsp;&nbsp;
+												<a class="btn btn-primary" href="<%=basePath %>openingReportYuLan.shtm?filePathSrc=${item.openingReportSrc}&filePath=${item.openingReportPath}" target="_blank">预览</a>
 											</td>								
 										</c:forEach>						
 									</tbody>

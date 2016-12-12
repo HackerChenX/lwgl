@@ -36,6 +36,7 @@ public class Student extends BaseBean{
 	private TaskBook taskBook;
 	private OpeningReport openingReport;
 	private MidCheck midCheck;
+	private FinalPaper finalPaper;
 	
 	
 	private String finalPaperPath;
@@ -205,6 +206,12 @@ public class Student extends BaseBean{
 	}
 	public void setPyTeaZhiCheng(String pyTeaZhiCheng) {
 		this.pyTeaZhiCheng = pyTeaZhiCheng;
+	}
+	public FinalPaper getFinalPaper() {
+		return finalPaper;
+	}
+	public void setFinalPaper(FinalPaper finalPaper) {
+		this.finalPaper = finalPaper;
 	}
 	
 	

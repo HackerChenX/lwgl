@@ -62,9 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>性别</th>
 											<th>学号</th>
 											<th>课题名</th>
-											<th>班级</th>
-											<th>电话</th>
-											<th>邮箱</th>
+											<th>专业</th>
 											<th>审核状态</th>
 											<th>论文初稿</th>
 										</tr>
@@ -77,9 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>${item.student.sex}</td>
 											<td>${item.student.userNum }</td>
 									 		<td>${item.student.title }</td>
-											<td>${item.student.stuClass }</td>											
-											<td>${item.student.tel}</td>
-											<td>${item.student.mail }</td>
+											<td>${item.student.major }</td>											
 											<td>
 												<c:if test="${item.teaStatus==0}">
 													未审核
@@ -92,8 +88,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												</c:if>
 											</td>											
 											<td>
-												<a class="btn btn-primary" href="<%=basePath %>downloadFile.chtm?filePath=${item.firstPaperPath}" target="_blank">下载</a>&nbsp;&nbsp;
-												<a class="btn btn-primary" href="<%=basePath %>stagePaper/yulan.shtm?path=${item.firstPaperPath}"  target="_blank">预览</a>
+												<a class="btn btn-primary" href="<%=basePath %>downloadFile.chtm?filePath=${item.firstPaperPath}">下载</a>&nbsp;&nbsp;
+												<a class="btn btn-primary" href="<%=basePath %>firstPaperYuLan.shtm?filePathSrc=${item.firstPaperSrc}&filePath=${item.firstPaperPath}&stuId=${item.student.userId}"  target="_blank">预览</a>
 											</td>								
 										</c:forEach>								
 									</tbody>

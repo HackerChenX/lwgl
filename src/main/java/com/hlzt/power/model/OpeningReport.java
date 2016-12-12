@@ -15,9 +15,10 @@ public class OpeningReport extends BaseBean{
 	private String teaStatus;//指导老师审批状态（0待审核  1通过  2驳回）
 	private String leaderStatus;//专业负责人审批状态（0待审核  1通过  2驳回）
 	private String openingReportPath;//开题报告路径
+	private String openingReportSrc;//开题报
 	private Date limitTime;//限时
-	
 	private Student student;
+	
 	
 	public String getStuId() {
 		return stuId;
@@ -60,6 +61,12 @@ public class OpeningReport extends BaseBean{
 	}
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	public String getOpeningReportSrc() {
+		return openingReportSrc;
+	}
+	public void setOpeningReportSrc(String openingReportSrc) {
+		this.openingReportSrc = openingReportSrc;
 	}
 	
 	

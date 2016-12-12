@@ -54,7 +54,7 @@
 							<div class="panel-footer text-center">
 								<input class="btn btn-primary" type="button" id="taskBookOnlineSubmit" value="提交"></input>&nbsp;&nbsp;&nbsp;&nbsp;
 								<button class="btn btn-default" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;
-								<a class="btn btn-default" onclick="<%=basePath %>student/taskBook.shtm">返回</a>
+								<a class="btn btn-default" href="<%=basePath %>student/taskBook.shtm">返回</a>
 							</div>
 						</div>
 						<div class="modal fade" id="mymodal-data" tabindex="-1" role="dialog"

@@ -30,15 +30,21 @@ import com.hlzt.commons.helper.SysConfig;
 import com.hlzt.commons.model.GlobalVar;
 import com.hlzt.power.model.BackLog;
 import com.hlzt.power.model.ClassName;
+import com.hlzt.power.model.FinalPaper;
+import com.hlzt.power.model.FirstPaper;
 import com.hlzt.power.model.Major;
 import com.hlzt.power.model.PublicNotice;
+import com.hlzt.power.model.Student;
 import com.hlzt.power.service.PublicSer;
+import com.hlzt.power.service.StudentFlowManageSer;
+import com.hlzt.power.service.ZdTeacherFlowManageSer;
 
 @Controller
 public class ConfigController {
 	@Autowired
 	private PublicSer publiSer;
-	
+	@Autowired
+	private StudentFlowManageSer studentFlowManageSer;
 	/**
 	 * 重新设置每页多少条
 	 * @param model
@@ -175,4 +181,155 @@ public class ConfigController {
     	return "Public_Page/notice.jsp";
     }
     
+    /**
+     * @Title: openingReportYuLan
+     * @Description: 开题报告在线预览
+     * @param filePathSrc
+     * @param filePath
+     * @param model
+     * @param map
+     * @param request
+     * @param response
+     * @return String 
+     * @throws
+     */
+    @RequestMapping("openingReportYuLan.shtm")
+  	public String openingReportYuLan(String filePathSrc,String filePath,Model model,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response){
+  		//网络地址
+  		model.addAttribute("filePathSrc", filePathSrc);
+  		//服务器绝对地址
+  		model.addAttribute("filePath", filePath); 		
+  		return "guideTeacher/openingReportYuLan.jsp";
+  	}
+    
+    /**
+     * @Title: midCheckYuLan
+     * @Description: 中期检查在线预览
+     * @param filePathSrc
+     * @param filePath
+     * @param model
+     * @param map
+     * @param request
+     * @param response
+     * @return String 
+     * @throws
+     */
+    @RequestMapping("midCheckYuLan.shtm")
+  	public String midCheckYuLan(String filePathSrc,String filePath,Model model,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response){
+  		//网络地址
+  		model.addAttribute("filePathSrc", filePathSrc);
+  		//服务器绝对地址
+  		model.addAttribute("filePath", filePath);
+  		return "guideTeacher/midCheckYuLan.jsp";
+  	}
+    
+    /**
+     * @Title: firstPaperYuLan
+     * @Description: 论文初稿预览
+     * @param filePathSrc
+     * @param filePath
+     * @param stuId
+     * @param model
+     * @param map
+     * @param request
+     * @param response
+     * @return String 
+     * @throws
+     */
+    @RequestMapping("firstPaperYuLan.shtm")
+  	public String firstPaperYuLan(String filePathSrc,String filePath,String stuId,Model model,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response){
+  		//网络地址
+  		model.addAttribute("filePathSrc", filePathSrc);
+  		//服务器绝对地址
+  		model.addAttribute("filePath", filePath);
+  		//学生UserId  		
+  		FirstPaper firstPaper = null;
+  		try{
+  			firstPaper = studentFlowManageSer.findFirstPaperByStuId(stuId);
+  		}catch(Exception e){
+  			e.printStackTrace();
+  		}
+  		//获取项目网络地址
+		String Path = request.getContextPath();
+		String BasePath = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort()
+				+ Path ;
+		//截取文件地址，拼接文件的网络地址
+		String zdFile = firstPaper.getZdTablePath();
+		String[] FilePaths = zdFile.split("lwgl");
+		String TablePath = BasePath+FilePaths[1];
+		firstPaper.setZdTabelSrc(TablePath); 		
+  		model.addAttribute("firstPaper", firstPaper);
+  		
+  		return "guideTeacher/firstPaperYuLan.jsp";
+  	}
+    
+    /**
+     * @Title: finalPaperYuLan
+     * @Description: 论文定稿预览
+     * @param filePathSrc
+     * @param filePath
+     * @param stuId
+     * @param model
+     * @param map
+     * @param request
+     * @param response
+     * @return String 
+     * @throws
+     */
+    @RequestMapping("finalPaperYuLan.shtm")
+  	public String finalPaperYuLan(String filePathSrc,String filePath,String stuId,Model model,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response){
+  		//网络地址
+  		model.addAttribute("filePathSrc", filePathSrc);
+  		//服务器绝对地址
+  		model.addAttribute("filePath", filePath);
+  		//学生UserId
+  		FinalPaper finalPaper = null;
+  		try{
+  			finalPaper = studentFlowManageSer.findFinalPaperByStuId(stuId);
+  		}catch(Exception e){
+  			e.printStackTrace();
+  		}
+  		//获取项目网络地址
+  		String syFile = finalPaper.getSyTablePath();
+		String Path = request.getContextPath();
+		String BasePath = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort()
+				+ Path ;
+		//截取文件地址，拼接文件的网络地址
+		String[] FilePaths = syFile.split("lwgl");
+		String TablePath = BasePath+FilePaths[1];
+		finalPaper.setSyTableSrc(TablePath);
+  		model.addAttribute("finalPaper", finalPaper);
+  		
+  		return "guideTeacher/finalPaperYuLan.jsp";
+  	}
+    
+    @RequestMapping("pyYuLan.shtm")
+  	public String pyYuLan(String filePathSrc,String filePath,String stuId,Model model,Map<String, Object> map,HttpServletRequest request, HttpServletResponse response){
+  		//网络地址
+  		model.addAttribute("filePathSrc", filePathSrc);
+  		//服务器绝对地址
+  		model.addAttribute("filePath", filePath);
+  		//学生UserId
+  		FinalPaper finalPaper = null;
+  		try{
+  			finalPaper = studentFlowManageSer.findFinalPaperByStuId(stuId);
+  		}catch(Exception e){
+  			e.printStackTrace();
+  		}
+  		//获取项目网络地址
+  		String pyFile = finalPaper.getPyTablePath();
+		String Path = request.getContextPath();
+		String BasePath = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort()
+				+ Path ;
+		//截取文件地址，拼接文件的网络地址
+		String[] FilePaths = pyFile.split("lwgl");
+		String TablePath = BasePath+FilePaths[1];
+		finalPaper.setPyTableSrc(TablePath);
+  		model.addAttribute("finalPaper", finalPaper);
+  		
+  		return "guideTeacher/pyYuLan.jsp";
+  	}
 }

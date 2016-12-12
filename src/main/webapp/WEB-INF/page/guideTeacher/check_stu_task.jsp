@@ -38,7 +38,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</select>
 								<button class="btn btn-primary" type="submit" id="search"><span class="fa fa-search">搜索</span></button>
 							</div>
-
 						</div>
 					</form>
 				</div>
@@ -61,12 +60,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>性别</th>
 											<th>学号</th>
 											<th>课题名</th>
-											<th>班级</th>
-											<th>电话</th>
-											<th>邮箱</th>
+											<th>专业</th>
 											<th>审核状态</th>
 											<th>任务书</th>
-
 										</tr>
 									</thead>
 									<tbody>
@@ -77,9 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>${item.student.sex}</td>
 											<td>${item.student.userNum }</td>
 									 		<td>${item.student.title }</td>
-											<td>${item.student.stuClass }</td>											
-											<td>${item.student.tel}</td>
-											<td>${item.student.mail}</td>
+											<td>${item.student.major }</td>											
 											<td>
 												<c:if test="${item.teaStatus==0}">
 													未审核
@@ -92,8 +86,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												</c:if>
 											</td>											
 											<td>
-												<a class="btn btn-primary" href="<%=basePath %>downloadFile.chtm?filePath=${item.taskBookPath}" target="_blank">下载</a>&nbsp;&nbsp;
-												<a class="btn btn-primary" href="<%=basePath %>stagePaper/yulan.shtm?path=${item.taskBookPath}"  target="_blank">预览</a>
+												<c:if test="${item.taskBookPath!=null}">
+													<a class="btn btn-primary" href="<%=basePath %>downloadFile.chtm?filePath=${item.taskBookPath}">下载</a>&nbsp;&nbsp;
+													<a class="btn btn-primary" href="https://view.officeapps.live.com/op/view.aspx?src=${item.taskBookSrc}"  target="_blank">预览</a>
+												</c:if>													
+											</td>
 										</c:forEach>
 									</tbody>
 								</table>

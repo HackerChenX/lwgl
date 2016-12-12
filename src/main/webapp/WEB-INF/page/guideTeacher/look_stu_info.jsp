@@ -26,10 +26,11 @@
 
 <body>
 	<div class="row" style="margin-top:50px ;">
-		<div class="col-xs-12 col-md-11 col-md-offset-1">
+		<div class="col-sm-12 col-md-11 col-md-offset-1">
 			<form action="<%=basePath%>guideTeacher/findStudentInfo.shtm"
 				method="post" id="select">
-				<input type="hidden" value="${page.pageNo}" name="pageNo">
+				<input name="pageNo"  type="hidden"  value="${page.pageNo}"   id="pageNow" />
+				<input name="pageSize" type="hidden"  value="${page.pageSize}" id="pageSize">
 			</form>
 			<form action="<%=basePath%>guideTeacher/exportStuInfo.shtm"
 				method="post">
@@ -46,7 +47,7 @@
 									<th>性别</th>
 									<th>学号</th>
 									<th>课题名</th>
-									<th>班级</th>
+									<th>专业</th>
 									<th>电话</th>
 									<th>邮箱</th>
 								</tr>
@@ -58,7 +59,7 @@
 										<td>${Student.sex}</td>
 										<td>${Student.userNum }</td>
 										<td>${Student.title }</td>
-										<td>${Student.stuClass }</td>
+										<td>${Student.major}</td>
 										<td>${Student.tel}</td>
 										<td>${Student.mail }</td>
 								</c:forEach>

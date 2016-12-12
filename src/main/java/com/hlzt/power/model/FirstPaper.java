@@ -15,6 +15,9 @@ public class FirstPaper extends BaseBean{
 	private String teaStatus;//教师审核状态（0待审核  1通过  2驳回）
 	private String leaderStatus;//专业负责人审核状态（0待审核  1通过  2驳回）
 	private String firstPaperPath;//初稿路径
+	private String firstPaperSrc;//初稿网络地址
+	private String zdTablePath;//指导记录表路径
+	private String zdTabelSrc;//指导记录表网络地址
 	private Date limitTime;//限时
 	
 	private Student student;
@@ -60,6 +63,24 @@ public class FirstPaper extends BaseBean{
 	}
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	public String getFirstPaperSrc() {
+		return firstPaperSrc;
+	}
+	public void setFirstPaperSrc(String firstPaperSrc) {
+		this.firstPaperSrc = firstPaperSrc;
+	}
+	public String getZdTablePath() {
+		return zdTablePath;
+	}
+	public void setZdTablePath(String zdTablePath) {
+		this.zdTablePath = zdTablePath;
+	}
+	public String getZdTabelSrc() {
+		return zdTabelSrc;
+	}
+	public void setZdTabelSrc(String zdTabelSrc) {
+		this.zdTabelSrc = zdTabelSrc;
 	}
 	
 }

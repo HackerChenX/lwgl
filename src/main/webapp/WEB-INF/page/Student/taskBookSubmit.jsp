@@ -51,7 +51,7 @@
 							<div class="alert alert-info" role="alert"
 								style="margin-top: 15px;">
 								<strong>注意事项：</strong>
-								<p>（1）选择附件点击提交后上传</p>
+								<p>（1）可选择在线填写或附件上传两种提交方式</p>
 								<p>（2）仅限撤回审核中的文件</p>
 								<p>（3）附件上传后由系统统一命名为:任务书-姓名-学号格式</p>
 							</div>
@@ -117,9 +117,6 @@
 									<td>
 									<c:if test="${taskBook.taskBookPath!=null}">
 										<a href="<%=basePath%>student/downloadFile.shtm?filePath=${taskBook.taskBookPath}">许昌学院本科毕业论文（设计）任务书</a>
-									</c:if>
-									<c:if test="${taskBook.mainTask!=null}">
-										<a href="<%=basePath%>student/StudentFreeMarker.shtm?stage=taskBook">许昌学院本科毕业论文（设计）任务书</a>
 									</c:if>
 									
 									</td>

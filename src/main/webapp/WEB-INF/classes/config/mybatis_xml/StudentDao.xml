@@ -382,11 +382,12 @@
 	</select>
 	
 	<select id="zdTeaFindPyStu" resultMap="BaseResultMap">
-		select s.*,f.final_paper as finalPaperPath
-			from student s, finalpaper f
+		select s.*,f.final_paper as finalPaperPath,t.tea_name as zdTeaName
+			from student s, finalpaper f,teacher t
 			where 
 				s.py_teacher = #{pyTeaId}
 				and s.user_id = f.stu_id
+				and s.zd_teacher = t.user_id
 			order by s.zd_teacher,s.user_num
 			  <if test=" page.pageSize>0">
 			limit
@@ -396,10 +397,11 @@
 	
 	<select id="zdTeaFindPyStuNum" resultType="int">
 		select count(*)
-			from student s, finalpaper f
+			from student s, finalpaper f,teacher t
 			where 
 				s.py_teacher = #{pyTeaId}
 				and s.user_id = f.stu_id
+				and s.zd_teacher = t.user_id
 			order by s.zd_teacher,s.user_num
 	</select>
 
@@ -622,7 +624,31 @@
 				AND apt.tea_status=#{map.teaStatus}
 			</if>
 		</trim>
+		order by s.major,s.stu_name
+		<if test="page.pageSize>0">
+		limit #{page.recordNo},#{page.pageSize}
+		</if>
 	</select>
+	
+	<select id="findStuTitleNum" resultType="int">
+		select count(*)
+		from
+		student s,apply_title apt
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			apt.tea_id=#{map.teaId}
+			AND apt.stu_id=s.user_id
+			<if test="map.stuNum!=null">
+				AND s.user_num like #{map.stuNum}
+			</if>
+			<if test="map.stuName!=null">
+				AND s.stu_name like #{map.stuName}
+			</if>
+			<if test="map.teaStatus!=null">
+				AND apt.tea_status=#{map.teaStatus}
+			</if>
+		</trim>
+	</select>
+	
 	<!-- 通过答辩组id查学生 -->
 	<select id="findStuByDbkey" resultMap="BaseResultMap">
 		select s.*

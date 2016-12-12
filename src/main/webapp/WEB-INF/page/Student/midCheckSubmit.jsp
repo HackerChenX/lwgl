@@ -51,7 +51,7 @@
 							<div class="alert alert-info" role="alert"
 								style="margin-top: 15px;">
 								<strong>注意事项：</strong>
-								<p>（1）选择附件点击提交后上传</p>
+								<p>（1）可选择在线填写或附件上传两种提交方式</p>
 								<p>（2）仅限撤回审核中的文件</p>
 								<p>（3）附件上传后由系统统一命名为:中期检查-姓名-学号格式</p>
 							</div>
@@ -62,7 +62,7 @@
 						<div class="panel-footer">					
 							<button id="submitMidCheck" class="btn btn-primary" type="button">提交</button>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<button type="reset" class="btn btn-default">撤销</button>
+							<a class="btn btn-primary" href="<%=basePath%>student/midCheckOnline.shtm">在线填写</a>		
 						</div>
 						<div class="modal fade" id="mymodal-data" tabindex="-1"
 							role="dialog" aria-labelledby="mySmallModalLabel"
@@ -113,7 +113,11 @@
 							<c:if test="${midCheck!=null}">
 								<tr>
 									<td>${midCheck.createUser}</td>
-									<td><a href="<%=basePath%>student/downloadFile.shtm?filePath=${midCheck.midCheckPath}">许昌学院本科毕业论文（设计）中期检查</a></td>
+									<td>
+									<c:if test="${midCheck.midCheckPath!=null}">
+										<a href="<%=basePath%>student/downloadFile.shtm?filePath=${midCheck.midCheckPath}">许昌学院本科毕业论文（设计）中期检查</a>
+									</c:if>
+									</td>
 									<td><c:if test="${midCheck.teaStatus==0}">审核中</c:if>
 										<c:if test="${midCheck.teaStatus==1}">通过</c:if>
 										<c:if test="${midCheck.teaStatus==2}">退回</c:if>

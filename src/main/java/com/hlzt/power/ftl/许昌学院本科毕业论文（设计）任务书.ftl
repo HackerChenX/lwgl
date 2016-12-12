@@ -30,47 +30,24 @@
 			<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se wp14">
 				<w:background w:color="FFFFFF"/>
 				<w:body>
-					<w:p w:rsidR="00C934C0" w:rsidRPr="008D368F" w:rsidRDefault="00C934C0" w:rsidP="00FB1A08">
-						<w:pPr>
-							<w:snapToGrid w:val="0"/>
-							<w:spacing w:line="360" w:lineRule="auto"/>
-							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-								<w:b/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
-							</w:rPr>
-						</w:pPr>
-					</w:p>
-					<w:p w:rsidR="00F93C42" w:rsidRPr="008D368F" w:rsidRDefault="00F93C42" w:rsidP="00973D67">
+					<w:p w:rsidR="00462695" w:rsidRPr="008D368F" w:rsidRDefault="00462695" w:rsidP="00462695">
 						<w:pPr>
 							<w:spacing w:line="360" w:lineRule="auto"/>
 							<w:jc w:val="center"/>
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
 								<w:sz w:val="30"/>
 								<w:szCs w:val="30"/>
 							</w:rPr>
 						</w:pPr>
 						<w:r w:rsidRPr="008D368F">
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
+								<w:rFonts w:hint="eastAsia"/>
 								<w:b/>
 								<w:bCs/>
 								<w:sz w:val="30"/>
 								<w:szCs w:val="30"/>
 							</w:rPr>
-							<w:t>许昌学院本科毕业论文（设计）</w:t>
-						</w:r>
-						<w:r w:rsidR="00D5207D" w:rsidRPr="008D368F">
-							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-								<w:b/>
-								<w:bCs/>
-								<w:sz w:val="30"/>
-								<w:szCs w:val="30"/>
-							</w:rPr>
-							<w:t>任务书</w:t>
+							<w:t>许昌学院本科毕业论文（设计）任务书</w:t>
 						</w:r>
 					</w:p>
 					<w:tbl>
@@ -110,17 +87,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>学生姓名</w:t>
 									</w:r>
@@ -143,18 +113,8 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${stuName}</w:t>
 									</w:r>
 								</w:p>
@@ -176,17 +136,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>学号</w:t>
 									</w:r>
@@ -209,18 +162,8 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${stuNum}</w:t>
 									</w:r>
 								</w:p>
@@ -247,17 +190,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>所在院</w:t>
 									</w:r>
@@ -280,18 +216,8 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${stuDepartment}</w:t>
 									</w:r>
 								</w:p>
@@ -313,17 +239,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>专业</w:t>
 									</w:r>
@@ -346,18 +265,8 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${stuMajor}</w:t>
 									</w:r>
 								</w:p>
@@ -384,17 +293,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>指导教师</w:t>
 									</w:r>
@@ -412,29 +314,14 @@
 									<w:noWrap/>
 									<w:vAlign w:val="center"/>
 								</w:tcPr>
-								<w:p w:rsidR="00604514" w:rsidRPr="008D368F" w:rsidRDefault="00604514" w:rsidP="00AC4F60">
+								<w:p w:rsidR="00604514" w:rsidRPr="008D368F" w:rsidRDefault="00723258" w:rsidP="00723258">
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
-									<w:r w:rsidRPr="008D368F">
+									<w:r>
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
-										<w:t xml:space="preserve">　</w:t>
-									</w:r>
-									<w:r w:rsidR="008117E6">
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>${teaName}</w:t>
 									</w:r>
@@ -457,17 +344,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>职称</w:t>
 									</w:r>
@@ -490,18 +370,8 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${zhicheng}</w:t>
 									</w:r>
 								</w:p>
@@ -521,17 +391,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>任务下达时间</w:t>
 									</w:r>
@@ -552,11 +415,6 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 								</w:p>
 							</w:tc>
@@ -582,17 +440,10 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>论文题目</w:t>
 									</w:r>
@@ -615,18 +466,8 @@
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
 										<w:jc w:val="center"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${title}</w:t>
 									</w:r>
 								</w:p>
@@ -655,15 +496,11 @@
 										<w:rPr>
 											<w:rFonts w:hAnsi="宋体" w:cs="宋体-18030"/>
 											<w:bCs/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
 										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
 										<w:rPr>
 											<w:rFonts w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
 										</w:rPr>
 										<w:t>毕业论文（设计）</w:t>
 									</w:r>
@@ -671,28 +508,22 @@
 										<w:rPr>
 											<w:rFonts w:hAnsi="宋体" w:cs="宋体-18030" w:hint="eastAsia"/>
 											<w:bCs/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
 										</w:rPr>
 										<w:t>要求完成的主要任务及其时间安排</w:t>
 									</w:r>
 								</w:p>
-								<w:p w:rsidR="004F0DE8" w:rsidRPr="008D368F" w:rsidRDefault="00AE22E5" w:rsidP="00E96CBF">
+								<w:p w:rsidR="004F0DE8" w:rsidRPr="00F61F56" w:rsidRDefault="0088509D" w:rsidP="00E10EE1">
 									<w:pPr>
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 									</w:pPr>
-									<w:r w:rsidR="0088509D">
+									<w:r>
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 										<w:t>${mainTask}</w:t>
-									</w:r>				
+									</w:r>
 								</w:p>
 							</w:tc>
 						</w:tr>
@@ -715,35 +546,18 @@
 								<w:p w:rsidR="00F93C42" w:rsidRPr="008D368F" w:rsidRDefault="00604514" w:rsidP="00AC4F60">
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>毕业论文（设计）的主要技术指标</w:t>
 									</w:r>
 								</w:p>
-								<w:p w:rsidR="00604514" w:rsidRPr="008D368F" w:rsidRDefault="00785690" w:rsidP="00785690">
+								<w:p w:rsidR="00E10EE1" w:rsidRPr="008D368F" w:rsidRDefault="00785690" w:rsidP="00785690">
 									<w:pPr>
 										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
+											<w:rFonts w:hint="eastAsia"/>
 										</w:rPr>
 									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${zhiBiao}</w:t>
 									</w:r>
 								</w:p>
@@ -768,65 +582,19 @@
 								<w:p w:rsidR="00604514" w:rsidRDefault="00604514" w:rsidP="004F0DE8">
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>毕业论文（设计）的基本要求及应完成的成果形式</w:t>
 									</w:r>
 								</w:p>
-								<w:p w:rsidR="00D75391" w:rsidRDefault="00667D69" w:rsidP="00D75391">
-									<w:pPr>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
-									</w:pPr>
-									<w:r w:rsidR="007C6B79">
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
+								<w:p w:rsidR="00D75391" w:rsidRDefault="007C6B79" w:rsidP="00D75391">
+									<w:r>
 										<w:t>${yaoQiu}</w:t>
 									</w:r>
 								</w:p>
-								<w:p w:rsidR="00D75391" w:rsidRDefault="00D75391" w:rsidP="00D75391">
-									<w:pPr>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
-									</w:pPr>
-								</w:p>
-								<w:p w:rsidR="00D75391" w:rsidRDefault="00D75391" w:rsidP="00D75391">
-									<w:pPr>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
-									</w:pPr>
-								</w:p>
-								<w:p w:rsidR="00D75391" w:rsidRPr="008D368F" w:rsidRDefault="00D75391" w:rsidP="00D75391">
-									<w:pPr>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
-									</w:pPr>
-								</w:p>
+								<w:p w:rsidR="00D75391" w:rsidRDefault="00D75391" w:rsidP="00D75391"/>
+								<w:p w:rsidR="00D75391" w:rsidRDefault="00D75391" w:rsidP="00D75391"/>
+								<w:p w:rsidR="00D75391" w:rsidRPr="008D368F" w:rsidRDefault="00D75391" w:rsidP="00D75391"/>
 							</w:tc>
 						</w:tr>
 						<w:tr w:rsidR="00F93C42" w:rsidRPr="008D368F" w:rsidTr="000C4EEC">
@@ -849,44 +617,22 @@
 								<w:p w:rsidR="00604514" w:rsidRDefault="00604514" w:rsidP="00AC4F60">
 									<w:pPr>
 										<w:spacing w:line="360" w:lineRule="auto"/>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 									</w:pPr>
 									<w:r w:rsidRPr="008D368F">
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>毕业论文（设计）应收集的资料及主要参考文献</w:t>
 									</w:r>
 								</w:p>
 								<w:p w:rsidR="004F0DE8" w:rsidRDefault="00242A5C" w:rsidP="00D75391">
-									<w:pPr>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
-									</w:pPr>
 									<w:r>
-										<w:rPr>
-											<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
-											<w:sz w:val="24"/>
-											<w:szCs w:val="24"/>
-										</w:rPr>
 										<w:t>${wenXian}</w:t>
 									</w:r>
-									<w:bookmarkStart w:id="0" w:name="_GoBack"/>
-									<w:bookmarkEnd w:id="0"/>
 								</w:p>
 								<w:p w:rsidR="004F0DE8" w:rsidRPr="004F0DE8" w:rsidRDefault="004F0DE8" w:rsidP="004F0DE8">
 									<w:pPr>
 										<w:pStyle w:val="1"/>
 									</w:pPr>
+									<w:bookmarkStart w:id="0" w:name="_GoBack"/>
+									<w:bookmarkEnd w:id="0"/>
 								</w:p>
 							</w:tc>
 						</w:tr>
@@ -894,42 +640,29 @@
 					<w:p w:rsidR="000C4EEC" w:rsidRPr="008D368F" w:rsidRDefault="00F93C42" w:rsidP="00AC4F60">
 						<w:pPr>
 							<w:spacing w:line="360" w:lineRule="auto"/>
-							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
-							</w:rPr>
 						</w:pPr>
 						<w:r w:rsidRPr="008D368F">
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
+								<w:rFonts w:hint="eastAsia"/>
 							</w:rPr>
 							<w:t xml:space="preserve">指导教师签名：      </w:t>
 						</w:r>
 						<w:r w:rsidR="00604514" w:rsidRPr="008D368F">
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体-18030" w:hint="eastAsia"/>
+								<w:rFonts w:cs="宋体-18030" w:hint="eastAsia"/>
 								<w:bCs/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
 							</w:rPr>
 							<w:t xml:space="preserve"> 教研室主任签名： </w:t>
 						</w:r>
 						<w:r w:rsidRPr="008D368F">
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
+								<w:rFonts w:hint="eastAsia"/>
 							</w:rPr>
 							<w:t xml:space="preserve">       </w:t>
 						</w:r>
 						<w:r w:rsidR="000C4EEC" w:rsidRPr="008D368F">
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
+								<w:rFonts w:hint="eastAsia"/>
 							</w:rPr>
 							<w:t>学院主管领导签名：</w:t>
 						</w:r>
@@ -938,17 +671,10 @@
 						<w:pPr>
 							<w:spacing w:line="360" w:lineRule="auto"/>
 							<w:ind w:firstLineChars="2200" w:firstLine="5280"/>
-							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
-							</w:rPr>
 						</w:pPr>
 						<w:r w:rsidRPr="008D368F">
 							<w:rPr>
-								<w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:hint="eastAsia"/>
-								<w:sz w:val="24"/>
-								<w:szCs w:val="24"/>
+								<w:rFonts w:hint="eastAsia"/>
 							</w:rPr>
 							<w:t xml:space="preserve">          年    月     日</w:t>
 						</w:r>
@@ -968,14 +694,14 @@
 		<pkg:xmlData>
 			<w:footnotes xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se wp14">
 				<w:footnote w:type="separator" w:id="-1">
-					<w:p w:rsidR="00F40058" w:rsidRDefault="00F40058">
+					<w:p w:rsidR="00C6678D" w:rsidRDefault="00C6678D">
 						<w:r>
 							<w:separator/>
 						</w:r>
 					</w:p>
 				</w:footnote>
 				<w:footnote w:type="continuationSeparator" w:id="0">
-					<w:p w:rsidR="00F40058" w:rsidRDefault="00F40058">
+					<w:p w:rsidR="00C6678D" w:rsidRDefault="00C6678D">
 						<w:r>
 							<w:continuationSeparator/>
 						</w:r>
@@ -988,14 +714,14 @@
 		<pkg:xmlData>
 			<w:endnotes xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se wp14">
 				<w:endnote w:type="separator" w:id="-1">
-					<w:p w:rsidR="00F40058" w:rsidRDefault="00F40058">
+					<w:p w:rsidR="00C6678D" w:rsidRDefault="00C6678D">
 						<w:r>
 							<w:separator/>
 						</w:r>
 					</w:p>
 				</w:endnote>
 				<w:endnote w:type="continuationSeparator" w:id="0">
-					<w:p w:rsidR="00F40058" w:rsidRDefault="00F40058">
+					<w:p w:rsidR="00C6678D" w:rsidRDefault="00C6678D">
 						<w:r>
 							<w:continuationSeparator/>
 						</w:r>
@@ -1400,6 +1126,7 @@
 					<w:rsid w:val="00072E27"/>
 					<w:rsid w:val="0007668C"/>
 					<w:rsid w:val="00080014"/>
+					<w:rsid w:val="00084E5D"/>
 					<w:rsid w:val="00087565"/>
 					<w:rsid w:val="000A07C9"/>
 					<w:rsid w:val="000A4562"/>
@@ -1546,6 +1273,7 @@
 					<w:rsid w:val="003743F2"/>
 					<w:rsid w:val="00374E14"/>
 					<w:rsid w:val="003775E0"/>
+					<w:rsid w:val="0038346B"/>
 					<w:rsid w:val="00387857"/>
 					<w:rsid w:val="00397052"/>
 					<w:rsid w:val="003A132C"/>
@@ -1582,6 +1310,7 @@
 					<w:rsid w:val="00457AD3"/>
 					<w:rsid w:val="004607B5"/>
 					<w:rsid w:val="00460ED8"/>
+					<w:rsid w:val="00462695"/>
 					<w:rsid w:val="00462BCB"/>
 					<w:rsid w:val="00462C8E"/>
 					<w:rsid w:val="00462E72"/>
@@ -1713,6 +1442,7 @@
 					<w:rsid w:val="00717924"/>
 					<w:rsid w:val="00717C47"/>
 					<w:rsid w:val="00720920"/>
+					<w:rsid w:val="00723258"/>
 					<w:rsid w:val="00723CB2"/>
 					<w:rsid w:val="00725B8B"/>
 					<w:rsid w:val="00731F02"/>
@@ -1732,6 +1462,7 @@
 					<w:rsid w:val="00785690"/>
 					<w:rsid w:val="00793FCB"/>
 					<w:rsid w:val="007972B6"/>
+					<w:rsid w:val="007A5346"/>
 					<w:rsid w:val="007A59AB"/>
 					<w:rsid w:val="007B0318"/>
 					<w:rsid w:val="007B08EF"/>
@@ -1784,6 +1515,7 @@
 					<w:rsid w:val="008A0350"/>
 					<w:rsid w:val="008A0FAF"/>
 					<w:rsid w:val="008A184F"/>
+					<w:rsid w:val="008A3B2A"/>
 					<w:rsid w:val="008A5EA4"/>
 					<w:rsid w:val="008A7892"/>
 					<w:rsid w:val="008B3A02"/>
@@ -1800,6 +1532,7 @@
 					<w:rsid w:val="008E29F3"/>
 					<w:rsid w:val="008E4233"/>
 					<w:rsid w:val="008E5580"/>
+					<w:rsid w:val="008F02A4"/>
 					<w:rsid w:val="008F0FC6"/>
 					<w:rsid w:val="008F2B34"/>
 					<w:rsid w:val="008F33EE"/>
@@ -1973,6 +1706,7 @@
 					<w:rsid w:val="00C60B17"/>
 					<w:rsid w:val="00C64162"/>
 					<w:rsid w:val="00C65C5A"/>
+					<w:rsid w:val="00C6678D"/>
 					<w:rsid w:val="00C72CED"/>
 					<w:rsid w:val="00C734BD"/>
 					<w:rsid w:val="00C735E7"/>
@@ -2048,6 +1782,7 @@
 					<w:rsid w:val="00DF5C36"/>
 					<w:rsid w:val="00DF5C47"/>
 					<w:rsid w:val="00DF671D"/>
+					<w:rsid w:val="00E10EE1"/>
 					<w:rsid w:val="00E12AAF"/>
 					<w:rsid w:val="00E20078"/>
 					<w:rsid w:val="00E200D7"/>
@@ -2059,8 +1794,10 @@
 					<w:rsid w:val="00E32DFE"/>
 					<w:rsid w:val="00E370CE"/>
 					<w:rsid w:val="00E47E12"/>
+					<w:rsid w:val="00E503E4"/>
 					<w:rsid w:val="00E50A55"/>
 					<w:rsid w:val="00E6066D"/>
+					<w:rsid w:val="00E61A72"/>
 					<w:rsid w:val="00E62D20"/>
 					<w:rsid w:val="00E62DD3"/>
 					<w:rsid w:val="00E63ACE"/>
@@ -2115,6 +1852,7 @@
 					<w:rsid w:val="00F47504"/>
 					<w:rsid w:val="00F543DD"/>
 					<w:rsid w:val="00F56E62"/>
+					<w:rsid w:val="00F61F56"/>
 					<w:rsid w:val="00F66903"/>
 					<w:rsid w:val="00F723A3"/>
 					<w:rsid w:val="00F7465D"/>
@@ -2129,6 +1867,7 @@
 					<w:rsid w:val="00FB1A08"/>
 					<w:rsid w:val="00FB5900"/>
 					<w:rsid w:val="00FB6DB9"/>
+					<w:rsid w:val="00FC082D"/>
 					<w:rsid w:val="00FC321A"/>
 					<w:rsid w:val="00FC597A"/>
 					<w:rsid w:val="00FC64D9"/>
@@ -2173,7 +1912,7 @@
 				</w:shapeDefaults>
 				<w:decimalSymbol w:val="."/>
 				<w:listSeparator w:val=","/>
-				<w14:docId w14:val="024E5D0D"/>
+				<w14:docId w14:val="023F0D6F"/>
 				<w15:chartTrackingRefBased/>
 				<w15:docId w15:val="{B1198CEF-9FA6-4F32-9A48-8D2AB3757CB6}"/>
 			</w:settings>
@@ -2235,7 +1974,7 @@
 				<w:docDefaults>
 					<w:rPrDefault>
 						<w:rPr>
-							<w:rFonts w:ascii="Times New Roman" w:eastAsia="宋体" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
+							<w:rFonts w:ascii="宋体" w:eastAsia="宋体" w:hAnsi="宋体" w:cs="宋体"/>
 							<w:lang w:val="en-US" w:eastAsia="zh-CN" w:bidi="ar-SA"/>
 						</w:rPr>
 					</w:rPrDefault>
@@ -2526,7 +2265,8 @@
 					</w:pPr>
 					<w:rPr>
 						<w:kern w:val="2"/>
-						<w:sz w:val="21"/>
+						<w:sz w:val="24"/>
+						<w:szCs w:val="24"/>
 					</w:rPr>
 				</w:style>
 				<w:style w:type="character" w:default="1" w:styleId="a0">
@@ -2573,10 +2313,6 @@
 						<w:snapToGrid w:val="0"/>
 						<w:spacing w:line="360" w:lineRule="auto"/>
 					</w:pPr>
-					<w:rPr>
-						<w:rFonts w:ascii="宋体" w:hAnsi="宋体"/>
-						<w:sz w:val="24"/>
-					</w:rPr>
 				</w:style>
 				<w:style w:type="paragraph" w:styleId="3">
 					<w:name w:val="Body Text Indent 3"/>
@@ -2600,7 +2336,7 @@
 					<w:name w:val="Plain Text"/>
 					<w:basedOn w:val="a"/>
 					<w:rPr>
-						<w:rFonts w:ascii="宋体" w:hAnsi="Courier New"/>
+						<w:rFonts w:hAnsi="Courier New"/>
 					</w:rPr>
 				</w:style>
 				<w:style w:type="paragraph" w:styleId="20">
@@ -2641,6 +2377,11 @@
 						<w:spacing w:line="360" w:lineRule="exact"/>
 						<w:jc w:val="both"/>
 					</w:pPr>
+					<w:rPr>
+						<w:kern w:val="2"/>
+						<w:sz w:val="24"/>
+						<w:szCs w:val="24"/>
+					</w:rPr>
 				</w:style>
 				<w:style w:type="table" w:styleId="a8">
 					<w:name w:val="Table Grid"/>
@@ -2749,10 +2490,10 @@
 				<cp:keywords/>
 				<dc:description/>
 				<cp:lastModifiedBy>风吟</cp:lastModifiedBy>
-				<cp:revision>29</cp:revision>
+				<cp:revision>41</cp:revision>
 				<cp:lastPrinted>2012-12-21T01:54:00Z</cp:lastPrinted>
 				<dcterms:created xsi:type="dcterms:W3CDTF">2016-11-29T03:21:00Z</dcterms:created>
-				<dcterms:modified xsi:type="dcterms:W3CDTF">2016-11-30T09:51:00Z</dcterms:modified>
+				<dcterms:modified xsi:type="dcterms:W3CDTF">2016-12-07T06:26:00Z</dcterms:modified>
 				<cp:category/>
 			</cp:coreProperties>
 		</pkg:xmlData>
@@ -2818,10 +2559,10 @@
 		<pkg:xmlData>
 			<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
 				<Template>Normal</Template>
-				<TotalTime>160</TotalTime>
+				<TotalTime>165</TotalTime>
 				<Pages>1</Pages>
-				<Words>51</Words>
-				<Characters>291</Characters>
+				<Words>50</Words>
+				<Characters>290</Characters>
 				<Application>Microsoft Office Word</Application>
 				<DocSecurity>0</DocSecurity>
 				<PresentationFormat/>
@@ -2835,7 +2576,7 @@
 				<Manager/>
 				<Company>MS User</Company>
 				<LinksUpToDate>false</LinksUpToDate>
-				<CharactersWithSpaces>341</CharactersWithSpaces>
+				<CharactersWithSpaces>339</CharactersWithSpaces>
 				<SharedDoc>false</SharedDoc>
 				<HyperlinksChanged>false</HyperlinksChanged>
 				<AppVersion>16.0000</AppVersion>

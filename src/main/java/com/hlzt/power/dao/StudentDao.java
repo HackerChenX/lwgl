@@ -311,7 +311,17 @@ public interface StudentDao extends BaseDao<Student>{
 	 * @return
 	 * Student 
 	 */
-	public List<Student> findStuTitle(@Param("map")Map<String, Object> map);
+	public List<Student> findStuTitle(@Param("map")Map<String, Object> map,@Param("page") BasePage<Student> page);
+	
+	/**
+	 * @Title: findStuTitleNum
+	 * @Description: 查询学生申报数量
+	 * @param map
+	 * @return int 
+	 * @throws
+	 */
+	public int findStuTitleNum(@Param("map")Map<String, Object> map);
+	
 	/**
 	 * 通过教师Id查学生
 	 * @author gym

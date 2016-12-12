@@ -5,10 +5,6 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
     <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
-    <result column="main_task" property="mainTask" jdbcType="VARCHAR" />
-    <result column="zhi_biao" property="zhiBiao" jdbcType="VARCHAR" />
-    <result column="yao_qiu" property="yaoQiu" jdbcType="VARCHAR" />
-    <result column="wen_xian" property="wenXian" jdbcType="VARCHAR" />
     <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
     <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
     <result column="task_book" property="taskBookPath" jdbcType="VARCHAR" />
@@ -23,8 +19,8 @@
   
    <!-- 提交任务书 -->
   <insert id="insert">
-  	insert into taskbook (id, stu_id, tea_id,main_task,zhi_biao,yao_qiu,wen_xian,tea_status, leader_status, task_book, create_user, create_time, limit_time)
-  	values (#{id, jdbcType=VARCHAR},#{stuId, jdbcType=VARCHAR},#{teaId, jdbcType=VARCHAR},#{mainTask},#{zhiBiao},#{yaoQiu},#{wenXian},#{teaStatus, jdbcType=VARCHAR},
+  	insert into taskbook (id, stu_id, tea_id,tea_status, leader_status, task_book, create_user, create_time, limit_time)
+  	values (#{id, jdbcType=VARCHAR},#{stuId, jdbcType=VARCHAR},#{teaId, jdbcType=VARCHAR},#{teaStatus, jdbcType=VARCHAR},
   			#{leaderStatus, jdbcType=VARCHAR}, #{taskBookPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
   			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
   </insert>
@@ -48,18 +44,6 @@
   		</if>
   		<if test="map.leaderStatus!=null">
   			leader_status=#{map.leaderStatus},
-  		</if>
-  		<if test="map.mainTask!=null">
-  			main_task=#{map.mainTask},
-  		</if>
-  		<if test="map.yaoQiu!=null">
-  			yao_qiu=#{map.yaoQiu},
-  		</if>
-  		<if test="map.zhiBiao!=null">
-  			zhi_biao=#{map.zhiBiao},
-  		</if>
-  		<if test="map.wenXian!=null">
-  			wen_xian=#{map.wenXian},
   		</if>
   		<if test="map.taskBook!=null">
   			task_book=#{map.taskBook},

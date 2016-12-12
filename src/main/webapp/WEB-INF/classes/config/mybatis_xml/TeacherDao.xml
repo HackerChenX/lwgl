@@ -387,7 +387,7 @@
 		teacher_title tt
 	WHERE
 		t.user_id = tt.teacher_id
-		AND tt.choose = 0
+		AND tt.choose = 0 AND tt.leader_status = 1 AND tt.manager_status=1
 		<if test="map.teaName!=null and map.teaName!=''">
 			AND t.tea_name = #{map.teaName}
 		</if> 
@@ -406,7 +406,7 @@
 		teacher_title tt
 	WHERE
 		t.user_id = tt.teacher_id
-		AND tt.choose = 0 
+		AND tt.choose = 0 AND tt.leader_status = 1 AND tt.manager_status=1
 		<if test="map.teaName!=null and map.teaName!=''">
 			AND t.tea_name = #{map.teaName}
 		</if> 

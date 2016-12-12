@@ -20,8 +20,8 @@
   <insert id="insert">
   	insert into openingreport (id, stu_id, tea_id, tea_status, leader_status, opening_report, create_user, create_time, limit_time)
   	values (#{id, jdbcType=VARCHAR}, #{stuId, jdbcType=VARCHAR} ,#{teaId, jdbcType=VARCHAR}, #{teaStatus, jdbcType=VARCHAR},
-  			#{leaderStatus, jdbcType=VARCHAR}, #{openingReportPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
-  			#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
+  	#{leaderStatus, jdbcType=VARCHAR}, #{openingReportPath, jdbcType=VARCHAR}, #{createUser, jdbcType=VARCHAR}, 
+  	#{createTime, jdbcType=TIMESTAMP}, #{limitTime, jdbcType=TIMESTAMP})
   </insert>
  
   <!-- 根据学生ID查询开题报告信息 -->
@@ -45,7 +45,7 @@
   		</if>
   		<if test="map.openingReport!=null">
   			opening_report=#{map.openingReport},
-  		</if>
+  		</if>  		
   		<if test="map.createTime!=null">
   			create_time=#{map.createTime}
   		</if>

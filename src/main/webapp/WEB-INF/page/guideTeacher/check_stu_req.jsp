@@ -25,9 +25,9 @@
 
 <body style="margin-top:50px;">
 	<div class="row" style="margin-top: 50px;" id="row1">
-		<div class="col-xs-12 col-md-11 col-md-offset-1">
+		<div class="col-xs-12 col-md-12">
 			<form class="form-inline" method="post"
-				action="<%=basePath%>guideTeacher/findStuTitle.shtm">
+				action="<%=basePath%>guideTeacher/findStuTitle.shtm" id="select">
 				<div class="panel panel-primary">
 					<div class="panel-body">
 						<label class="control-label">学号：</label> <input type="text"
@@ -46,7 +46,9 @@
 							<option <c:if test="${status==2}">selected="selected"</c:if>
 								value="2">未通过</option>
 						</select>
-						<button class="btn btn-primary" type="submit" id="search">
+						<input name="pageNo"  type="hidden"  value="${page.pageNo}"   id="pageNow" />
+						<input name="pageSize" type="hidden"  value="${page.pageSize}" id="pageSize">
+						<button class="btn btn-primary" type="submit" id="keyWordSelect">
 							<span class="fa fa-search">搜索</span>
 						</button>
 					</div>
@@ -58,7 +60,7 @@
 	<!--row_1 ↑↑↑↑-->
 	<c:if test="${tea.allStunum!=0}">
 		<div class="row">
-			<div class="col-xs-12 col-md-11 col-md-offset-1">
+			<div class="col-xs-12 col-md-12">
 			<div class="alert alert-info">
 				<p>可带学生数：${tea.allStunum}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前申请学生数：${tea.nowStunum}</p>
 			</div>
@@ -67,7 +69,7 @@
 	</c:if>
 	<!--row_2 ↓↓↓↓-->
 	<div class="row" id="row2">
-				<div class="col-xs-12 col-md-11 col-md-offset-1">
+				<div class="col-xs-12 col-md-12">
 			<form class="form-horizontal"  method="post"
 				action="<%=basePath%>guideTeacher/findStuTitle_checkStuTitile.shtm">
 				<div class="panel panel-primary">
@@ -86,7 +88,7 @@
 									<th>学号</th>
 									<th>课题名</th>
 									<th>选题方式</th>
-									<th>班级</th>
+									<th>专业</th>
 									<th>电话</th>
 									<th>邮箱</th>
 									<th>审核状态</th>
@@ -94,8 +96,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:if test="${StuTitle!=null}">
-									<c:forEach var="StuTitle" items="${StuTitle}">
+								<c:if test="${page!=null}">
+									<c:forEach var="StuTitle" items="${page.results}">
 										<tr>
 											<td><input type="checkbox" name="ids"
 												value="${StuTitle.applyTitleId}">
@@ -105,9 +107,9 @@
 											<td>${StuTitle.userNum }</td>
 											<td>${StuTitle.titleName}</td>
 											<td>
-											<c:if test="${StuTitle.titleSourse==1}">学生自拟</c:if>
-											<c:if test="${StuTitle.titleSourse==0}">教师命题</c:if></td>
-											<td>${StuTitle.stuClass}</td>
+											<c:if test="${StuTitle.titleSourse==1}">自拟课题</c:if>
+											<c:if test="${StuTitle.titleSourse==0}">教师课题</c:if></td>
+											<td>${StuTitle.major}</td>
 											<td>${StuTitle.tel}</td>
 											<td>${StuTitle.mail}</td>
 											<td>
@@ -132,6 +134,7 @@
 						</table>
 					</div>
 					<div class="panel-footer">
+					<div class="row" style="padding-left:15px"><!-- row -->		
 						<input type="button" class="btn btn-default" id="check_all"
 							value="全选"></input>&nbsp;&nbsp;
 					
@@ -140,7 +143,32 @@
 						&nbsp;&nbsp;
 						<button name="status" value="2"
 							class="btn btn-primary alert-danger">退回</button>
-						&nbsp;&nbsp;
+						&nbsp;&nbsp;															
+							<div class="col-xs-8 col-md-8 "	style="float: right; text-align:right;">
+									<script type="text/javascript" src="<%=basePath%>js/page.js"></script>
+									<c:if test="${page.isAjax==0}">
+										<c:if test="${page.pageNo-1>0 }">
+											<a href="javascript:upPage()" class="btn btn-default btn-sm">&laquo;上一页</a>
+										</c:if>
+
+										<a class="btn btn-default btn-sm">第${page.pageNo }页</a>
+
+										<c:if test="${page.pageNo+1<=page.totalPage }">
+											<a href="javascript:nextPage()"
+												class="btn btn-default btn-sm">下一页&raquo;</a>
+										</c:if>
+										&nbsp;&nbsp;共${page.totalRecord }条&nbsp;共${page.totalPage}页 &nbsp;&nbsp;跳转到&nbsp;
+										<input type="text" value="" id="zc_tz_text"
+											style="width:28px;height:28px" />&nbsp;页<input type="button"
+											value="跳转" id="zc_tz_button" class="btn btn-default btn-sm"
+											onclick="zcTzClick(${page.totalPage})" /> &nbsp;&nbsp;每页&nbsp;<input
+											type="text" value="" id="page_size_text"
+											style="width:28px;height:28px" />&nbsp;条<input type="button"
+											value="设置" id="zc_size_button" class="btn btn-default btn-sm"
+											onclick="pageSizeClick()" />
+									</c:if>
+								</div>
+						</div><!-- /row -->
 					</div>
 				</div>
 			</form>

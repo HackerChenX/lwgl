@@ -1,6 +1,8 @@
 package com.hlzt.power.web;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import java.text.SimpleDateFormat;
@@ -57,6 +59,7 @@ import com.hlzt.power.model.TitleNature;
 import com.hlzt.power.model.User;
 
 import com.hlzt.power.service.PublicSer;
+import com.hlzt.power.service.StudentFlowManageSer;
 import com.hlzt.power.service.UserSer;
 import com.hlzt.power.service.ZdTeacherFlowManageSer;
 import com.mysql.fabric.xmlrpc.base.Array;
@@ -76,6 +79,8 @@ public class ZdTeacherFlowManageController {
 	private PublicSer publicSer;
 	@Resource
 	private UserSer userSer;
+	@Resource
+	private StudentFlowManageSer studentFlowManageSer;
 
 	/**
 	 * 指导老师已申报的课题
@@ -554,7 +559,7 @@ public class ZdTeacherFlowManageController {
 	 */
 	@RequestMapping("/findStuTitle.shtm")
 	public String findStuTitle(String stuNum, String stuName,
-			Map<String, Object> map, String status, Model model,
+			Map<String, Object> map, String status, Model model,BasePage<Student> page,
 			HttpServletRequest request, HttpServletResponse response){
 		Subject currentUser = SecurityUtils.getSubject();
 		if (!currentUser.hasRole("zd_teacher")) {
@@ -568,6 +573,10 @@ public class ZdTeacherFlowManageController {
     		model.addAttribute("errorMsg","请完善个人信息！");
 			return "error/error.jsp";
 		}	
+		/**
+		 * 此处重新调用setPageNo方法为了正确接收pageSize后设置RecordNo
+		 */
+		page.setPageNo(page.getPageNo());
 		if (status == null)
 			status = "0";// 默认显示未审核记录
 
@@ -582,12 +591,14 @@ public class ZdTeacherFlowManageController {
 				status = null;
 			map.put("teaStatus", status);
 		} // 查询条件
-
-		List<Student> stuTitle = ZdTeacherFlowManageSer.findStuTitle(map);
+		try{
+			page = ZdTeacherFlowManageSer.findStuTitle(map,page);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		//获取当前教师状态（session更新不及时）
 		Teacher tea = userSer.finTeacherByUserNum(teacher.getTeaNum());
-		model.addAttribute("StuTitle", stuTitle);// 查询结果带回
-
+		model.addAttribute("page", page);// 查询结果带回
 		model.addAttribute("stuNum", stuNum);
 		model.addAttribute("stuName", stuName);
 		model.addAttribute("status", status);// 查询关键词带回前台
@@ -638,7 +649,7 @@ public class ZdTeacherFlowManageController {
 	 */
 	@RequestMapping("/findStuTitle_checkStuTitile.shtm")
 	public String checkStuTitile(String[] ids, String status,String applyTitleId, String teaIdea,String titleSourse,
-			String stuName, String major, String teaName,
+			String stuName, String major, String teaName,BasePage<Student> page,
 			Map<String, Object> map, String findStatus, Model model,
 			HttpServletRequest request, HttpServletResponse response) {
 		Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
@@ -658,7 +669,7 @@ public class ZdTeacherFlowManageController {
 		} // status无参错误
 		if (ids == null) {
 			model.addAttribute("errorMsg", "您未选择数据！");
-			return findStuTitle(null, null, map, findStatus, model, request,
+			return findStuTitle(null, null, map, findStatus, model,page,request,
 					response);
 		}
 		if(teaIdea==null){
@@ -694,7 +705,7 @@ public class ZdTeacherFlowManageController {
 				}		
 			}	
 		}
-		return findStuTitle(null, null, map, findStatus, model, request,response);
+		return findStuTitle(null, null, map, findStatus, model, page,request,response);
 	}
 
 	// ////////////////////////////////////////////////////////////////////
@@ -745,11 +756,22 @@ public class ZdTeacherFlowManageController {
 			String stuId=taskBooks.get(i).getStuId();//获取任务书中的stuId
 			map.put("stuId", stuId);
 			Student student=ZdTeacherFlowManageSer.findStuForTeacher(map);
-
+			if(StringUtils.isNotBlank(taskBooks.get(i).getTaskBookPath()))
+			{
+				//获取项目网络地址
+				String path = request.getContextPath();
+				String basePath = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ path ;
+				//截取文件地址，拼接文件的网络地址
+				String[] filePaths = taskBooks.get(i).getTaskBookPath().split("lwgl");
+				taskBooks.get(i).setTaskBookSrc(basePath+filePaths[1]);
+			}
 			if(student!=null){				
 				taskBooks.get(i).setStudent(student);//把学生放入
 				reList.add(taskBooks.get(i));
-			}			
+			}	
+			
 		}
 		model.addAttribute("stuNum", stuNum);
 		model.addAttribute("stuName", stuName);
@@ -917,11 +939,23 @@ public class ZdTeacherFlowManageController {
 			String stuId=openingReports.get(i).getStuId();//获取开题报告中的stuId
 			map.put("stuId", stuId);
 			Student student=ZdTeacherFlowManageSer.findStuForTeacher(map);
-
+			if(StringUtils.isNotBlank(openingReports.get(i).getOpeningReportPath()))
+			{
+				//获取项目网络地址
+				String path = request.getContextPath();
+				String basePath = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ path ;
+				//截取文件地址，拼接文件的网络地址
+				String[] filePaths = openingReports.get(i).getOpeningReportPath().split("lwgl");
+				openingReports.get(i).setOpeningReportSrc(basePath+filePaths[1]);
+			}
 			if(student!=null){					
 				openingReports.get(i).setStudent(student);//把学生放入
 				reList.add(openingReports.get(i));
-			}			
+			}	
+			
+			
 		}
 		model.addAttribute("stuNum", stuNum);
 		model.addAttribute("stuName", stuName);
@@ -1089,11 +1123,22 @@ public class ZdTeacherFlowManageController {
 			String stuId=midChecks.get(i).getStuId();//获取任务书中的stuId
 			map.put("stuId", stuId);
 			Student student=ZdTeacherFlowManageSer.findStuForTeacher(map);
-
+			if(StringUtils.isNotBlank(midChecks.get(i).getMidCheckPath()))
+			{
+				//获取项目网络地址
+				String path = request.getContextPath();
+				String basePath = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ path ;
+				//截取文件地址，拼接文件的网络地址
+				String[] filePaths = midChecks.get(i).getMidCheckPath().split("lwgl");
+				midChecks.get(i).setMidCheckSrc(basePath+filePaths[1]);
+			}
 			if(student!=null){					
 				midChecks.get(i).setStudent(student);//把学生放入
 				reList.add(midChecks.get(i));
-			}			
+			}	
+			
 		}
 		model.addAttribute("stuNum", stuNum);
 		model.addAttribute("stuName", stuName);
@@ -1232,11 +1277,22 @@ public class ZdTeacherFlowManageController {
 			String stuId=firstPapers.get(i).getStuId();//获取任务书中的stuId
 			map.put("stuId", stuId);
 			Student student=ZdTeacherFlowManageSer.findStuForTeacher(map);
-
+			if(StringUtils.isNotBlank(firstPapers.get(i).getFirstPaperPath()))
+			{
+				//获取项目网络地址
+				String path = request.getContextPath();
+				String basePath = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ path ;
+				//截取文件地址，拼接文件的网络地址
+				String[] filePaths = firstPapers.get(i).getFirstPaperPath().split("lwgl");
+				firstPapers.get(i).setFirstPaperSrc(basePath+filePaths[1]);
+			}
 			if(student!=null){				
 				firstPapers.get(i).setStudent(student);//把学生放入
 				reList.add(firstPapers.get(i));
-			}			
+			}	
+			
 		}
 		model.addAttribute("stuNum", stuNum);
 		model.addAttribute("stuName", stuName);
@@ -1374,11 +1430,22 @@ public class ZdTeacherFlowManageController {
 			String stuId=finalPapers.get(i).getStuId();//获取任务书中的stuId
 			map.put("stuId", stuId);
 			Student student=ZdTeacherFlowManageSer.findStuForTeacher(map);
-
+			if(StringUtils.isNotBlank(finalPapers.get(i).getFinalPaperPath()))
+			{
+				//获取项目网络地址
+				String path = request.getContextPath();
+				String basePath = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ path ;
+				//截取文件地址，拼接文件的网络地址
+				String[] filePaths = finalPapers.get(i).getFinalPaperPath().split("lwgl");
+				finalPapers.get(i).setFinalPaperSrc(basePath+filePaths[1]);
+			}
 			if(student!=null){				
 				finalPapers.get(i).setStudent(student);//把学生放入
 				reList.add(finalPapers.get(i));
-			}			
+			}	
+			
 		}
 		model.addAttribute("stuNum", stuNum);
 		model.addAttribute("stuName", stuName);
@@ -1529,7 +1596,7 @@ public class ZdTeacherFlowManageController {
 	 * @return
 	 */
 	@RequestMapping("/findPyStu.shtm")
-	public String findPyStu(Model model, BasePage page,
+	public String findPyStu(Model model, BasePage<Student> page,
 			HttpServletRequest request, HttpServletResponse response){
 		Subject currentUser = SecurityUtils.getSubject();
 		if (!currentUser.hasRole("zd_teacher")) {
@@ -1546,11 +1613,6 @@ public class ZdTeacherFlowManageController {
     		model.addAttribute("errorMsg","请完善个人信息！");
 			return "error/error.jsp";
 		}	
-		if(StringUtils.isBlank(teacher.getMajor()))
-		{
-    		model.addAttribute("errorMsg","请完善个人信息！");
-			return "error/error.jsp";
-		}	
 		try {
 			page = ZdTeacherFlowManageSer.zdTeaFindPyStu(teacher.getUserId(), page);
 		} catch (Exception e) {
@@ -1558,6 +1620,20 @@ public class ZdTeacherFlowManageController {
 			model.addAttribute("errorMsg", "系统异常！");
 			return "error/error.jsp";
 		}
+		//获取项目网络地址
+		String path = request.getContextPath();
+		String basePath = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort()
+				+ path ;
+		for(int i = 0;i<page.getResults().size();i++)
+		{
+			FinalPaper finalPaper = studentFlowManageSer.findFinalPaperByStuId(page.getResults().get(i).getUserId());		
+			//截取文件地址，拼接文件的网络地址
+			String[] filePaths = finalPaper.getFinalPaperPath().split("lwgl");
+			finalPaper.setFinalPaperSrc(basePath+filePaths[1]);
+			page.getResults().get(i).setFinalPaper(finalPaper);
+		}
+			
 		model.addAttribute("page", page);
 		return "guideTeacher/look_py_stu.jsp";
 	}
@@ -1947,5 +2023,5 @@ public class ZdTeacherFlowManageController {
   		}
   		return wb;
   	}
-	
+		
 }

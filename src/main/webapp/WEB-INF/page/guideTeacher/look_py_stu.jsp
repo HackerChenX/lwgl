@@ -46,24 +46,24 @@
 									<th>学号</th>
 									<th>姓名</th>
 									<th>课题名</th>
-									<th>班级</th>
+									<th>专业</th>
+									<th>指导教师</th>
 									<th>论文</th>
-									<th>电话</th>
-									<th>邮箱</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="Student" items="${page.results}">
 									<tr>
-										<td>${Student.userNum }</td>
-										<td>${Student.stuName }</td>
-										<td>${Student.title }</td>
-										<td>${Student.stuClass }</td>
-										<td><a
+										<td>${Student.userNum}</td>
+										<td>${Student.stuName}</td>
+										<td>${Student.title}</td>
+										<td>${Student.major}</td>
+										<td>${Student.zdTeaName}</td>
+										<td><a class="btn btn-primary"
 											href="<%=basePath %>downloadFile.chtm?filePath=${Student.finalPaperPath}">下载</a>
-											<a href="<%=basePath %>stagePaper/yulan.shtm?path=${Student.finalPaperPath}"  target="_blank"">预览</a></td>
-										<td>${Student.tel}</td>
-										<td>${Student.mail }</td>
+											<a class="btn btn-primary" href="<%=basePath %>pyYuLan.shtm?filePathSrc=${Student.finalPaper.finalPaperSrc}&filePath=${Student.finalPaper.finalPaperPath}&stuId=${Student.userId}"  target="_blank">预览</a>
+										</td>
+										</tr>
 								</c:forEach>
 								<c:if test="${page.results==null||fn:length(page.results)==0}">
 									<tr>

@@ -62,7 +62,7 @@
 						<div class="panel-footer">					
 							<button id="submitFinalPaper" class="btn btn-primary" type="button">提交</button>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<button type="reset" class="btn btn-default">撤销</button>
+							<button type="reset" class="btn btn-default">重置</button>
 						</div>
 						<div class="modal fade" id="mymodal-data" tabindex="-1"
 							role="dialog" aria-labelledby="mySmallModalLabel"

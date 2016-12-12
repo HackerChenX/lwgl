@@ -7,6 +7,8 @@
     <result column="tea_id" property="teaId" jdbcType="VARCHAR" />
     <result column="tea_status" property="teaStatus" jdbcType="VARCHAR" />
     <result column="leader_status" property="leaderStatus" jdbcType="VARCHAR" />
+    <result column="sy_table" property="syTablePath" jdbcType="VARCHAR" />
+    <result column="py_table" property="pyTablePath" jdbcType="VARCHAR" />
     <result column="final_paper" property="finalPaperPath" jdbcType="VARCHAR" />
     <result column="create_user" property="createUser" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -48,6 +50,12 @@
   		</if>
   		<if test="map.createTime!=null">
   			create_time=#{map.createTime}
+  		</if>
+  		<if test="map.syTablePath!=null">
+  			sy_table=#{map.syTablePath}
+  		</if>
+  		<if test="map.pyTablePath!=null">
+  			py_table=#{map.pyTablePath}
   		</if>
   	</set> 
   	WHERE stu_id=#{stuId}

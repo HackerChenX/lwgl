@@ -51,7 +51,7 @@
 							<div class="alert alert-info" role="alert"
 								style="margin-top: 15px;">
 								<strong>注意事项：</strong>
-								<p>（1）选择附件点击提交后上传</p>
+								<p>（1）可选择在线填写或附件上传两种提交方式</p>
 								<p>（2）仅限撤回审核中的文件</p>
 								<p>（3）附件上传后由系统统一命名为:开题报告-姓名-学号格式</p>
 							</div>
@@ -62,7 +62,7 @@
 						<div class="panel-footer">					
 							<button id="submitOpeningReport" class="btn btn-primary" type="button">提交</button>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<button type="reset" class="btn btn-default">撤销</button>
+							<a class="btn btn-primary" href="<%=basePath%>student/openingReportOnline.shtm">在线填写</a>
 						</div>
 						<div class="modal fade" id="mymodal-data" tabindex="-1"
 							role="dialog" aria-labelledby="mySmallModalLabel"
@@ -114,7 +114,11 @@
 							<c:if test="${openingReport!=null}">
 								<tr>
 									<td>${openingReport.createUser}</td>
-									<td><a href="<%=basePath%>student/downloadFile.shtm?filePath=${openingReport.openingReportPath}">许昌学院本科毕业论文（设计）开题报告</a></td>
+									<td>
+									<c:if test="${openingReport.openingReportPath!=null}">
+										<a href="<%=basePath%>student/downloadFile.shtm?filePath=${openingReport.openingReportPath}">许昌学院本科毕业论文（设计）开题报告</a>
+									</c:if>			
+									</td>
 									<td><c:if test="${openingReport.teaStatus==0}">审核中</c:if>
 										<c:if test="${openingReport.teaStatus==1}">通过</c:if>
 										<c:if test="${openingReport.teaStatus==2}">退回</c:if>
@@ -177,7 +181,7 @@
 	</div>
 	<input id="ErrorMsg" value="${errorMsg}" hidden="hidden"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document).ready(function(){
 			var ErrorMsg=$("#ErrorMsg").val();
 			if(!(ErrorMsg==''|| ErrorMsg==undefined || ErrorMsg==null)){
 				$(".modal-title").html("错误提示");

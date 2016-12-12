@@ -256,7 +256,7 @@ public TeacherTitle findTeaTitleByTitleid(String titleid);
  * @return
  * BasePage<StuStageFile> 
  */
-public List<Student> findStuTitle(Map<String, Object> map);
+public BasePage<Student> findStuTitle(Map<String, Object> map,BasePage<Student> page);
 /**
  * 通过学生id查学生
  * @author gym

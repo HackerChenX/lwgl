@@ -25,7 +25,7 @@
     <script type="text/javascript">
 		 var ue = UE.getEditor('editor');
 		 $("#content").val(UE.getContent());		  		 
-   </script>
+    </script>
  <style>
   .fileUpload {
 	position: relative;
